@@ -12,7 +12,7 @@
       --accent: #2563eb;
       --accent-soft: rgba(37, 99, 235, 0.12);
       --text: #111827;
-      --muted: #6b7280;
+      --muted: #4b5563;
     }
 
     * { box-sizing: border-box; }
@@ -22,9 +22,9 @@
       padding: 24px 8px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
-      /* ✅ 전체 배경 이미지를 적용 (같은 폴더에 plane-window.png 업로드) */
+      /* 전체 배경 이미지 (같은 폴더에 plane-window.png 업로드) */
       background:
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.35), rgba(15, 23, 42, 0.25)),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.3)),
         url("plane-window.png") center/cover fixed no-repeat;
     }
 
@@ -40,7 +40,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.15);
       position: relative;
       overflow: hidden;
-      backdrop-filter: blur(18px);      /* 글라스모피즘 효과 */
+      backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
     }
 
@@ -52,15 +52,15 @@
     h1 {
       font-size: 1.9rem;
       margin: 0 0 0.2rem;
-      color: #f9fafb;
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+      color: #111827;                 /* 진한 글자색으로 변경 */
+      text-shadow: none;
     }
 
     p.desc {
       margin: 0;
-      color: #e5e7eb;
+      color: #374151;                 /* 좀 더 진한 회색 */
       font-size: 0.95rem;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      text-shadow: none;
     }
 
     .layout {
@@ -165,20 +165,21 @@
       margin-top: 0.4rem;
       font-size: 0.8rem;
       color: var(--muted);
+      /* "1 HKD" 같이 단위는 JS에서 줄바꿈 안 되는 공백 사용 */
     }
 
     .error {
       margin-top: 0.7rem;
-      color: #fecaca;
+      color: #b91c1c;
       font-size: 0.85rem;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      text-shadow: none;
     }
 
     .ok {
       margin-top: 0.7rem;
-      color: #bfdbfe;
+      color: #2563eb;
       font-size: 0.85rem;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      text-shadow: none;
     }
 
     .calc-summary {
@@ -213,8 +214,14 @@
       text-decoration: underline;
     }
 
+    /* PC/모바일용 텍스트 분리 */
+    .only-desktop { display: block; }
+    .only-mobile  { display: none; }
+
     @media (max-width: 720px) {
       .panel { min-width: 280px; }
+      .only-desktop { display: none; }
+      .only-mobile  { display: block; }
     }
   </style>
 </head>
@@ -262,9 +269,15 @@
       <!-- 오른쪽: 텍스트 합산식 + 환전 -->
       <section class="panel">
         <h2>2. 텍스트 합산식 → 환전</h2>
-        <p class="help">
+
+        <!-- 데스크탑용 설명 -->
+        <p class="help only-desktop">
           예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
           합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
+        </p>
+        <!-- 모바일용 설명 (줄바꿈 없이 짧게) -->
+        <p class="help only-mobile">
+          예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
         </p>
 
         <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
@@ -378,7 +391,6 @@
           div.textContent = `${c.code} - ${c.nameKo}`;
           div.addEventListener("mousedown", (e) => {
             e.preventDefault();
-            // ✅ 버그 수정: c.nameKo가 제대로 들어가도록 템플릿 사용
             inputEl.value = `${c.code} - ${c.nameKo}`;
             listEl.style.display = "none";
             onSelect(c.code);
@@ -437,9 +449,13 @@
 
         currentRate = rate;
         lastUpdateText = data.time_last_update_utc || "";
+
+        // 숫자와 통화 단위 사이에 줄바꿈 안 되는 공백(\u00a0)을 사용
+        const baseStr = `1\u00a0${baseCode}`;
+        const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
+
         rateInfoEl.textContent =
-          `${lastUpdateText || "최근"} 기준 1 ${baseCode} ≈ ` +
-          `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })} ${targetCode}`;
+          `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
         mainInfoEl.textContent = "환율 정보를 정상적으로 불러왔습니다.";
         updateSingleAmountResult();
         updateCalcResult();
