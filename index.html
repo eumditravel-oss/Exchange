@@ -2,98 +2,440 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>웹 환율 계산기</title>
+  <title>웹 환율 계산기 + 계산기 합산</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 0 16px;
+    }
     h1 { font-size: 1.6rem; margin-bottom: 0.5rem; }
-    label { display: block; margin-top: 1rem; font-weight: 600; }
-    select, input { width: 100%; padding: 8px 10px; margin-top: 0.4rem; box-sizing: border-box; }
-    button { margin-top: 1.2rem; width: 100%; padding: 10px; font-size: 1rem; cursor: pointer; }
-    .result { margin-top: 1.5rem; font-size: 1.1rem; font-weight: 600; }
-    .error { margin-top: 1rem; color: #c0392b; }
-    footer { margin-top: 2.5rem; font-size: 0.8rem; color: #777; text-align: center; }
+    h2 { font-size: 1.2rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    p { margin: 0.25rem 0 0.75rem; }
+
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      margin-top: 16px;
+    }
+    .panel {
+      flex: 1 1 280px;
+      border: 1px solid #e1e4e8;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    label { display: block; margin-top: 0.6rem; font-weight: 600; font-size: 0.9rem; }
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px 10px;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #d0d7de;
+      font-size: 0.95rem;
+    }
+
+    .search-wrapper {
+      position: relative;
+    }
+    .suggestions {
+      position: absolute;
+      z-index: 10;
+      left: 0;
+      right: 0;
+      top: 100%;
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 0 0 6px 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .suggestions li {
+      padding: 6px 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .suggestions li:hover {
+      background: #f6f8fa;
+    }
+
+    .selected {
+      margin-top: 0.3rem;
+      font-size: 0.86rem;
+      color: #555;
+    }
+
+    .result-main {
+      margin-top: 1.2rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .subinfo {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 0.3rem;
+    }
+    .error {
+      margin-top: 0.6rem;
+      color: #c0392b;
+      font-size: 0.85rem;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+    }
+    .row select {
+      padding: 6px 8px;
+      border-radius: 6px;
+      border: 1px solid #d0d7de;
+      font-size: 0.9rem;
+    }
+    .row input[type="number"] {
+      flex: 1;
+    }
+    .btn-small {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #d0d7de;
+      background: #f6f8fa;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    .btn-small:hover {
+      background: #eaeef2;
+    }
+
+    .calc-summary {
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    footer {
+      margin-top: 2.5rem;
+      font-size: 0.8rem;
+      color: #777;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <h1>웹 환율 계산기</h1>
-  <p>실시간 환율로 통화 금액을 변환합니다.</p>
+  <p>통화를 검색해서 선택하고, 금액과 여러 숫자를 합산해 환전 결과를 확인해 보세요.</p>
 
-  <label for="base">기준 통화 (From)</label>
-  <select id="base">
-    <option value="USD">USD (미국 달러)</option>
-    <option value="KRW" selected>KRW (대한민국 원)</option>
-    <option value="EUR">EUR (유로)</option>
-    <option value="JPY">JPY (일본 엔)</option>
-    <option value="CNY">CNY (중국 위안)</option>
-    <option value="GBP">GBP (영국 파운드)</option>
-  </select>
+  <div class="layout">
+    <!-- 왼쪽: 기본 환율 계산 -->
+    <div class="panel">
+      <h2>1. 환율 계산</h2>
 
-  <label for="target">변환 통화 (To)</label>
-  <select id="target">
-    <option value="USD" selected>USD (미국 달러)</option>
-    <option value="KRW">KRW (대한민국 원)</option>
-    <option value="EUR">EUR (유로)</option>
-    <option value="JPY">JPY (일본 엔)</option>
-    <option value="CNY">CNY (중국 위안)</option>
-    <option value="GBP">GBP (영국 파운드)</option>
-  </select>
+      <label for="baseSearch">기준 통화 검색 (From)</label>
+      <div class="search-wrapper">
+        <input type="text" id="baseSearch" placeholder="예: kr, 미국, usd ..." autocomplete="off" />
+        <ul id="baseSuggestions" class="suggestions" style="display:none;"></ul>
+      </div>
+      <div class="selected" id="baseSelected"></div>
 
-  <label for="amount">금액</label>
-  <input type="number" id="amount" placeholder="금액을 입력하세요" value="10000" />
+      <label for="targetSearch">변환 통화 검색 (To)</label>
+      <div class="search-wrapper">
+        <input type="text" id="targetSearch" placeholder="예: jp, 일본, jpy ..." autocomplete="off" />
+        <ul id="targetSuggestions" class="suggestions" style="display:none;"></ul>
+      </div>
+      <div class="selected" id="targetSelected"></div>
 
-  <button id="convertBtn">환율 계산하기</button>
+      <label for="amount">금액</label>
+      <input type="number" id="amount" placeholder="금액을 입력하세요" value="10000" />
 
-  <div class="result" id="result"></div>
-  <div class="error" id="error"></div>
+      <div class="result-main" id="resultMain"></div>
+      <div class="subinfo" id="rateInfo"></div>
+      <div class="error" id="errorMain"></div>
+    </div>
+
+    <!-- 오른쪽: 계산기 합산 -->
+    <div class="panel">
+      <h2>2. 계산기 합산 → 환전</h2>
+      <p style="font-size:0.9rem; color:#555;">여러 금액을 + / −로 더한 합계와 그 합계의 환전 결과를 확인합니다.</p>
+
+      <div id="calcRows"></div>
+      <button type="button" class="btn-small" id="addRowBtn">+ 행 추가</button>
+
+      <div class="calc-summary" id="calcSumText"></div>
+      <div class="subinfo" id="calcConvertedText"></div>
+    </div>
+  </div>
 
   <footer>
-    GitHub Pages + JS로 만든 간단한 환율 계산기 예제
+    GitHub Pages + JavaScript로 만든 환율/계산기 도구 예제
   </footer>
 
   <script>
-    const btn = document.getElementById('convertBtn');
-    const resultEl = document.getElementById('result');
-    const errorEl = document.getElementById('error');
+    // === 1. 통화 목록 설정 (여러 국가 + 홍콩 포함) ===
+    const currencies = [
+      { code: 'KRW', countryKo: '대한민국', nameKo: '원', countryEn: 'South Korea', nameEn: 'Won' },
+      { code: 'USD', countryKo: '미국', nameKo: '달러', countryEn: 'United States', nameEn: 'Dollar' },
+      { code: 'EUR', countryKo: '유럽연합', nameKo: '유로', countryEn: 'Eurozone', nameEn: 'Euro' },
+      { code: 'JPY', countryKo: '일본', nameKo: '엔', countryEn: 'Japan', nameEn: 'Yen' },
+      { code: 'CNY', countryKo: '중국', nameKo: '위안', countryEn: 'China', nameEn: 'Yuan' },
+      { code: 'HKD', countryKo: '홍콩', nameKo: '달러', countryEn: 'Hong Kong', nameEn: 'Dollar' }, // 홍콩 꼭 포함
+      { code: 'GBP', countryKo: '영국', nameKo: '파운드', countryEn: 'United Kingdom', nameEn: 'Pound' },
+      { code: 'AUD', countryKo: '호주', nameKo: '달러', countryEn: 'Australia', nameEn: 'Dollar' },
+      { code: 'CAD', countryKo: '캐나다', nameKo: '달러', countryEn: 'Canada', nameEn: 'Dollar' },
+      { code: 'CHF', countryKo: '스위스', nameKo: '프랑', countryEn: 'Switzerland', nameEn: 'Franc' },
+      { code: 'SGD', countryKo: '싱가포르', nameKo: '달러', countryEn: 'Singapore', nameEn: 'Dollar' },
+      { code: 'THB', countryKo: '태국', nameKo: '바트', countryEn: 'Thailand', nameEn: 'Baht' },
+      { code: 'TWD', countryKo: '대만', nameKo: '달러', countryEn: 'Taiwan', nameEn: 'Dollar' },
+      { code: 'PHP', countryKo: '필리핀', nameKo: '페소', countryEn: 'Philippines', nameEn: 'Peso' },
+      { code: 'VND', countryKo: '베트남', nameKo: '동', countryEn: 'Vietnam', nameEn: 'Dong' },
+      { code: 'MYR', countryKo: '말레이시아', nameKo: '링깃', countryEn: 'Malaysia', nameEn: 'Ringgit' },
+      { code: 'IDR', countryKo: '인도네시아', nameKo: '루피아', countryEn: 'Indonesia', nameEn: 'Rupiah' },
+      { code: 'NZD', countryKo: '뉴질랜드', nameKo: '달러', countryEn: 'New Zealand', nameEn: 'Dollar' }
+    ];
 
-    btn.addEventListener('click', async () => {
-      const base = document.getElementById('base').value;
-      const target = document.getElementById('target').value;
-      const amount = parseFloat(document.getElementById('amount').value || '0');
+    let currentBase = 'KRW';
+    let currentTarget = 'USD';
+    let currentRate = null; // base → target 환율
 
-      resultEl.textContent = '';
-      errorEl.textContent = '';
+    const resultMain = document.getElementById('resultMain');
+    const rateInfo = document.getElementById('rateInfo');
+    const errorMain = document.getElementById('errorMain');
+    const amountInput = document.getElementById('amount');
 
-      if (!amount || amount <= 0) {
-        errorEl.textContent = '금액을 0보다 크게 입력해주세요.';
+    const baseSearch = document.getElementById('baseSearch');
+    const targetSearch = document.getElementById('targetSearch');
+    const baseSuggestions = document.getElementById('baseSuggestions');
+    const targetSuggestions = document.getElementById('targetSuggestions');
+    const baseSelected = document.getElementById('baseSelected');
+    const targetSelected = document.getElementById('targetSelected');
+
+    // === 2. 통화 검색 & 자동완성 ===
+    function formatCurrencyItem(c) {
+      return `${c.countryKo} ${c.nameKo} (${c.code})`;
+    }
+
+    function filterCurrencies(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return [];
+      return currencies.filter(c => {
+        return (
+          c.code.toLowerCase().includes(q) ||
+          c.countryKo.toLowerCase().includes(q) ||
+          c.nameKo.toLowerCase().includes(q) ||
+          c.countryEn.toLowerCase().includes(q) ||
+          c.nameEn.toLowerCase().includes(q)
+        );
+      }).slice(0, 10); // 최대 10개
+    }
+
+    function showSuggestions(type, query) {
+      const list = filterCurrencies(query);
+      const ul = type === 'base' ? baseSuggestions : targetSuggestions;
+
+      ul.innerHTML = '';
+      if (!list.length) {
+        ul.style.display = 'none';
         return;
       }
 
-      if (base === target) {
-        errorEl.textContent = '서로 다른 통화를 선택해주세요.';
+      list.forEach(c => {
+        const li = document.createElement('li');
+        li.textContent = formatCurrencyItem(c);
+        li.addEventListener('click', () => {
+          selectCurrency(type, c);
+          ul.style.display = 'none';
+        });
+        ul.appendChild(li);
+      });
+      ul.style.display = 'block';
+    }
+
+    function selectCurrency(type, currency) {
+      if (type === 'base') {
+        currentBase = currency.code;
+        baseSelected.textContent = `선택된 기준 통화: ${formatCurrencyItem(currency)}`;
+        baseSearch.value = currency.code;
+      } else {
+        currentTarget = currency.code;
+        targetSelected.textContent = `선택된 변환 통화: ${formatCurrencyItem(currency)}`;
+        targetSearch.value = currency.code;
+      }
+      // 통화가 바뀌었으니 환율 다시 가져오기
+      fetchRateAndUpdate();
+    }
+
+    baseSearch.addEventListener('input', (e) => {
+      showSuggestions('base', e.target.value);
+    });
+    targetSearch.addEventListener('input', (e) => {
+      showSuggestions('target', e.target.value);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!baseSearch.parentElement.contains(e.target)) {
+        baseSuggestions.style.display = 'none';
+      }
+      if (!targetSearch.parentElement.contains(e.target)) {
+        targetSuggestions.style.display = 'none';
+      }
+    });
+
+    // 초기 선택값 표기
+    (function initDefaultSelection() {
+      const baseDefault = currencies.find(c => c.code === currentBase);
+      const targetDefault = currencies.find(c => c.code === currentTarget);
+      if (baseDefault) baseSelected.textContent = `선택된 기준 통화: ${formatCurrencyItem(baseDefault)}`;
+      if (targetDefault) targetSelected.textContent = `선택된 변환 통화: ${formatCurrencyItem(targetDefault)}`;
+      baseSearch.value = currentBase;
+      targetSearch.value = currentTarget;
+    })();
+
+    // === 3. 환율 가져오기 & 결과 업데이트 ===
+    async function fetchRateAndUpdate() {
+      errorMain.textContent = '';
+      resultMain.textContent = '';
+      rateInfo.textContent = '';
+
+      if (currentBase === currentTarget) {
+        errorMain.textContent = '기준 통화와 변환 통화가 같습니다. 다른 통화를 선택해주세요.';
+        currentRate = null;
+        updateCalculatorSummary(); // 계산기 쪽도 같이 갱신
         return;
       }
 
       try {
-        const url = `https://api.exchangerate.host/latest?base=${base}&symbols=${target}`;
+        const url = `https://api.exchangerate.host/latest?base=${currentBase}&symbols=${currentTarget}`;
         const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error('API 응답 오류');
-        }
+        if (!res.ok) throw new Error('API 응답 오류');
         const data = await res.json();
 
-        const rate = data.rates?.[target];
-        if (!rate) {
-          throw new Error('해당 통화 환율 정보를 찾을 수 없습니다.');
-        }
+        const rate = data.rates?.[currentTarget];
+        if (!rate) throw new Error('환율 정보 없음');
 
-        const converted = amount * rate;
-        resultEl.textContent = `${amount.toLocaleString()} ${base} ≈ ${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${target}`;
+        currentRate = rate;
+        rateInfo.textContent = `1 ${currentBase} ≈ ${rate.toFixed(4)} ${currentTarget}`;
+        updateMainConversion();
+        updateCalculatorSummary();
       } catch (err) {
         console.error(err);
-        errorEl.textContent = '환율 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+        errorMain.textContent = '환율 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+        currentRate = null;
+        updateCalculatorSummary();
+      }
+    }
+
+    function updateMainConversion() {
+      const amount = parseFloat(amountInput.value || '0');
+      if (!currentRate || !amount || amount <= 0) {
+        resultMain.textContent = '';
+        return;
+      }
+      const converted = amount * currentRate;
+      resultMain.textContent = `${amount.toLocaleString()} ${currentBase} ≈ ${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${currentTarget}`;
+    }
+
+    amountInput.addEventListener('input', () => {
+      // 금액 입력 시 실시간으로 결과 변경
+      if (!currentRate) {
+        fetchRateAndUpdate();
+      } else {
+        updateMainConversion();
+        updateCalculatorSummary();
       }
     });
+
+    // === 4. 계산기 영역 ===
+    const calcRowsContainer = document.getElementById('calcRows');
+    const addRowBtn = document.getElementById('addRowBtn');
+    const calcSumText = document.getElementById('calcSumText');
+    const calcConvertedText = document.getElementById('calcConvertedText');
+
+    function createCalcRow(initialSign = '+', initialValue = '') {
+      const row = document.createElement('div');
+      row.className = 'row';
+
+      const signSelect = document.createElement('select');
+      const optPlus = document.createElement('option');
+      optPlus.value = '+';
+      optPlus.textContent = '+';
+      const optMinus = document.createElement('option');
+      optMinus.value = '-';
+      optMinus.textContent = '−';
+      signSelect.appendChild(optPlus);
+      signSelect.appendChild(optMinus);
+      signSelect.value = initialSign;
+
+      const numInput = document.createElement('input');
+      numInput.type = 'number';
+      numInput.placeholder = '금액 입력';
+      numInput.value = initialValue;
+
+      const delBtn = document.createElement('button');
+      delBtn.type = 'button';
+      delBtn.className = 'btn-small';
+      delBtn.textContent = '삭제';
+
+      signSelect.addEventListener('change', updateCalculatorSummary);
+      numInput.addEventListener('input', updateCalculatorSummary);
+      delBtn.addEventListener('click', () => {
+        row.remove();
+        updateCalculatorSummary();
+      });
+
+      row.appendChild(signSelect);
+      row.appendChild(numInput);
+      row.appendChild(delBtn);
+      return row;
+    }
+
+    function updateCalculatorSummary() {
+      const rows = Array.from(calcRowsContainer.querySelectorAll('.row'));
+      let sum = 0;
+      rows.forEach(row => {
+        const sign = row.querySelector('select').value;
+        const val = parseFloat(row.querySelector('input').value || '0');
+        if (!val) return;
+        if (sign === '+') sum += val;
+        else sum -= val;
+      });
+
+      if (!rows.length) {
+        calcSumText.textContent = '현재 입력된 값이 없습니다.';
+        calcConvertedText.textContent = '';
+        return;
+      }
+
+      calcSumText.textContent = `합계: ${sum.toLocaleString()} ${currentBase}`;
+
+      if (currentRate) {
+        const converted = sum * currentRate;
+        calcConvertedText.textContent =
+          `합계 환전 결과: ${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${currentTarget}`;
+      } else {
+        calcConvertedText.textContent = '환율 정보를 불러온 뒤 합계 환전 결과가 표시됩니다.';
+      }
+    }
+
+    addRowBtn.addEventListener('click', () => {
+      const row = createCalcRow('+', '');
+      calcRowsContainer.appendChild(row);
+      updateCalculatorSummary();
+    });
+
+    // 시작할 때 기본 행 2개 정도 만들어두기
+    calcRowsContainer.appendChild(createCalcRow('+', '10000'));
+    calcRowsContainer.appendChild(createCalcRow('+', '5000'));
+    updateCalculatorSummary();
+
+    // 초기 환율 한 번 가져오기
+    fetchRateAndUpdate();
   </script>
 </body>
 </html>
