@@ -75,7 +75,6 @@
       }
 
       try {
-        // ExchangeRate.host API 예시
         const url = `https://api.exchangerate.host/latest?base=${base}&symbols=${target}`;
         const res = await fetch(url);
         if (!res.ok) {
