@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>웹 환율 계산기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+    h1 { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    select, input { width: 100%; padding: 8px 10px; margin-top: 0.4rem; box-sizing: border-box; }
+    button { margin-top: 1.2rem; width: 100%; padding: 10px; font-size: 1rem; cursor: pointer; }
+    .result { margin-top: 1.5rem; font-size: 1.1rem; font-weight: 600; }
+    .error { margin-top: 1rem; color: #c0392b; }
+    footer { margin-top: 2.5rem; font-size: 0.8rem; color: #777; text-align: center; }
+  </style>
+</head>
+<body>
+  <h1>웹 환율 계산기</h1>
+  <p>실시간 환율로 통화 금액을 변환합니다.</p>
+
+  <label for="base">기준 통화 (From)</label>
+  <select id="base">
+    <option value="USD">USD (미국 달러)</option>
+    <option value="KRW" selected>KRW (대한민국 원)</option>
+    <option value="EUR">EUR (유로)</option>
+    <option value="JPY">JPY (일본 엔)</option>
+    <option value="CNY">CNY (중국 위안)</option>
+    <option value="GBP">GBP (영국 파운드)</option>
+  </select>
+
+  <label for="target">변환 통화 (To)</label>
+  <select id="target">
+    <option value="USD" selected>USD (미국 달러)</option>
+    <option value="KRW">KRW (대한민국 원)</option>
+    <option value="EUR">EUR (유로)</option>
+    <option value="JPY">JPY (일본 엔)</option>
+    <option value="CNY">CNY (중국 위안)</option>
+    <option value="GBP">GBP (영국 파운드)</option>
+  </select>
+
+  <label for="amount">금액</label>
+  <input type="number" id="amount" placeholder="금액을 입력하세요" value="10000" />
+
+  <button id="convertBtn">환율 계산하기</button>
+
+  <div class="result" id="result"></div>
+  <div class="error" id="error"></div>
+
+  <footer>
+    GitHub Pages + JS로 만든 간단한 환율 계산기 예제
+  </footer>
+
+  <script>
+    const btn = document.getElementById('convertBtn');
+    const resultEl = document.getElementById('result');
+    const errorEl = document.getElementById('error');
+
+    btn.addEventListener('click', async () => {
+      const base = document.getElementById('base').value;
+      const target = document.getElementById('target').value;
+      const amount = parseFloat(document.getElementById('amount').value || '0');
+
+      resultEl.textContent = '';
+      errorEl.textContent = '';
+
+      if (!amount || amount <= 0) {
+        errorEl.textContent = '금액을 0보다 크게 입력해주세요.';
+        return;
+      }
+
+      if (base === target) {
+        errorEl.textContent = '서로 다른 통화를 선택해주세요.';
+        return;
+      }
+
+      try {
+        // ExchangeRate.host API 예시
+        const url = `https://api.exchangerate.host/latest?base=${base}&symbols=${target}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error('API 응답 오류');
+        }
+        const data = await res.json();
+
+        const rate = data.rates?.[target];
+        if (!rate) {
+          throw new Error('해당 통화 환율 정보를 찾을 수 없습니다.');
+        }
+
+        const converted = amount * rate;
+        resultEl.textContent = `${amount.toLocaleString()} ${base} ≈ ${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${target}`;
+      } catch (err) {
+        console.error(err);
+        errorEl.textContent = '환율 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      }
+    });
+  </script>
+</body>
+</html>
