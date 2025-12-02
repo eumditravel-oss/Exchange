@@ -2,204 +2,309 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>웹 환율 계산기</title>
+  <title>환율 계산기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    :root {
+      --bg: #e6f2ff;
+      --bg2: #f4f7ff;
+      --panel-bg: #ffffff;
+      --border: #d4dde9;
+      --accent: #2563eb;
+      --accent-soft: #e0ecff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+
     * { box-sizing: border-box; }
+
     body {
+      margin: 0;
+      padding: 24px 8px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 0 16px;
-      line-height: 1.5;
+      background: radial-gradient(circle at top left, #ffffff 0, var(--bg) 40%, #d2e7ff 100%);
+      color: var(--text);
     }
+
+    .app {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 24px 24px 20px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(15,23,42,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 비행기 창문 배경 – plane-window.png 파일을 같은 폴더에 두기 */
+    .app::before {
+      content: "";
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 140px;
+      height: 160px;
+      background: url("plane-window.png") no-repeat center/cover;
+      opacity: 0.9;
+      pointer-events: none;
+      border-radius: 36px;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      padding-right: 160px; /* 오른쪽 이미지 공간만큼 여백 */
+    }
+
     h1 {
-      font-size: 1.8rem;
-      margin-bottom: 0.2rem;
+      font-size: 1.9rem;
+      margin: 0 0 0.2rem;
     }
+
     p.desc {
-      margin-top: 0;
-      color: #555;
+      margin: 0;
+      color: var(--muted);
       font-size: 0.95rem;
     }
+
+    .layout {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: nowrap;          /* 항상 가로로만 배치 */
+      gap: 16px;
+      margin-top: 18px;
+      overflow-x: auto;           /* 화면이 좁으면 가로 스크롤 */
+      padding-bottom: 8px;
+    }
+
+    .panel {
+      flex: 0 0 50%;
+      min-width: 320px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px 20px;
+      background: linear-gradient(135deg, var(--panel-bg), #f9fbff);
+      box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+    }
+
+    .panel h2 {
+      font-size: 1.1rem;
+      margin: 0 0 0.5rem;
+    }
+
     label {
       display: block;
       margin-top: 1rem;
       font-weight: 600;
       font-size: 0.9rem;
     }
+
     input {
       width: 100%;
       padding: 8px 10px;
       margin-top: 0.4rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
       font-size: 0.95rem;
+      background: #ffffff;
     }
+
     input:focus {
       outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px #2563eb33;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent-soft);
     }
-    .layout {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 16px;
-    }
-    .panel {
-      flex: 1 1 340px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px 18px 20px;
-      background: #fafafa;
-    }
-    .panel h2 {
-      font-size: 1.1rem;
-      margin: 0 0 0.5rem;
-    }
+
     .help {
       font-size: 0.8rem;
-      color: #777;
+      color: var(--muted);
       margin-top: 0.2rem;
     }
+
     .small-label {
       margin-top: 0.4rem;
       font-size: 0.8rem;
-      color: #555;
+      color: var(--muted);
     }
+
     .suggestions {
       position: relative;
     }
+
     .suggestions-list {
       position: absolute;
       z-index: 10;
       top: 100%;
       left: 0;
       right: 0;
-      background: #fff;
-      border: 1px solid #ddd;
+      background: #ffffff;
+      border: 1px solid #d4dde9;
       border-top: none;
       max-height: 180px;
       overflow-y: auto;
       font-size: 0.85rem;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 8px 20px rgba(15,23,42,0.14);
     }
+
     .suggestion-item {
       padding: 6px 10px;
       cursor: pointer;
     }
     .suggestion-item:hover {
-      background: #eef2ff;
+      background: var(--accent-soft);
     }
+
     .result-main {
       margin-top: 1.2rem;
       font-size: 1rem;
       font-weight: 600;
     }
+
     .rate-info {
       margin-top: 0.4rem;
       font-size: 0.8rem;
-      color: #555;
+      color: var(--muted);
     }
+
     .error {
       margin-top: 0.7rem;
       color: #c0392b;
       font-size: 0.85rem;
     }
+
     .ok {
       margin-top: 0.7rem;
-      color: #2563eb;
+      color: var(--accent);
       font-size: 0.85rem;
     }
+
     .calc-summary {
       margin-top: 1rem;
       font-size: 0.95rem;
     }
+
     .calc-summary div {
       margin-top: 0.3rem;
     }
+
     .calc-main {
       font-weight: 600;
     }
+
     footer {
-      margin-top: 2.5rem;
+      position: relative;
+      z-index: 1;
+      margin-top: 18px;
       font-size: 0.8rem;
-      color: #777;
+      color: var(--muted);
       text-align: center;
     }
+
     footer a {
-      color: #2563eb;
+      color: var(--accent);
       text-decoration: none;
     }
     footer a:hover {
       text-decoration: underline;
     }
-    @media (max-width: 640px) {
-      body { margin-top: 20px; }
+
+    @media (max-width: 720px) {
+      header {
+        padding-right: 80px;
+      }
+      .app::before {
+        width: 110px;
+        height: 130px;
+        right: -12px;
+        top: -10px;
+        opacity: 0.75;
+      }
+      .panel {
+        min-width: 280px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>웹 환율 계산기</h1>
-  <p class="desc">통화를 검색해서 선택하고, 금액과 텍스트 합산식의 환전 결과를 실시간으로 확인해 보세요.</p>
+  <div class="app">
+    <header>
+      <h1>환율 계산기</h1>
+      <p class="desc">여행·송금 전에 환율을 확인하고, 텍스트로 입력한 합산식까지 한 번에 계산해 보세요.</p>
+    </header>
 
-  <div class="layout">
-    <!-- 왼쪽: 기본 환율 계산 -->
-    <section class="panel">
-      <h2>1. 환율 계산</h2>
+    <div class="layout">
+      <!-- 왼쪽: 기본 환율 계산 -->
+      <section class="panel">
+        <h2>1. 환율 계산</h2>
 
-      <label for="fromSearch">기준 통화 검색 (From)</label>
-      <div class="suggestions">
-        <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
-        <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
-      </div>
-      <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
-
-      <label for="toSearch">변환 통화 검색 (To)</label>
-      <div class="suggestions">
-        <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
-        <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
-      </div>
-      <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
-
-      <label for="singleAmount">금액</label>
-      <input id="singleAmount" type="text" placeholder="예: 10000" />
-
-      <div class="result-main" id="singleResult"></div>
-      <div class="rate-info" id="rateInfo"></div>
-      <div class="error" id="mainError"></div>
-      <div class="ok" id="mainInfo"></div>
-    </section>
-
-    <!-- 오른쪽: 텍스트 합산식 + 환전 -->
-    <section class="panel">
-      <h2>2. 텍스트 합산식 → 환전</h2>
-      <p class="help">
-        예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
-        합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
-      </p>
-
-      <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
-      <input id="calcExpr" type="text" placeholder="예: 500+30" />
-
-      <div class="calc-summary">
-        <div class="calc-main">
-          합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+        <label for="fromSearch">기준 통화 검색 (From)</label>
+        <div class="suggestions">
+          <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
+          <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
         </div>
-        <div>
-          환전 금액: <span id="calcConverted">-</span>
+        <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
+
+        <label for="toSearch">변환 통화 검색 (To)</label>
+        <div class="suggestions">
+          <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
+          <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
         </div>
-        <div class="help">
-          * 여기서 사용하는 통화는 왼쪽의 <b>기준 통화</b>와 동일합니다.
+        <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
+
+        <label for="singleAmount">금액</label>
+        <input
+          id="singleAmount"
+          type="text"
+          inputmode="decimal"
+          pattern="[0-9.,]*"
+          placeholder="예: 10000"
+        />
+
+        <div class="result-main" id="singleResult"></div>
+        <div class="rate-info" id="rateInfo"></div>
+        <div class="error" id="mainError"></div>
+        <div class="ok" id="mainInfo"></div>
+      </section>
+
+      <!-- 오른쪽: 텍스트 합산식 + 환전 -->
+      <section class="panel">
+        <h2>2. 텍스트 합산식 → 환전</h2>
+        <p class="help">
+          예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
+          합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
+        </p>
+
+        <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
+        <input
+          id="calcExpr"
+          type="text"
+          inputmode="numeric"
+          pattern="[0-9+\\-\\s.,]*"
+          placeholder="예: 500+30"
+        />
+
+        <div class="calc-summary">
+          <div class="calc-main">
+            합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+          </div>
+          <div>
+            환전 금액: <span id="calcConverted">-</span>
+          </div>
+          <div class="help">
+            * 여기서 사용하는 통화는 왼쪽의 <b>기준 통화</b>와 동일합니다.
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </div>
+
+    <footer>
+      GitHub Pages + JavaScript 예제 · 환율 데이터 제공 :
+      <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
+    </footer>
   </div>
-
-  <footer>
-    GitHub Pages + JavaScript 예제 · 환율 데이터 제공 :
-    <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
-  </footer>
 
   <script>
     // ===== 통화 목록 (HKD, KRW 포함 여러 국가) =====
@@ -281,7 +386,7 @@
           div.textContent = `${c.code} - ${c.nameKo}`;
           div.addEventListener("mousedown", (e) => {
             e.preventDefault();
-            inputEl.value = `${c.code} - c.nameKo`;
+            inputEl.value = `${c.code} - ${c.nameKo}`;
             listEl.style.display = "none";
             onSelect(c.code);
           });
@@ -322,7 +427,6 @@
       currentRate = null;
 
       try {
-        // open.er-api: baseCode 기준으로 모든 환율 반환
         const url = `https://open.er-api.com/v6/latest/${encodeURIComponent(baseCode)}`;
         const res = await fetch(url);
         if (!res.ok) {
@@ -407,20 +511,19 @@
         `${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${targetCode}`;
     }
 
-    // ===== 기준/변환 통화 바뀔 때 =====
     function setBase(code) {
       baseCode = code;
       fromLabel.textContent = `선택된 기준 통화: ${formatCurrencyLabel(code)}`;
       calcSumCurrencyEl.textContent = baseCode;
       fetchRate();
     }
+
     function setTarget(code) {
       targetCode = code;
       toLabel.textContent = `선택된 변환 통화: ${formatCurrencyLabel(code)}`;
       fetchRate();
     }
 
-    // 검색 박스 활성화
     setupSearchBox(fromSearchInput, fromSugBox, setBase);
     setupSearchBox(toSearchInput, toSugBox, setTarget);
 
@@ -431,7 +534,6 @@
     toLabel.textContent   = "선택된 변환 통화: 대한민국 원 (KRW)";
     calcSumCurrencyEl.textContent = baseCode;
 
-    // 이벤트
     singleAmountInput.addEventListener("input", updateSingleAmountResult);
     calcExprInput.addEventListener("input", updateCalcResult);
 
