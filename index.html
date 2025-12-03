@@ -66,7 +66,6 @@
       z-index: 1;
     }
 
-    /* 제목 */
     h1 {
       font-size: 1.45rem;
       margin: 0 0 0.15rem;
@@ -120,6 +119,7 @@
       margin-top: 12px;
     }
 
+    /* 패널 공통 */
     .layout {
       position: relative;
       z-index: 1;
@@ -140,7 +140,6 @@
       -webkit-backdrop-filter: blur(10px);
     }
 
-    /* 패널 상단 : 제목 + 선택방식 */
     .panel-header {
       display: flex;
       align-items: center;
@@ -171,7 +170,6 @@
       background: rgba(255, 255, 255, 0.92);
     }
 
-    /* iPhone에서 input 클릭 시 확대 방지 */
     @media (max-width: 720px) {
       input, select, textarea {
         font-size: 16px !important;
@@ -195,7 +193,7 @@
       font-size: 0.78rem;
       color: var(--muted);
     }
-
+        /* ===== 검색 제안 리스트 ===== */
     .suggestions {
       position: relative;
     }
@@ -268,41 +266,16 @@
       font-weight: 600;
     }
 
-    footer {
-      position: relative;
-      z-index: 1;
-      margin-top: 12px;
-      font-size: 0.78rem;
-      color: #e5e7eb;
-      text-align: center;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-    }
-
-    footer a {
-      color: #bfdbfe;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
     /* PC/모바일 설명 분리 */
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
     @media (max-width: 720px) {
-      .panel { flex: 1 1 100%; }
-      .top-bar { justify-content: flex-start; }
-      .tab-button {
-        padding: 4px 10px;
-        font-size: 0.8rem;
-      }
       .only-desktop { display: none; }
       .only-mobile  { display: block; }
     }
 
-    /* 통화/국가 선택 방식 토글 – 패널 우측 상단 */
+    /* 선택 방식 토글 */
     .mode-toggle {
       display: inline-flex;
       align-items: center;
@@ -337,22 +310,7 @@
       color: #f9fafb;
     }
 
-    @media (max-width: 720px) {
-      .mode-toggle {
-        font-size: 0.7rem;
-        padding: 2px 6px;
-        gap: 4px;
-      }
-      .mode-label {
-        font-size: 0.7rem;
-      }
-      .mode-btn {
-        padding: 3px 6px;
-        font-size: 0.7rem;
-      }
-    }
-
-    /* 선택 방식에 따른 표시 제어 */
+    /* 모드 전환 */
     body[data-pick-mode="search"] .select-mode { display: none; }
     body[data-pick-mode="search"] .search-mode { display: block; }
 
@@ -390,13 +348,14 @@
       white-space: nowrap;
     }
 
-    /* ===== 일정 관리 탭 ===== */
+    /* ===== 일정 관리 ===== */
     .schedule-header-text {
       margin-top: 0.2rem;
       font-size: 0.8rem;
       color: var(--muted);
     }
 
+    /* Day 장치들 */
     .day-toolbar {
       margin-top: 0.85rem;
       display: flex;
@@ -415,6 +374,7 @@
       cursor: pointer;
     }
 
+    /* Day tab */
     .day-tabs {
       margin-top: 8px;
       display: flex;
@@ -448,10 +408,6 @@
       align-items: center;
     }
 
-    .schedule-rows {
-      margin-top: 6px;
-    }
-
     .schedule-row {
       display: grid;
       grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
@@ -477,7 +433,6 @@
       border: 1px solid rgba(148, 163, 184, 0.9);
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.92);
-      box-sizing: border-box;
       resize: vertical;
       min-height: 32px;
       line-height: 1.3;
@@ -485,15 +440,15 @@
       word-break: break-word;
     }
 
-    /* 구글맵 버튼 (핀 아이콘) – 테두리 제거 & 안으로 정렬 */
+    /* 구글맵 버튼 */
     .map-btn {
       width: 100%;
       padding: 0;
       height: 32px;
       border-radius: 8px;
-      border: none;              /* ✅ 테두리 제거 */
-      background: transparent;   /* ✅ 배경 투명 */
-      font-size: 1.2rem;
+      border: none;
+      background: transparent;
+      font-size: 1.25rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -501,7 +456,7 @@
     }
 
     .map-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.9);
     }
 
     .add-row-btn {
@@ -553,22 +508,8 @@
       font-weight: 600;
       margin-bottom: 4px;
     }
-
-    .weather-small {
-      font-size: 0.75rem;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-
-    @media (max-width: 720px) {
-      .schedule-table-header,
-      .schedule-row {
-        grid-template-columns: 60px minmax(100px, 2fr) minmax(100px, 2fr) 56px;
-      }
-    }
   </style>
 </head>
-
 <body data-pick-mode="search">
   <div class="app">
     <header>
@@ -583,460 +524,1026 @@
         </div>
       </div>
     </header>
-    
+
+    <!-- ===== 환율 계산 뷰 ===== -->
+    <div class="view view-exchange">
+      <div class="layout">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>환율 계산</h2>
+            <!-- 선택 방식 토글 (검색형 / 드롭다운형) -->
+            <div class="mode-toggle">
+              <span class="mode-label">선택 방식</span>
+              <button class="mode-btn active" data-mode="search">검색형</button>
+              <button class="mode-btn" data-mode="select">드롭다운형</button>
+            </div>
+          </div>
+
+          <!-- 기준 통화 -->
+          <label for="fromSearch">기준 통화 (From)</label>
+          <div class="search-mode">
+            <div class="suggestions">
+              <input
+                id="fromSearch"
+                type="text"
+                placeholder="예: hkd, 홍콩, usd, 미국…"
+                autocomplete="off"
+              />
+              <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="select-mode">
+            <select id="fromSelect"></select>
+          </div>
+          <div class="small-label" id="fromSelectedLabel">
+            선택된 기준 통화: 홍콩 달러 (HKD)
+          </div>
+
+          <!-- 변환 통화 -->
+          <label for="toSearch" style="margin-top:0.8rem;">변환 통화 (To)</label>
+          <div class="search-mode">
+            <div class="suggestions">
+              <input
+                id="toSearch"
+                type="text"
+                placeholder="예: krw, 원, usd, eur…"
+                autocomplete="off"
+              />
+              <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="select-mode">
+            <select id="toSelect"></select>
+          </div>
+          <div class="small-label" id="toSelectedLabel">
+            선택된 변환 통화: 대한민국 원 (KRW)
+          </div>
+
+          <!-- 환율 정보 / 메시지 -->
+          <div class="rate-info" id="rateInfo"></div>
+          <div class="error" id="mainError"></div>
+          <div class="ok" id="mainInfo"></div>
+
+          <!-- 텍스트 합산식 섹션 -->
+          <div class="section-divider">
+            <p class="sub-heading">텍스트 합산식 계산</p>
+            <p class="help only-desktop">
+              예: <code>10+50-3</code> 처럼 계산하면 총 합의 환전 값을 확인할 수 있습니다.
+            </p>
+            <p class="help only-mobile">
+              예: <code>10+50-3</code> 처럼 입력하면 합계와 환전 값을 한 번에 확인할 수 있습니다.
+            </p>
+
+            <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
+            <input
+              id="calcExpr"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9+\\-\\s.,]*"
+              placeholder="예: 10+50-3"
+            />
+
+            <!-- + / - 키패드 + 안내 문구 -->
+            <div class="calc-keypad-row">
+              <div class="calc-keypad">
+                <button type="button" class="calc-key" data-op="+">+</button>
+                <button type="button" class="calc-key" data-op="-">−</button>
+              </div>
+              <span class="calc-hint">(+,-를 눌러 합산 또는 빼기 가능합니다.)</span>
+            </div>
+
+            <div class="calc-summary">
+              <div class="calc-main">
+                합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+              </div>
+              <div>
+                환전 금액: <span id="calcConverted">-</span>
+              </div>
+              <div class="help">
+                * 여기서 사용하는 통화는 위에 선택된 <b>통화</b>와 동일합니다.
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ===== 시차 검색 뷰 ===== -->
+    <div class="view view-time" style="display:none;">
+      <div class="layout">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>시차 검색</h2>
+            <div class="mode-toggle">
+              <span class="mode-label">선택 방식</span>
+              <button class="mode-btn active" data-mode="search">검색형</button>
+              <button class="mode-btn" data-mode="select">드롭다운형</button>
+            </div>
+          </div>
+
+          <p class="help only-desktop">
+            한국(서울) 기준으로 선택한 국가의 현재 시간과 시차를 확인할 수 있습니다.
+          </p>
+          <p class="help only-mobile">
+            한국 기준 현재 시간과 선택한 나라의 시간, 시차를 한 번에 보여줍니다.
+          </p>
+
+          <label for="timeSearch">나라 / 통화 검색</label>
+
+          <div class="search-mode">
+            <div class="suggestions">
+              <input
+                id="timeSearch"
+                type="text"
+                placeholder="예: 미국, 홍콩, 일본, usd…"
+                autocomplete="off"
+              />
+              <div id="timeSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="select-mode">
+            <select id="timeSelect"></select>
+          </div>
+
+          <div class="small-label" id="timeSelectedLabel">
+            선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
+          </div>
+
+          <div class="calc-summary" style="margin-top: 0.9rem;">
+            <div id="timeKorea" class="calc-main"></div>
+            <div id="timeTarget" style="margin-top:0.35rem;"></div>
+            <div id="timeDiff" class="help" style="margin-top:0.7rem;"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+
     <!-- ===== 일정 관리 뷰 ===== -->
-<div class="view view-schedule" style="display:none;">
-  <div class="layout">
-    <section class="panel">
+    <div class="view view-schedule" style="display:none;">
+      <div class="layout">
+        <section class="panel">
 
-      <div class="panel-header">
-        <h2>일정 관리</h2>
-      </div>
+          <div class="panel-header">
+            <h2>일정 관리</h2>
+          </div>
 
-      <p class="schedule-header-text">
-        여행 타이틀을 입력하고 Day 단위로 시간 / 장소 / 메모를 정리하세요.<br>
-        각 행의 <b>📍 핀 아이콘</b>을 누르면 구글맵 자동 검색이 실행됩니다.
-      </p>
+          <p class="schedule-header-text">
+            여행 타이틀을 입력하고 Day 단위로 시간 / 장소 / 메모를 정리하세요.<br>
+            각 행의 <b>📍 핀 아이콘</b>을 누르면 여행 타이틀 + 지명으로 구글맵 검색이 실행됩니다.
+          </p>
 
-      <!-- 여행 타이틀 -->
-      <label for="tripTitle">여행 타이틀 / 방문 국가</label>
-      <input id="tripTitle" type="text" placeholder="예: 홍콩 여행, 오사카 여행" />
+          <!-- 여행 타이틀 -->
+          <label for="tripTitle">여행 타이틀 / 방문 국가</label>
+          <input id="tripTitle" type="text" placeholder="예: 홍콩 여행, 오사카 여행" />
 
-      <!-- Day 조작 버튼 -->
-      <div class="day-toolbar">
-        <button type="button" id="addDayBtn">Day 추가</button>
-        <button type="button" id="deleteDayBtn">현재 Day 삭제</button>
-        <button type="button" id="renameDayBtn">현재 Day 이름 변경</button>
-      </div>
+          <!-- 🔹 여행 타이틀 기준 오늘/내일 날씨 표시 박스 -->
+          <div id="weatherBox" class="weather-box" style="display:none;">
+            <div class="weather-title" id="weatherTitle"></div>
+            <div>오늘: <span id="weatherToday"></span></div>
+            <div>내일: <span id="weatherTomorrow"></span></div>
+          </div>
 
-      <!-- Day 탭 -->
-      <div class="day-tabs" id="dayTabs"></div>
+          <!-- Day 조작 버튼 -->
+          <div class="day-toolbar">
+            <button type="button" id="addDayBtn">Day 추가</button>
+            <button type="button" id="deleteDayBtn">현재 Day 삭제</button>
+            <button type="button" id="renameDayBtn">현재 Day 이름 변경</button>
+          </div>
 
-      <!-- 일정 테이블 헤더 -->
-      <div class="schedule-table-header">
-        <div>시간</div>
-        <div>지명</div>
-        <div>비고</div>
-        <div style="text-align:center;">📍</div>
-      </div>
+          <!-- Day 탭 -->
+          <div class="day-tabs" id="dayTabs"></div>
 
-      <!-- 일정 행 출력 영역 -->
-      <div class="schedule-rows" id="scheduleRows"></div>
+          <!-- 일정 테이블 헤더 -->
+          <div class="schedule-table-header">
+            <div>시간</div>
+            <div>지명</div>
+            <div>비고</div>
+            <div style="text-align:center;">📍</div>
+          </div>
 
-      <!-- 일정 추가 버튼 -->
-      <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
+          <!-- 일정 행 출력 영역 -->
+          <div class="schedule-rows" id="scheduleRows"></div>
 
-      <!-- 내보내기 / 불러오기 -->
-      <div class="schedule-footer">
-        <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
-        <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
-      </div>
+          <!-- 일정 추가 버튼 -->
+          <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
 
-      <textarea
-        id="exportTextArea"
-        class="schedule-export-area"
-        placeholder="[Title] 홍콩 여행
+          <!-- 내보내기 / 불러오기 -->
+          <div class="schedule-footer">
+            <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
+            <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
+          </div>
+
+          <textarea
+            id="exportTextArea"
+            class="schedule-export-area"
+            placeholder="[Title] 홍콩 여행
 [Day.1]
 09:00 | 침사추이 스타의 거리 | 야경 감상"
-      ></textarea>
+          ></textarea>
 
-      <p class="schedule-footer-note">
-        ※ txt 파일로 저장해 두었다가 다시 불러오면 그대로 일정 복원 가능합니다.
-      </p>
+          <p class="schedule-footer-note">
+            ※ txt 파일로 저장해 두었다가 다시 불러오면 그대로 일정 복원 가능합니다.
+          </p>
 
-      <!-- 불러오기 hidden file input -->
-      <input type="file" id="importFileInput" accept=".txt" style="display:none;" />
-    </section>
+          <!-- 불러오기 hidden file input -->
+          <input type="file" id="importFileInput" accept=".txt" style="display:none;" />
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      GitHub Pages + JavaScript 예제 · 환율 데이터 제공 :
+      <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">
+        ExchangeRate-API
+      </a>
+    </footer>
   </div>
-</div>
+    <script>
+    // ===== 통화 + 시간대 목록 (countryKo 포함) =====
+    const currencies = [
+      { code: "USD", nameKo: "미국 달러",     countryKo: "미국",       aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
+      { code: "EUR", nameKo: "유로",          countryKo: "유로존",     aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
+      { code: "KRW", nameKo: "대한민국 원",   countryKo: "대한민국",   aliases: ["krw","원","한국","대한민국","won","seoul"], timeZone: "Asia/Seoul" },
+      { code: "HKD", nameKo: "홍콩 달러",     countryKo: "홍콩",       aliases: ["hkd","홍콩","hongkong","hong kong"], timeZone: "Asia/Hong_Kong" },
+      { code: "JPY", nameKo: "일본 엔",       countryKo: "일본",       aliases: ["jpy","엔","엔화","일본","japan","yen"], timeZone: "Asia/Tokyo" },
+      { code: "CNY", nameKo: "중국 위안",     countryKo: "중국",       aliases: ["cny","위안","rmb","중국","china","yuan"], timeZone: "Asia/Shanghai" },
+      { code: "GBP", nameKo: "영국 파운드",   countryKo: "영국",       aliases: ["gbp","파운드","영국","uk","london"], timeZone: "Europe/London" },
+      { code: "AUD", nameKo: "호주 달러",     countryKo: "호주",       aliases: ["aud","호주","australia","sydney"], timeZone: "Australia/Sydney" },
+      { code: "CAD", nameKo: "캐나다 달러",   countryKo: "캐나다",     aliases: ["cad","캐나다","canada","toronto"], timeZone: "America/Toronto" },
+      { code: "CHF", nameKo: "스위스 프랑",   countryKo: "스위스",     aliases: ["chf","스위스","swiss","franc"], timeZone: "Europe/Zurich" },
+      { code: "SGD", nameKo: "싱가포르 달러", countryKo: "싱가포르",   aliases: ["sgd","싱가포르","singapore"], timeZone: "Asia/Singapore" },
+      { code: "THB", nameKo: "태국 바트",     countryKo: "태국",       aliases: ["thb","태국","방콕","thailand"], timeZone: "Asia/Bangkok" },
+      { code: "TWD", nameKo: "대만 달러",     countryKo: "대만",       aliases: ["twd","대만","taiwan"], timeZone: "Asia/Taipei" },
+      { code: "NZD", nameKo: "뉴질랜드 달러", countryKo: "뉴질랜드",   aliases: ["nzd","뉴질랜드","new zealand"], timeZone: "Pacific/Auckland" },
+      { code: "PHP", nameKo: "필리핀 페소",   countryKo: "필리핀",     aliases: ["php","필리핀","philippines"], timeZone: "Asia/Manila" },
+      { code: "MYR", nameKo: "말레이시아 링깃", countryKo: "말레이시아", aliases: ["myr","말레이시아","malaysia"], timeZone: "Asia/Kuala_Lumpur" },
+      { code: "IDR", nameKo: "인도네시아 루피아", countryKo: "인도네시아", aliases: ["idr","인도네시아","indonesia"], timeZone: "Asia/Jakarta" },
+      { code: "VND", nameKo: "베트남 동",     countryKo: "베트남",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
+    ];
 
-<!-- ===== 여행 타이틀 기반 날씨 정보 박스 ===== -->
-<div id="weatherBox" style="
-  margin-top:14px;
-  padding:12px;
-  background:rgba(255,255,255,0.65);
-  border-radius:12px;
-  display:none;
-  font-size:0.9rem;
-  line-height:1.4;
-">
-  <b id="weatherTitle"></b><br>
-  오늘: <span id="weatherToday"></span><br>
-  내일: <span id="weatherTomorrow"></span>
-</div>
+    // ===== 공통 DOM 요소 =====
+    const tabButtons   = document.querySelectorAll(".tab-button");
+    const viewExchange = document.querySelector(".view-exchange");
+    const viewTime     = document.querySelector(".view-time");
+    const viewSchedule = document.querySelector(".view-schedule");
 
-<style>
-/* ===== 일정 관리 스타일 ===== */
-
-.schedule-header-text {
-  margin-top: 0.2rem;
-  font-size: 0.8rem;
-  color: var(--muted);
-}
-
-/* Day 버튼 */
-.day-toolbar button {
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148,163,184,0.9);
-  background: #f9fafb;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-/* Day 탭 */
-.day-tab-btn {
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148,163,184,0.9);
-  background: #fff;
-  font-size: 0.78rem;
-  cursor: pointer;
-}
-.day-tab-btn.active {
-  background:#111827;
-  color:#fff;
-}
-
-/* 테이블 형태 */
-.schedule-table-header,
-.schedule-row {
-  display: grid;
-  grid-template-columns: 70px minmax(140px,2fr) minmax(140px,2fr) 48px;
-  gap: 6px;
-  align-items: center;
-  margin-top: 8px;
-}
-
-@media (max-width:720px) {
-  .schedule-table-header,
-  .schedule-row {
-    grid-template-columns: 60px minmax(110px,2fr) minmax(110px,2fr) 44px;
-  }
-}
-
-/* 행 내부 input */
-.schedule-row input {
-  width: 100%;
-  padding: 6px 7px;
-  font-size: 0.82rem;
-  border: 1px solid rgba(148,163,184,0.9);
-  border-radius: 8px;
-  background: rgba(255,255,255,0.92);
-}
-
-/* 지명/비고는 자동 줄바꿈 */
-.schedule-textarea {
-  width: 100%;
-  padding: 6px 7px;
-  font-size: 0.82rem;
-  border-radius: 8px;
-  border: 1px solid rgba(148,163,184,0.9);
-  resize: vertical;
-  background: rgba(255,255,255,0.92);
-  white-space: pre-wrap;
-  min-height: 34px;
-  line-height: 1.35;
-}
-
-/* 📍 Google Maps 버튼 */
-.map-btn {
-  width: 100%;
-  height: 34px;
-  font-size: 1.25rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  text-align:center;
-  padding: 0;
-  margin: 0;
-}
-
-/* 모바일에서 튀어나오지 않도록 중앙 정렬 고정 */
-.schedule-row > .map-btn {
-  justify-self: center;
-}
-</style>
-
-<script>
-// =========================
-//        공통 탭 전환
-// =========================
-const tabButtons = document.querySelectorAll(".tab-button");
-const views = document.querySelectorAll(".view");
-
-tabButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    tabButtons.forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-
-    const viewName = btn.dataset.view;
-    views.forEach(v => {
-      v.style.display = v.classList.contains(`view-${viewName}`) ? "block" : "none";
+    // ===== 탭 전환 =====
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const v = btn.dataset.view;
+        viewExchange.style.display = (v === "exchange") ? "block" : "none";
+        viewTime.style.display     = (v === "time")     ? "block"  : "none";
+        viewSchedule.style.display = (v === "schedule") ? "block" : "none";
+        if (v === "time") updateTimeInfo();
+      });
     });
-  });
-});
 
+    // ===== 선택 방식 토글 (환율/시차 공통) =====
+    const modeButtons = document.querySelectorAll(".mode-btn");
 
-// =========================
-//      환율 계산 기능
-// =========================
-let currencyMode = "search"; // search / dropdown
+    function setPickMode(mode) {
+      document.body.setAttribute("data-pick-mode", mode);
+      modeButtons.forEach(b => {
+        if (b.dataset.mode === mode) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+    }
 
-document.getElementById("modeSearchBtn").onclick = () => {
-  currencyMode = "search";
-  document.getElementById("modeSearchBtn").classList.add("active");
-  document.getElementById("modeDropdownBtn").classList.remove("active");
-  document.querySelector(".currency-search-box").style.display = "block";
-  document.querySelector(".currency-dropdown-box").style.display = "none";
-};
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.mode;
+        setPickMode(mode);
+      });
+    });
 
-document.getElementById("modeDropdownBtn").onclick = () => {
-  currencyMode = "dropdown";
-  document.getElementById("modeDropdownBtn").classList.add("active");
-  document.getElementById("modeSearchBtn").classList.remove("active");
-  document.querySelector(".currency-search-box").style.display = "none";
-  document.querySelector(".currency-dropdown-box").style.display = "block";
-};
+    // ===== 환율 관련 DOM =====
+    const fromSearchInput = document.getElementById("fromSearch");
+    const toSearchInput   = document.getElementById("toSearch");
+    const fromSugBox      = document.getElementById("fromSuggestions");
+    const toSugBox        = document.getElementById("toSuggestions");
+    const fromLabel       = document.getElementById("fromSelectedLabel");
+    const toLabel         = document.getElementById("toSelectedLabel");
 
-// 환율 API 호출
-async function fetchRate(base, target) {
-  try {
-    const url = `https://open.er-api.com/v6/latest/${base}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.rates[target];
-  } catch (e) {
-    return null;
-  }
-}
+    const fromSelect      = document.getElementById("fromSelect");
+    const toSelect        = document.getElementById("toSelect");
 
-// 텍스트 합산식 계산 + 환전 적용
-async function convertTotal() {
-  const raw = document.getElementById("sumInput").value;
-  let base = document.getElementById("baseCurrency").value;
-  let target = document.getElementById("targetCurrency").value;
+    const rateInfoEl      = document.getElementById("rateInfo");
+    const mainErrorEl     = document.getElementById("mainError");
+    const mainInfoEl      = document.getElementById("mainInfo");
 
-  // 합산 값 계산
-  let total = 0;
-  try {
-    total = Function(`return ${raw.replace(/[^0-9+\-*/().]/g, "")}`)();
-  } catch {
-    total = 0;
-  }
+    const calcExprInput   = document.getElementById("calcExpr");
+    const calcSumEl       = document.getElementById("calcSum");
+    const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
+    const calcConvertedEl = document.getElementById("calcConverted");
 
-  document.getElementById("sumResult").textContent = `${total.toLocaleString()}`;
+    // + / - 키패드 버튼
+    const calcKeyButtons = document.querySelectorAll(".calc-key");
 
-  // 환율 적용
-  const rate = await fetchRate(base, target);
-  if (!rate) {
-    document.getElementById("exchangeResult").textContent = "환율 불러오기 오류";
-    return;
-  }
+    // ===== 시차 관련 DOM (함수는 PART 5에서 정의) =====
+    const timeSearchInput = document.getElementById("timeSearch");
+    const timeSugBox      = document.getElementById("timeSuggestions");
+    const timeSelect      = document.getElementById("timeSelect");
+    const timeLabel       = document.getElementById("timeSelectedLabel");
+    const timeKoreaEl     = document.getElementById("timeKorea");
+    const timeTargetEl    = document.getElementById("timeTarget");
+    const timeDiffEl      = document.getElementById("timeDiff");
 
-  const converted = total * rate;
-  document.getElementById("exchangeResult").textContent =
-    `${converted.toLocaleString(undefined,{maximumFractionDigits:2})} ${target}`;
-}
+    // ===== 일정/날씨 관련 DOM (로직은 PART 6에서 정의) =====
+    const tripTitleInput   = document.getElementById("tripTitle");
+    const dayTabsContainer = document.getElementById("dayTabs");
+    const rowsContainer    = document.getElementById("scheduleRows");
+    const addDayBtn        = document.getElementById("addDayBtn");
+    const deleteDayBtn     = document.getElementById("deleteDayBtn");
+    const renameDayBtn     = document.getElementById("renameDayBtn");
+    const addRowBtn        = document.getElementById("addRowBtn");
+    const exportBtn        = document.getElementById("exportBtn");
+    const importBtn        = document.getElementById("importBtn");
+    const exportTextArea   = document.getElementById("exportTextArea");
+    const importFileInput  = document.getElementById("importFileInput");
 
-document.getElementById("sumInput").addEventListener("input", convertTotal);
+    const weatherBox       = document.getElementById("weatherBox");
+    const weatherTitleEl   = document.getElementById("weatherTitle");
+    const weatherTodayEl   = document.getElementById("weatherToday");
+    const weatherTomorrowEl= document.getElementById("weatherTomorrow");
 
+    // ===== 공통 유틸 =====
+    function findCurrency(code) {
+      return currencies.find(c => c.code === code);
+    }
 
-// =========================
-//      시차 계산 기능
-// =========================
-async function fetchTimeDiff(country) {
-  try {
-    const url = `https://worldtimeapi.org/api/timezone`;
-    const all = await fetch(url);
-    const zones = await all.json();
-    
-    const match = zones.find(z => z.toLowerCase().includes(country.toLowerCase()));
-    if (!match) return null;
+    function formatCurrencyLabel(code) {
+      const c = findCurrency(code);
+      if (!c) return code;
+      return `${c.nameKo} (${c.code})`;
+    }
 
-    const info = await fetch(`https://worldtimeapi.org/api/timezone/${match}`);
-    const data = await info.json();
-    return data;
-  } catch {
-    return null;
-  }
-}
+    function optionLabel(c) {
+      return `${c.code} - ${c.nameKo}`;
+    }
 
-document.getElementById("timeSearchBtn").onclick = async () => {
-  const country = document.getElementById("timeSearchInput").value.trim();
-  const box = document.getElementById("timeResultBox");
+    function populateSelect(selectEl) {
+      selectEl.innerHTML = "";
+      currencies.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.code;
+        opt.textContent = optionLabel(c);
+        selectEl.appendChild(opt);
+      });
+    }
 
-  const data = await fetchTimeDiff(country);
-  if (!data) {
-    box.textContent = "해당 국가의 시차 정보를 찾을 수 없습니다.";
-    return;
-  }
+    function setSelectValue(selectEl, code) {
+      const options = Array.from(selectEl.options);
+      const found = options.find(o => o.value === code);
+      if (found) selectEl.value = code;
+    }
 
-  box.innerHTML = `
-    <b>${country}</b><br>
-    현재시각: ${data.datetime.slice(11,16)}<br>
-    UTC 오프셋: ${data.utc_offset}
-  `;
-};
+    function searchCurrencies(query) {
+      const q = query.trim().toLowerCase();
+      if (!q) return currencies.slice(0, 10);
+      return currencies
+        .filter(c => {
+          const combined =
+            (c.code + " " + c.nameKo + " " + c.countryKo + " " + c.aliases.join(" ")).toLowerCase();
+          return combined.includes(q);
+        })
+        .slice(0, 10);
+    }
 
+    function setupSearchBox(inputEl, listEl, onSelect) {
+      function renderList(items) {
+        if (!items.length) {
+          listEl.style.display = "none";
+          listEl.innerHTML = "";
+          return;
+        }
+        listEl.innerHTML = "";
+        for (const c of items) {
+          const div = document.createElement("div");
+          div.className = "suggestion-item";
+          div.textContent = optionLabel(c);
+          div.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            inputEl.value = optionLabel(c);
+            listEl.style.display = "none";
+            onSelect(c.code);
+          });
+          listEl.appendChild(div);
+        }
+        listEl.style.display = "block";
+      }
 
-// =========================
-//      일정 관리 기능
-// =========================
-let days = []; // { name: "Day.1", rows: [] }
-let currentDayIndex = -1;
+      inputEl.addEventListener("input", () => {
+        renderList(searchCurrencies(inputEl.value));
+      });
 
-const dayTabs = document.getElementById("dayTabs");
-const scheduleRows = document.getElementById("scheduleRows");
+      inputEl.addEventListener("focus", () => {
+        inputEl.value = "";
+        renderList(searchCurrencies(""));
+      });
 
-// Day 추가
-document.getElementById("addDayBtn").onclick = () => {
-  const dayName = `Day.${days.length + 1}`;
-  days.push({ name: dayName, rows: [] });
-  currentDayIndex = days.length - 1;
-  renderDayTabs();
-  renderRows();
-};
+      inputEl.addEventListener("blur", () => {
+        setTimeout(() => { listEl.style.display = "none"; }, 150);
+      });
 
-// Day 삭제
-document.getElementById("deleteDayBtn").onclick = () => {
-  if (currentDayIndex < 0) return;
-  days.splice(currentDayIndex, 1);
-  if (days.length === 0) currentDayIndex = -1;
-  else currentDayIndex = 0;
-  renderDayTabs();
-  renderRows();
-};
+      inputEl.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const items = searchCurrencies(inputEl.value);
+          if (items.length > 0) {
+            const c = items[0];
+            inputEl.value = optionLabel(c);
+            listEl.style.display = "none";
+            onSelect(c.code);
+          }
+        }
+      });
+    }
 
-// Day 이름 변경
-document.getElementById("renameDayBtn").onclick = () => {
-  if (currentDayIndex < 0) return;
-  const newName = prompt("새 Day 이름 입력", days[currentDayIndex].name);
-  if (!newName) return;
-  days[currentDayIndex].name = newName;
-  renderDayTabs();
-};
+    // ===== 환율 API (open.er-api.com) =====
+    let baseCode   = "HKD"; // 기준 통화
+    let targetCode = "KRW"; // 변환 통화
+    let currentRate = null; // base → target
+    let lastUpdateText = "";
 
-// Day 탭 렌더링
-function renderDayTabs() {
-  dayTabs.innerHTML = "";
-  days.forEach((d, i) => {
-    const btn = document.createElement("button");
-    btn.className = "day-tab-btn" + (i === currentDayIndex ? " active" : "");
-    btn.textContent = d.name;
-    btn.onclick = () => {
-      currentDayIndex = i;
+    async function fetchRate() {
+      mainErrorEl.textContent = "";
+      mainInfoEl.textContent = "";
+      rateInfoEl.textContent = "";
+      calcConvertedEl.textContent = "-";
+      currentRate = null;
+
+      try {
+        const url = `https://open.er-api.com/v6/latest/${encodeURIComponent(baseCode)}`;
+        const res = await fetch(url);
+        if (!res.ok) {
+          throw new Error("HTTP 오류: " + res.status);
+        }
+        const data = await res.json();
+        if (data.result !== "success") {
+          throw new Error("API 오류: " + (data["error-type"] || "unknown"));
+        }
+
+        const rate = data.rates?.[targetCode];
+        if (typeof rate !== "number") {
+          throw new Error("해당 통화 쌍의 환율을 찾을 수 없습니다.");
+        }
+
+        currentRate = rate;
+        lastUpdateText = data.time_last_update_utc || "";
+
+        const baseStr = `1\u00a0${baseCode}`;
+        const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
+
+        rateInfoEl.textContent =
+          `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
+        mainInfoEl.textContent = "환율 정보를 정상적으로 불러왔습니다.";
+        updateCalcResult();
+      } catch (err) {
+        console.error(err);
+        mainErrorEl.textContent = "환율 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
+      }
+    }
+
+    // "1000+5000-300" 같은 식 파싱
+    function parseExpression(raw) {
+      const str = raw.replace(/,/g, "");
+      if (!str.trim()) return 0;
+      const tokens = str.match(/[+\-]?\s*\d+(?:\.\d+)?/g);
+      if (!tokens) return NaN;
+      let sum = 0;
+      for (const t of tokens) {
+        const num = Number(t.replace(/\s+/g, ""));
+        if (!Number.isFinite(num)) return NaN;
+        sum += num;
+      }
+      return sum;
+    }
+
+    function updateCalcResult() {
+      const expr = calcExprInput.value;
+      const sum = parseExpression(expr);
+      if (Number.isNaN(sum)) {
+        calcSumEl.textContent = "입력 오류";
+        calcConvertedEl.textContent = "-";
+        return;
+      }
+      calcSumEl.textContent = sum.toLocaleString();
+      calcSumCurrencyEl.textContent = baseCode;
+
+      if (!currentRate) {
+        calcConvertedEl.textContent = "환율 정보를 먼저 불러와야 합니다.";
+        return;
+      }
+      const converted = sum * currentRate;
+      calcConvertedEl.textContent =
+        `${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${targetCode}`;
+    }
+
+    function setBase(code) {
+      baseCode = code;
+      fromLabel.textContent = `선택된 기준 통화: ${formatCurrencyLabel(code)}`;
+      calcSumCurrencyEl.textContent = baseCode;
+      setSelectValue(fromSelect, code);
+      fetchRate();
+    }
+
+    function setTarget(code) {
+      targetCode = code;
+      toLabel.textContent = `선택된 변환 통화: ${formatCurrencyLabel(code)}`;
+      setSelectValue(toSelect, code);
+      fetchRate();
+    }
+
+    // 환율 입력 관련 이벤트
+    calcExprInput.addEventListener("input", updateCalcResult);
+
+    calcKeyButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const op = btn.dataset.op; // "+" 또는 "-"
+        const input = calcExprInput;
+        const start = input.selectionStart ?? input.value.length;
+        const end   = input.selectionEnd ?? input.value.length;
+        const before = input.value.slice(0, start);
+        const after  = input.value.slice(end);
+        input.value = before + op + after;
+        const newPos = start + 1;
+        input.focus();
+        input.setSelectionRange(newPos, newPos);
+        updateCalcResult();
+      });
+    });
+
+    // 검색박스/드롭다운 초기 세팅
+    setupSearchBox(fromSearchInput, fromSugBox, setBase);
+    setupSearchBox(toSearchInput,   toSugBox,   setTarget);
+
+    populateSelect(fromSelect);
+    populateSelect(toSelect);
+
+    fromSelect.addEventListener("change", () => setBase(fromSelect.value));
+    toSelect.addEventListener("change",   () => setTarget(toSelect.value));
+
+    // 초기 값 세팅
+    fromSearchInput.value = optionLabel(findCurrency("HKD"));
+    toSearchInput.value   = optionLabel(findCurrency("KRW"));
+    fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
+    toLabel.textContent   = "선택된 변환 통화: 대한민국 원 (KRW)";
+    calcSumCurrencyEl.textContent = baseCode;
+    setSelectValue(fromSelect, "HKD");
+    setSelectValue(toSelect, "KRW");
+        // ===== 시차 계산 =====
+    let timeTargetCode = "HKD"; // 기본 시차 대상: 홍콩
+
+    function formatLocalTime(date, timeZone) {
+      return new Intl.DateTimeFormat("ko-KR", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function getOffsetMinutes(timeZone, date) {
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+      const parts = fmt.formatToParts(date);
+      const map = {};
+      for (const p of parts) map[p.type] = p.value;
+      const asUTC = Date.UTC(
+        Number(map.year),
+        Number(map.month) - 1,
+        Number(map.day),
+        Number(map.hour),
+        Number(map.minute),
+        Number(map.second)
+      );
+      const diffMs = asUTC - date.getTime();
+      return diffMs / 60000; // 분 단위
+    }
+
+    function describeDiff(diffMin, countryName) {
+      if (Math.abs(diffMin) < 0.5) {
+        return `${countryName}은(는) 한국과 시차가 없습니다.`;
+      }
+      const ahead = diffMin > 0;
+      const abs = Math.round(Math.abs(diffMin));
+      const hours = Math.floor(abs / 60);
+      const minutes = abs % 60;
+      let parts = [];
+      if (hours) parts.push(`${hours}시간`);
+      if (minutes) parts.push(`${minutes}분`);
+      const span = parts.join(" ");
+      return `${countryName}은(는) 한국보다 ${span} ${ahead ? "빠릅니다" : "느립니다"}.`;
+    }
+
+    function updateTimeInfo() {
+      const baseTZ = "Asia/Seoul";
+      const now = new Date();
+
+      // 한국 시간
+      const baseTimeStr = formatLocalTime(now, baseTZ);
+      timeKoreaEl.textContent = `한국 시간: ${baseTimeStr}`;
+
+      const c = findCurrency(timeTargetCode);
+      if (!c || !c.timeZone) {
+        timeTargetEl.textContent = "선택한 국가의 시간대를 찾을 수 없습니다.";
+        timeDiffEl.textContent = "";
+        return;
+      }
+
+      const country = c.countryKo || c.nameKo;
+      const targetTimeStr = formatLocalTime(now, c.timeZone);
+      timeTargetEl.textContent = `${country} 시간: ${targetTimeStr}`;
+
+      const baseOffset   = getOffsetMinutes(baseTZ, now);
+      const targetOffset = getOffsetMinutes(c.timeZone, now);
+      const diffMin      = targetOffset - baseOffset;
+      timeDiffEl.textContent = describeDiff(diffMin, country);
+    }
+
+    function setTimeTarget(code) {
+      timeTargetCode = code;
+      const c = findCurrency(code);
+      if (c) {
+        const country = c.countryKo || c.nameKo;
+        timeLabel.textContent =
+          `선택된 국가: ${country} (${c.code}, ${c.timeZone || "시간대 정보 없음"})`;
+      } else {
+        timeLabel.textContent = `선택된 국가 코드: ${code}`;
+      }
+      setSelectValue(timeSelect, code);
+      updateTimeInfo();
+    }
+
+    // 시차 검색용 검색 박스/드롭다운 세팅
+    setupSearchBox(timeSearchInput, timeSugBox, setTimeTarget);
+    populateSelect(timeSelect);
+
+    timeSelect.addEventListener("change", () => setTimeTarget(timeSelect.value));
+
+    // 초기 시차 대상: 홍콩(HKD)
+    timeSearchInput.value = optionLabel(findCurrency("HKD"));
+    setSelectValue(timeSelect, "HKD");
+    setTimeTarget("HKD");
+        // ===== 일정 관리 탭 상태 =====
+    let scheduleDays = [
+      { name: "Day.1", rows: [] }
+    ];
+    let currentDayIndex = 0;
+
+    // 날씨 DOM
+    const weatherBox          = document.getElementById("weatherBox");
+    const weatherTitleEl      = document.getElementById("weatherTitle");
+    const weatherTodayEl      = document.getElementById("weatherToday");
+    const weatherTomorrowEl   = document.getElementById("weatherTomorrow");
+
+    // ===== Day 탭 렌더링 =====
+    function renderDayTabs() {
+      dayTabsContainer.innerHTML = "";
+      scheduleDays.forEach((day, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "day-tab-btn" + (idx === currentDayIndex ? " active" : "");
+        btn.textContent = day.name;
+        btn.addEventListener("click", () => {
+          currentDayIndex = idx;
+          renderDayTabs();
+          renderRows();
+        });
+        dayTabsContainer.appendChild(btn);
+      });
+    }
+
+    // ===== 일정 행 렌더링 =====
+    function renderRows() {
+      rowsContainer.innerHTML = "";
+      const day = scheduleDays[currentDayIndex];
+      if (!day) return;
+
+      day.rows.forEach((row, idx) => {
+        const div = document.createElement("div");
+        div.className = "schedule-row";
+
+        // 시간
+        const timeInput = document.createElement("input");
+        timeInput.type = "text";
+        timeInput.placeholder = "예: 09:00";
+        timeInput.value = row.time || "";
+        timeInput.addEventListener("input", () => {
+          row.time = timeInput.value;
+        });
+
+        // 지명 (textarea, 자동 줄바꿈)
+        const placeTextarea = document.createElement("textarea");
+        placeTextarea.className = "schedule-textarea";
+        placeTextarea.placeholder = "예: 침사추이 스타의 거리";
+        placeTextarea.value = row.place || "";
+        placeTextarea.addEventListener("input", () => {
+          row.place = placeTextarea.value;
+        });
+
+        // 비고 (textarea, 자동 줄바꿈)
+        const noteTextarea = document.createElement("textarea");
+        noteTextarea.className = "schedule-textarea";
+        noteTextarea.placeholder = "예: 야경 감상";
+        noteTextarea.value = row.note || "";
+        noteTextarea.addEventListener("input", () => {
+          row.note = noteTextarea.value;
+        });
+
+        // 📍 구글맵 버튼 (핀 아이콘만, 테두리 없음, 칸 안에 정렬)
+        const mapBtn = document.createElement("button");
+        mapBtn.type = "button";
+        mapBtn.className = "map-btn";
+        mapBtn.textContent = "📍";
+        mapBtn.title = "구글맵 열기";
+        mapBtn.setAttribute("aria-label", "구글맵 열기");
+
+        mapBtn.addEventListener("click", () => {
+          const title = tripTitleInput.value.trim();
+          const place = (row.place || "").trim();
+          const queryParts = [];
+          if (title) queryParts.push(title);
+          if (place) queryParts.push(place);
+          if (!queryParts.length) return;
+          const url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(queryParts.join(" "));
+          window.open(url, "_blank");
+        });
+
+        div.appendChild(timeInput);
+        div.appendChild(placeTextarea);
+        div.appendChild(noteTextarea);
+        div.appendChild(mapBtn);
+
+        rowsContainer.appendChild(div);
+      });
+    }
+
+    // ===== Day/Row 조작 =====
+    function addRow() {
+      const day = scheduleDays[currentDayIndex];
+      if (!day) return;
+      day.rows.push({ time: "", place: "", note: "" });
+      renderRows();
+    }
+
+    function addDay() {
+      const newIndex = scheduleDays.length + 1;
+      scheduleDays.push({ name: `Day.${newIndex}`, rows: [] });
+      currentDayIndex = scheduleDays.length - 1;
       renderDayTabs();
       renderRows();
-    };
-    dayTabs.appendChild(btn);
-  });
-}
+    }
 
-// 일정 행 렌더
-function renderRows() {
-  scheduleRows.innerHTML = "";
-  if (currentDayIndex < 0) return;
-  
-  days[currentDayIndex].rows.forEach((row, idx) => {
-    const div = document.createElement("div");
-    div.className = "schedule-row";
+    function deleteCurrentDay() {
+      if (scheduleDays.length === 1) {
+        alert("최소 1개의 Day는 유지해야 합니다.");
+        return;
+      }
+      if (!confirm("현재 Day를 삭제하시겠습니까?")) return;
+      scheduleDays.splice(currentDayIndex, 1);
+      if (currentDayIndex >= scheduleDays.length) {
+        currentDayIndex = scheduleDays.length - 1;
+      }
+      renderDayTabs();
+      renderRows();
+    }
 
-    div.innerHTML = `
-      <input type="text" placeholder="09:00" value="${row.time || ""}"
-        onchange="updateRow(${idx}, 'time', this.value)">
-      <textarea class="schedule-textarea" placeholder="지명"
-        onchange="updateRow(${idx}, 'place', this.value)">${row.place || ""}</textarea>
-      <textarea class="schedule-textarea" placeholder="비고"
-        onchange="updateRow(${idx}, 'memo', this.value)">${row.memo || ""}</textarea>
+    function renameCurrentDay() {
+      const day = scheduleDays[currentDayIndex];
+      if (!day) return;
+      const newName = prompt("현재 Day 이름을 입력하세요.", day.name);
+      if (!newName) return;
+      day.name = newName;
+      renderDayTabs();
+    }
 
-      <button class="map-btn" onclick="openGoogleMap(${idx})">📍</button>
-    `;
-    scheduleRows.appendChild(div);
-  });
-}
+    // ===== 일정 텍스트 내보내기 =====
+    function buildExportText() {
+      const lines = [];
+      const title = tripTitleInput.value.trim();
+      if (title) {
+        lines.push(`[Title] ${title}`);
+      }
+      scheduleDays.forEach(day => {
+        lines.push(`\n[${day.name}]`);
+        day.rows.forEach(row => {
+          const time  = (row.time  || "").replace(/\n/g, " ");
+          const place = (row.place || "").replace(/\n/g, " ");
+          const note  = (row.note  || "").replace(/\n/g, " ");
+          if (!time && !place && !note) return;
+          lines.push(`${time} | ${place} | ${note}`);
+        });
+      });
+      return lines.join("\n");
+    }
 
-// 행 데이터 업데이트
-function updateRow(index, field, value) {
-  days[currentDayIndex].rows[index][field] = value;
-}
+    function exportToFile() {
+      const text = buildExportText();
+      exportTextArea.value = text;
 
-// 일정 추가
-document.getElementById("addRowBtn").onclick = () => {
-  if (currentDayIndex < 0) return;
-  days[currentDayIndex].rows.push({ time: "", place: "", memo: "" });
-  renderRows();
-};
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "travel-plan.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
 
-// 지도 검색
-function openGoogleMap(idx) {
-  const country = document.getElementById("tripTitle").value.trim();
-  const row = days[currentDayIndex].rows[idx];
-  const q = encodeURIComponent(`${country} ${row.place}`);
-  window.open(`https://www.google.com/maps/search/?api=1&query=${q}`, "_blank");
-}
+    // ===== 텍스트 불러오기 =====
+    function parseImportText(text) {
+      const lines = text.split(/\r?\n/);
+      const newDays = [];
+      let currentDay = null;
 
+      tripTitleInput.value = "";
 
-// =========================
-//   일정 텍스트 내보내기
-// =========================
-document.getElementById("exportBtn").onclick = () => {
-  let txt = `[Title] ${document.getElementById("tripTitle").value}\n\n`;
+      lines.forEach(rawLine => {
+        const line = rawLine.trim();
+        if (!line) return;
 
-  days.forEach(d => {
-    txt += `[${d.name}]\n`;
-    d.rows.forEach(r => {
-      txt += `${r.time} | ${r.place} | ${r.memo}\n`;
+        // [Title] 줄
+        if (line.startsWith("[Title]")) {
+          const title = line.replace("[Title]", "").trim();
+          tripTitleInput.value = title;
+          return;
+        }
+
+        // [Day.1] 이런 형식
+        const dayMatch = line.match(/^\[(Day\.[^\]]*)\]$/);
+        if (dayMatch) {
+          currentDay = { name: dayMatch[1], rows: [] };
+          newDays.push(currentDay);
+          return;
+        }
+
+        // 일정 줄: "09:00 | 곳 | 메모"
+        if (!currentDay) return;
+        const parts = line.split("|").map(p => p.trim());
+        const time  = parts[0] || "";
+        const place = parts[1] || "";
+        const note  = parts[2] || "";
+        if (!time && !place && !note) return;
+        currentDay.rows.push({ time, place, note });
+      });
+
+      if (newDays.length === 0) {
+        alert("불러올 Day 정보를 찾지 못했습니다.");
+        return;
+      }
+
+      scheduleDays = newDays;
+      currentDayIndex = 0;
+      renderDayTabs();
+      renderRows();
+      updateWeatherForTitle(); // 타이틀 기반 날씨 갱신
+    }
+
+    function handleImportFile(files) {
+      if (!files || !files.length) return;
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result || "";
+        exportTextArea.value = text;
+        parseImportText(text);
+      };
+      reader.readAsText(file, "utf-8");
+    }
+
+    // ===== 여행 타이틀 기반 날씨 기능 =====
+
+    // 간단 도시/국가 → 위도/경도 매핑
+    const weatherLocations = [
+      { keywords: ["홍콩", "hong kong", "hongkong"], name: "홍콩",      lat: 22.3,  lon: 114.2 },
+      { keywords: ["오사카", "osaka"],               name: "오사카",    lat: 34.6937, lon: 135.5023 },
+      { keywords: ["도쿄", "tokyo"],                 name: "도쿄",      lat: 35.6762, lon: 139.6503 },
+      { keywords: ["오키나와", "okinawa"],           name: "오키나와",  lat: 26.2124, lon: 127.6809 },
+      { keywords: ["방콕", "bangkok"],               name: "방콕",      lat: 13.7563, lon: 100.5018 },
+      { keywords: ["싱가포르", "singapore"],         name: "싱가포르",  lat: 1.3521,  lon: 103.8198 },
+      { keywords: ["다낭", "danang", "da nang"],     name: "다낭",      lat: 16.0544, lon: 108.2022 },
+      { keywords: ["나트랑", "nha trang"],           name: "나트랑",    lat: 12.2388, lon: 109.1967 },
+      { keywords: ["파리", "paris"],                 name: "파리",      lat: 48.8566, lon: 2.3522 },
+      { keywords: ["런던", "london"],                name: "런던",      lat: 51.5074, lon: -0.1278 },
+      { keywords: ["뉴욕", "new york"],             name: "뉴욕",      lat: 40.7128, lon: -74.0060 },
+      { keywords: ["괌", "guam"],                    name: "괌",       lat: 13.4443, lon: 144.7937 },
+      { keywords: ["세부", "cebu"],                  name: "세부",      lat: 10.3157, lon: 123.8854 },
+      { keywords: ["제주", "jeju"],                  name: "제주",      lat: 33.4996, lon: 126.5312 }
+    ];
+
+    function findWeatherLocationFromTitle(title) {
+      const lower = title.toLowerCase();
+      for (const loc of weatherLocations) {
+        if (loc.keywords.some(k => lower.includes(k.toLowerCase()))) {
+          return loc;
+        }
+      }
+      return null;
+    }
+
+    function weatherCodeToText(code) {
+      // Open-Meteo weathercode 간단 매핑
+      if (code === 0) return "맑음";
+      if ([1, 2, 3].includes(code)) return "부분적/대체로 흐림";
+      if ([45, 48].includes(code)) return "안개";
+      if ([51, 53, 55].includes(code)) return "이슬비";
+      if ([61, 63, 65].includes(code)) return "비";
+      if ([71, 73, 75].includes(code)) return "눈";
+      if ([80, 81, 82].includes(code)) return "소나기";
+      if ([95, 96, 99].includes(code)) return "뇌우";
+      return "변동";
+    }
+
+    async function updateWeatherForTitle() {
+      const title = tripTitleInput.value.trim();
+      if (!title) {
+        weatherBox.style.display = "none";
+        return;
+      }
+
+      const loc = findWeatherLocationFromTitle(title);
+      if (!loc) {
+        weatherBox.style.display = "block";
+        weatherTitleEl.textContent = `날씨 정보`;
+        weatherTodayEl.textContent = "타이틀에 도시명을 포함하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
+        weatherTomorrowEl.textContent = "";
+        return;
+      }
+
+      weatherBox.style.display = "block";
+      weatherTitleEl.textContent = `${loc.name} 오늘 / 내일 날씨`;
+
+      try {
+        const url =
+          `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
+          `&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("weather http error");
+        const data = await res.json();
+        if (!data.daily || !data.daily.time || data.daily.time.length < 2) {
+          throw new Error("no daily data");
+        }
+
+        const todayMax = data.daily.temperature_2m_max[0];
+        const todayMin = data.daily.temperature_2m_min[0];
+        const todayCode = data.daily.weathercode[0];
+
+        const tomorrowMax = data.daily.temperature_2m_max[1];
+        const tomorrowMin = data.daily.temperature_2m_min[1];
+        const tomorrowCode = data.daily.weathercode[1];
+
+        weatherTodayEl.textContent =
+          `${todayMin.toFixed(1)}°C ~ ${todayMax.toFixed(1)}°C, ${weatherCodeToText(todayCode)}`;
+        weatherTomorrowEl.textContent =
+          `${tomorrowMin.toFixed(1)}°C ~ ${tomorrowMax.toFixed(1)}°C, ${weatherCodeToText(tomorrowCode)}`;
+      } catch (e) {
+        console.error(e);
+        weatherTodayEl.textContent = "날씨 정보를 불러오지 못했습니다.";
+        weatherTomorrowEl.textContent = "";
+      }
+    }
+
+    // 타이틀 입력이 바뀔 때마다 날씨 갱신 시도
+    tripTitleInput.addEventListener("change", updateWeatherForTitle);
+    tripTitleInput.addEventListener("blur", updateWeatherForTitle);
+    tripTitleInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") updateWeatherForTitle();
     });
-    txt += `\n`;
-  });
 
-  const blob = new Blob([txt], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
+    // ===== 일정 관련 이벤트 연결 =====
+    addRowBtn.addEventListener("click", addRow);
+    addDayBtn.addEventListener("click", addDay);
+    deleteDayBtn.addEventListener("click", deleteCurrentDay);
+    renameDayBtn.addEventListener("click", renameCurrentDay);
+    exportBtn.addEventListener("click", exportToFile);
+    importBtn.addEventListener("click", () => importFileInput.click());
+    importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "travel_plan.txt";
-  a.click();
+    // ===== 초기 렌더링 & 기본 설정 =====
+    renderDayTabs();
+    renderRows();
+    updateWeatherForTitle();      // 타이틀이 이미 있으면 날씨 표시
 
-  URL.revokeObjectURL(url);
-};
-
-document.getElementById("importBtn").onclick = () => {
-  document.getElementById("importFileInput").click();
-};
-
-// =========================
-//    텍스트 불러오기
-// =========================
-document.getElementById("importFileInput").addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const text = await file.text();
-  const lines = text.split("\n");
-
-  days = [];
-  currentDayIndex = -1;
-
-  let currentDay = null;
-
-  lines.forEach(line => {
-    if (line.startsWith("[Title]")) {
-      document.getElementById("tripTitle").value = line.replace("[Title]", "").trim();
-    } 
-    else if (line.startsWith("[Day")) {
-      currentDay = { name: line.replace("[", "").replace("]", ""), rows: [] };
-      days.push(currentDay);
-      currentDayIndex = days.length - 1;
-    }
-    else if (line.includes("|")) {
-      const [time, place, memo] = line.split("|").map(s => s.trim());
-      currentDay.rows.push({ time, place, memo });
-    }
-  });
-
-  renderDayTabs();
-  renderRows();
-});
-</script>
+    // 환율 기본 세팅
+    fetchRate();
+    setPickMode("search");
+  </script>
+</body>
+</html>
