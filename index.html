@@ -106,9 +106,9 @@
     .tab-button {
       border: none;
       background: transparent;
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 999px;
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       cursor: pointer;
       color: #6b7280;
       white-space: nowrap;
@@ -331,8 +331,8 @@
       }
 
       .tab-button {
-        padding: 4px 10px;
-        font-size: 0.8rem;
+        padding: 4px 8px;
+        font-size: 0.78rem;
       }
 
       .mode-toggle {
@@ -387,6 +387,105 @@
       font-size: 0.78rem;
       color: #6b7280;
     }
+
+    /* ===== 일정 관리 스타일 ===== */
+    .plan-days {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 0.4rem;
+    }
+
+    .plan-day-button {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: #f9fafb;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .plan-day-button.active {
+      background: #111827;
+      color: #f9fafb;
+      border-color: #111827;
+    }
+
+    .plan-day-actions {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .plan-day-actions button,
+    .plan-add-item,
+    .plan-export-controls button {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .plan-day-actions button:active,
+    .plan-add-item:active,
+    .plan-export-controls button:active {
+      background: #e5e7eb;
+    }
+
+    .plan-items {
+      margin-top: 0.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .plan-item-row {
+      display: grid;
+      grid-template-columns: minmax(70px, 90px) minmax(120px, 1.5fr) minmax(100px, 1.4fr) auto;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .plan-item-row input {
+      font-size: 0.8rem;
+      padding: 5px 7px;
+    }
+
+    .plan-item-remove {
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(239, 68, 68, 0.8);
+      background: #fef2f2;
+      color: #b91c1c;
+      cursor: pointer;
+    }
+
+    @media (max-width: 720px) {
+      .plan-item-row {
+        grid-template-columns: minmax(70px, 90px) minmax(120px, 1fr);
+        grid-template-rows: auto auto;
+      }
+      .plan-item-row input:nth-child(3) {
+        grid-column: 1 / span 2;
+      }
+    }
+
+    .plan-add-item {
+      margin-top: 0.5rem;
+    }
+
+    .plan-export-controls {
+      margin-top: 0.4rem;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
   </style>
 </head>
 <body data-pick-mode="search">
@@ -400,6 +499,7 @@
         <div class="tabs">
           <button class="tab-button active" data-view="exchange">환율 계산</button>
           <button class="tab-button" data-view="time">시차 검색</button>
+          <button class="tab-button" data-view="plan">일정 관리</button>
         </div>
 
         <div class="mode-toggle">
@@ -530,6 +630,47 @@
       </div>
     </div>
 
+    <!-- ===== 일정 관리 뷰 ===== -->
+    <div class="view view-plan" style="display:none;">
+      <div class="layout">
+        <section class="panel">
+          <h2>일정 관리</h2>
+
+          <p class="help only-desktop">
+            Day 단위로 여행 일정을 정리하고, 텍스트로 내보내거나 다시 불러올 수 있습니다.
+          </p>
+          <p class="help only-mobile">
+            Day.1, Day.2처럼 일자별로 일정 정리 후, 텍스트로 저장/불러오기 할 수 있어요.
+          </p>
+
+          <label>Day 선택</label>
+          <div id="planDays" class="plan-days"></div>
+          <div class="plan-day-actions">
+            <button type="button" id="addDayBtn">Day 추가</button>
+            <button type="button" id="removeDayBtn">선택 Day 삭제</button>
+          </div>
+
+          <div class="section-divider">
+            <p class="sub-heading">선택 Day의 일정</p>
+            <div id="planItems" class="plan-items"></div>
+            <button type="button" id="addItemBtn" class="plan-add-item">+ 일정 추가</button>
+          </div>
+
+          <div class="section-divider">
+            <p class="sub-heading">텍스트 내보내기 / 불러오기</p>
+            <p class="help">
+              아래 내용을 복사해서 메모장에 저장해 두었다가, 나중에 다시 붙여넣고 "텍스트 불러오기"를 누르면 일정이 복원됩니다.
+            </p>
+            <div class="plan-export-controls">
+              <button type="button" id="exportPlanBtn">텍스트 내보내기</button>
+              <button type="button" id="importPlanBtn">텍스트 불러오기</button>
+            </div>
+            <textarea id="planText" rows="6" style="width:100%; margin-top:0.5rem; font-size:0.8rem;"></textarea>
+          </div>
+        </section>
+      </div>
+    </div>
+
     <footer>
       GitHub Pages + JavaScript 예제 · 환율 데이터 제공 :
       <a href="https://www.exchangerate-api.com" target="_blank" rel="noopener noreferrer">ExchangeRate-API</a>
@@ -591,24 +732,38 @@
     const timeTargetEl    = document.getElementById("timeTarget");
     const timeDiffEl      = document.getElementById("timeDiff");
 
+    // ===== DOM: 일정 관리 부분 =====
+    const dayTabsEl      = document.getElementById("planDays");
+    const planItemsEl    = document.getElementById("planItems");
+    const addDayBtn      = document.getElementById("addDayBtn");
+    const removeDayBtn   = document.getElementById("removeDayBtn");
+    const addItemBtn     = document.getElementById("addItemBtn");
+    const exportPlanBtn  = document.getElementById("exportPlanBtn");
+    const importPlanBtn  = document.getElementById("importPlanBtn");
+    const planTextArea   = document.getElementById("planText");
+
     // ===== 탭 =====
     const tabButtons   = document.querySelectorAll(".tab-button");
     const viewExchange = document.querySelector(".view-exchange");
     const viewTime     = document.querySelector(".view-time");
+    const viewPlan     = document.querySelector(".view-plan");
+
+    function showView(name) {
+      viewExchange.style.display = (name === "exchange") ? "block" : "none";
+      viewTime.style.display     = (name === "time")     ? "block" : "none";
+      viewPlan.style.display     = (name === "plan")     ? "block" : "none";
+
+      if (name === "time") {
+        updateTimeInfo();
+      }
+    }
 
     tabButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         tabButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         const v = btn.dataset.view;
-        if (v === "exchange") {
-          viewExchange.style.display = "block";
-          viewTime.style.display = "none";
-        } else {
-          viewExchange.style.display = "none";
-          viewTime.style.display = "block";
-          updateTimeInfo(); // 탭 전환 시 시차 정보 갱신
-        }
+        showView(v);
       });
     });
 
@@ -636,6 +791,178 @@
     let lastUpdateText = "";
 
     let timeTargetCode = "HKD"; // 시차 조회 대상
+
+    // ===== 일정 관리 상태 =====
+    let plannerData = {
+      days: [
+        { id: 1, name: "Day 1", items: [] }
+      ],
+      nextDayId: 2
+    };
+    let currentDayId = 1;
+
+    // localStorage에서 일정 불러오기 시도
+    try {
+      const saved = localStorage.getItem("exchangePlanner");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.days) && parsed.days.length > 0) {
+          plannerData = parsed;
+          currentDayId = parsed.days[0].id;
+        }
+      }
+    } catch (e) {
+      console.warn("planner localStorage load failed:", e);
+    }
+
+    function savePlanner() {
+      try {
+        localStorage.setItem("exchangePlanner", JSON.stringify(plannerData));
+      } catch (e) {
+        console.warn("planner localStorage save failed:", e);
+      }
+    }
+
+    function getCurrentDay() {
+      return plannerData.days.find(d => d.id === currentDayId) || plannerData.days[0];
+    }
+
+    function renderPlanDays() {
+      if (!dayTabsEl) return;
+      dayTabsEl.innerHTML = "";
+      plannerData.days.forEach(day => {
+        const btn = document.createElement("button");
+        btn.className = "plan-day-button" + (day.id === currentDayId ? " active" : "");
+        btn.textContent = day.name;
+        btn.addEventListener("click", () => {
+          currentDayId = day.id;
+          renderPlanDays();
+          renderPlanItems();
+        });
+        dayTabsEl.appendChild(btn);
+      });
+    }
+
+    function renderPlanItems() {
+      if (!planItemsEl) return;
+      const day = getCurrentDay();
+      planItemsEl.innerHTML = "";
+      if (!day) return;
+
+      day.items.forEach((item, idx) => {
+        const row = document.createElement("div");
+        row.className = "plan-item-row";
+
+        const timeInput = document.createElement("input");
+        timeInput.type = "text";
+        timeInput.placeholder = "시간 (예: 09:00)";
+        timeInput.value = item.time || "";
+        timeInput.addEventListener("input", () => {
+          item.time = timeInput.value;
+          savePlanner();
+        });
+
+        const titleInput = document.createElement("input");
+        titleInput.type = "text";
+        titleInput.placeholder = "장소 / 일정 제목";
+        titleInput.value = item.title || "";
+        titleInput.addEventListener("input", () => {
+          item.title = titleInput.value;
+          savePlanner();
+        });
+
+        const noteInput = document.createElement("input");
+        noteInput.type = "text";
+        noteInput.placeholder = "메모 (선택)";
+        noteInput.value = item.note || "";
+        noteInput.addEventListener("input", () => {
+          item.note = noteInput.value;
+          savePlanner();
+        });
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "plan-item-remove";
+        removeBtn.textContent = "삭제";
+        removeBtn.addEventListener("click", () => {
+          day.items.splice(idx, 1);
+          savePlanner();
+          renderPlanItems();
+        });
+
+        row.appendChild(timeInput);
+        row.appendChild(titleInput);
+        row.appendChild(noteInput);
+        row.appendChild(removeBtn);
+        planItemsEl.appendChild(row);
+      });
+    }
+
+    // Day 추가 / 삭제 / 일정 추가
+    if (addDayBtn) {
+      addDayBtn.addEventListener("click", () => {
+        const newId = plannerData.nextDayId++;
+        const dayName = `Day ${plannerData.days.length + 1}`;
+        plannerData.days.push({ id: newId, name: dayName, items: [] });
+        currentDayId = newId;
+        savePlanner();
+        renderPlanDays();
+        renderPlanItems();
+      });
+    }
+
+    if (removeDayBtn) {
+      removeDayBtn.addEventListener("click", () => {
+        if (plannerData.days.length <= 1) {
+          alert("최소 1개의 Day는 유지해야 합니다.");
+          return;
+        }
+        plannerData.days = plannerData.days.filter(d => d.id !== currentDayId);
+        currentDayId = plannerData.days[0].id;
+        savePlanner();
+        renderPlanDays();
+        renderPlanItems();
+      });
+    }
+
+    if (addItemBtn) {
+      addItemBtn.addEventListener("click", () => {
+        const day = getCurrentDay();
+        if (!day) return;
+        day.items.push({ time: "", title: "", note: "" });
+        savePlanner();
+        renderPlanItems();
+      });
+    }
+
+    // 텍스트 내보내기 / 불러오기
+    if (exportPlanBtn) {
+      exportPlanBtn.addEventListener("click", () => {
+        if (!planTextArea) return;
+        planTextArea.value = JSON.stringify(plannerData, null, 2);
+      });
+    }
+
+    if (importPlanBtn) {
+      importPlanBtn.addEventListener("click", () => {
+        if (!planTextArea) return;
+        try {
+          const obj = JSON.parse(planTextArea.value);
+          if (!obj.days || !Array.isArray(obj.days) || obj.days.length === 0) {
+            alert("형식이 올바르지 않습니다. days 배열이 필요합니다.");
+            return;
+          }
+          plannerData = obj;
+          currentDayId = obj.days[0].id;
+          savePlanner();
+          renderPlanDays();
+          renderPlanItems();
+          alert("일정을 불러왔습니다.");
+        } catch (e) {
+          alert("JSON 형식이 올바르지 않습니다. 다시 확인해주세요.");
+        }
+      });
+    }
 
     // ===== 공통 유틸 =====
     function findCurrency(code) {
@@ -705,7 +1032,6 @@
       });
 
       inputEl.addEventListener("focus", () => {
-        // 클릭하면 기존 텍스트 삭제 + 기본 추천 목록
         inputEl.value = "";
         renderList(searchCurrencies(""));
       });
@@ -713,6 +1039,7 @@
       inputEl.addEventListener("blur", () => {
         setTimeout(() => { listEl.style.display = "none"; }, 150);
       });
+
       inputEl.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           const items = searchCurrencies(inputEl.value);
@@ -753,7 +1080,6 @@
         currentRate = rate;
         lastUpdateText = data.time_last_update_utc || "";
 
-        // 줄바꿈 안 되는 공백(\u00a0) 사용
         const baseStr = `1\u00a0${baseCode}`;
         const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
 
@@ -961,10 +1287,16 @@
     setSelectValue(timeSelect, "HKD");
     setTimeTarget("HKD");
 
+    // 일정 관리 UI 렌더링 초기화
+    renderPlanDays();
+    renderPlanItems();
+
     // 시작 시 환율 한번 가져오기
     fetchRate();
     // 기본 선택 방식: 검색형
     setPickMode("search");
+    // 기본 탭: 환율
+    showView("exchange");
   </script>
 </body>
 </html>
