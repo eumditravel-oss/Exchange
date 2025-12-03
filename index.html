@@ -19,7 +19,7 @@
 
     body {
       margin: 0;
-      padding: 24px 8px;
+      padding: 16px 8px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
@@ -30,12 +30,12 @@
     .app {
       max-width: 1040px;
       margin: 0 auto;
-      padding: 24px 24px 20px;
+      padding: 18px 20px 14px;
       background: var(--panel-bg);
-      border-radius: 24px;
+      border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.6);
       box-shadow:
-        0 18px 45px rgba(15, 23, 42, 0.35),
+        0 16px 38px rgba(15, 23, 42, 0.32),
         0 0 0 1px rgba(255, 255, 255, 0.15);
       position: relative;
       overflow: hidden;
@@ -49,20 +49,28 @@
     }
 
     h1 {
-      font-size: 1.9rem;
-      margin: 0 0 0.2rem;
+      font-size: 1.7rem;
+      margin: 0 0 0.15rem;
       color: #111827;
     }
 
     p.desc {
       margin: 0;
       color: #374151;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
-    /* 상단 탭 */
+    /* 상단 탭 + 선택방식 한 줄 배치 */
+    .top-bar {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
     .tabs {
-      margin-top: 12px;
       display: inline-flex;
       padding: 2px;
       border-radius: 999px;
@@ -76,7 +84,7 @@
       background: transparent;
       padding: 6px 14px;
       border-radius: 999px;
-      font-size: 0.9rem;
+      font-size: 0.86rem;
       cursor: pointer;
       color: #6b7280;
       white-space: nowrap;
@@ -87,17 +95,16 @@
       color: #f9fafb;
     }
 
-    /* 통화 선택 방식 토글 */
+    /* 통화/국가 선택 방식 토글 */
     .mode-toggle {
-      margin-top: 14px;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 4px 10px;
+      gap: 6px;
+      padding: 3px 9px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: #4b5563;
     }
 
@@ -108,11 +115,12 @@
     .mode-btn {
       border: none;
       background: transparent;
-      padding: 4px 10px;
+      padding: 4px 9px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       cursor: pointer;
       color: #6b7280;
+      white-space: nowrap;
     }
 
     .mode-btn.active {
@@ -121,7 +129,7 @@
     }
 
     .view {
-      margin-top: 16px;
+      margin-top: 12px;
     }
 
     .layout {
@@ -129,7 +137,7 @@
       z-index: 1;
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 14px;
     }
 
     .panel {
@@ -137,32 +145,32 @@
       min-width: 0;
       border-radius: 16px;
       border: 1px solid var(--border);
-      padding: 16px 18px 20px;
+      padding: 14px 16px 16px;
       background: var(--panel-inner-bg);
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.18);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
     }
 
     .panel h2 {
-      font-size: 1.1rem;
-      margin: 0 0 0.5rem;
+      font-size: 1.05rem;
+      margin: 0 0 0.35rem;
     }
 
     label {
       display: block;
-      margin-top: 1rem;
+      margin-top: 0.9rem;
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
 
     input, select {
       width: 100%;
-      padding: 8px 10px;
-      margin-top: 0.4rem;
+      padding: 7px 9px;
+      margin-top: 0.35rem;
       border: 1px solid rgba(148, 163, 184, 0.9);
       border-radius: 8px;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       background: rgba(255, 255, 255, 0.92);
     }
 
@@ -173,14 +181,14 @@
     }
 
     .help {
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--muted);
-      margin-top: 0.2rem;
+      margin-top: 0.15rem;
     }
 
     .small-label {
-      margin-top: 0.4rem;
-      font-size: 0.8rem;
+      margin-top: 0.35rem;
+      font-size: 0.78rem;
       color: var(--muted);
     }
 
@@ -199,13 +207,13 @@
       border-top: none;
       max-height: 200px;
       overflow-y: auto;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       border-radius: 0 0 8px 8px;
       box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
     }
 
     .suggestion-item {
-      padding: 7px 10px;
+      padding: 6px 9px;
       cursor: pointer;
     }
 
@@ -213,37 +221,31 @@
       background: var(--accent-soft);
     }
 
-    .result-main {
-      margin-top: 1.2rem;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
     .rate-info {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
+      margin-top: 0.45rem;
+      font-size: 0.78rem;
       color: var(--muted);
     }
 
     .error {
-      margin-top: 0.7rem;
+      margin-top: 0.5rem;
       color: #b91c1c;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .ok {
-      margin-top: 0.7rem;
+      margin-top: 0.45rem;
       color: #2563eb;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .calc-summary {
-      margin-top: 1rem;
-      font-size: 0.95rem;
+      margin-top: 0.7rem;
+      font-size: 0.9rem;
     }
 
     .calc-summary div {
-      margin-top: 0.3rem;
+      margin-top: 0.25rem;
     }
 
     .calc-main {
@@ -251,22 +253,22 @@
     }
 
     .section-divider {
-      margin-top: 1.2rem;
-      padding-top: 1rem;
+      margin-top: 0.9rem;
+      padding-top: 0.7rem;
       border-top: 1px dashed rgba(148, 163, 184, 0.8);
     }
 
     .sub-heading {
-      margin: 0 0 0.4rem;
-      font-size: 0.95rem;
+      margin: 0 0 0.3rem;
+      font-size: 0.9rem;
       font-weight: 600;
     }
 
     footer {
       position: relative;
       z-index: 1;
-      margin-top: 18px;
-      font-size: 0.8rem;
+      margin-top: 12px;
+      font-size: 0.78rem;
       color: #e5e7eb;
       text-align: center;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
@@ -287,6 +289,7 @@
 
     @media (max-width: 720px) {
       .panel { flex: 1 1 100%; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
       .only-desktop { display: none; }
       .only-mobile  { display: block; }
     }
@@ -305,17 +308,18 @@
       <h1>환율 계산기</h1>
       <p class="desc">여행·송금 전에 환율을 확인하고, 텍스트 합산식과 시차까지 한 번에 계산해 보세요.</p>
 
-      <!-- 상단 탭 -->
-      <div class="tabs">
-        <button class="tab-button active" data-view="exchange">환율 계산</button>
-        <button class="tab-button" data-view="time">시차 검색</button>
-      </div>
+      <!-- 상단: 탭 + 선택 방식 토글 -->
+      <div class="top-bar">
+        <div class="tabs">
+          <button class="tab-button active" data-view="exchange">환율 계산</button>
+          <button class="tab-button" data-view="time">시차 검색</button>
+        </div>
 
-      <!-- 통화/국가 선택 방식 토글 -->
-      <div class="mode-toggle">
-        <span class="mode-label">선택 방식</span>
-        <button class="mode-btn active" data-mode="search">검색형</button>
-        <button class="mode-btn" data-mode="select">드롭다운형</button>
+        <div class="mode-toggle">
+          <span class="mode-label">선택 방식</span>
+          <button class="mode-btn active" data-mode="search">검색형</button>
+          <button class="mode-btn" data-mode="select">드롭다운형</button>
+        </div>
       </div>
     </header>
 
@@ -340,7 +344,7 @@
           <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
 
           <!-- 변환 통화 -->
-          <label for="toSearch" style="margin-top:0.9rem;">변환 통화 (To)</label>
+          <label for="toSearch" style="margin-top:0.8rem;">변환 통화 (To)</label>
           <div class="search-mode">
             <div class="suggestions">
               <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
@@ -367,7 +371,7 @@
               예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
             </p>
 
-            <label for="calcExpr" style="margin-top:0.6rem;">합산할 식 (기준 통화 기준)</label>
+            <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
             <input
               id="calcExpr"
               type="text"
@@ -421,10 +425,10 @@
             선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
           </div>
 
-          <div class="calc-summary" style="margin-top: 1.2rem;">
+          <div class="calc-summary" style="margin-top: 0.9rem;">
             <div id="timeKorea" class="calc-main"></div>
-            <div id="timeTarget" style="margin-top:0.4rem;"></div>
-            <div id="timeDiff" class="help" style="margin-top:0.8rem;"></div>
+            <div id="timeTarget" style="margin-top:0.35rem;"></div>
+            <div id="timeDiff" class="help" style="margin-top:0.7rem;"></div>
           </div>
         </section>
       </div>
