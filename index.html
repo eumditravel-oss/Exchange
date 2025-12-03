@@ -287,12 +287,35 @@
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
-    @media (max-width: 720px) {
-      .panel { flex: 1 1 100%; }
-      .top-bar { flex-direction: column; align-items: flex-start; }
-      .only-desktop { display: none; }
-      .only-mobile  { display: block; }
-    }
+@media (max-width: 720px) {
+  .panel { flex: 1 1 100%; }
+
+  /* 탭 + 선택방식 한 줄 유지 */
+  .top-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  /* 모바일에선 선택방식 토글을 조금 더 컴팩트하게 */
+  .mode-toggle {
+    font-size: 0.72rem;
+    padding: 2px 7px;
+  }
+
+  .mode-label {
+    font-size: 0.72rem;
+  }
+
+  .mode-btn {
+    padding: 3px 7px;
+    font-size: 0.72rem;
+  }
+
+  .only-desktop { display: none; }
+  .only-mobile  { display: block; }
+}
 
     /* 선택 방식에 따른 표시 제어 */
     body[data-pick-mode="search"] .select-mode { display: none; }
