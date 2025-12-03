@@ -95,7 +95,7 @@
       position: relative;
       z-index: 1;
       display: flex;
-      flex-wrap: nowrap;      /* 모바일에서도 항상 가로 배치, 필요시 가로 스크롤 */
+      flex-wrap: nowrap;      /* 모바일에서도 가로 배치, 부족하면 가로 스크롤 */
       gap: 16px;
       overflow-x: auto;
       padding-bottom: 8px;
@@ -354,7 +354,9 @@
             <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
             <div id="timeSuggestions" class="suggestions-list" style="display:none;"></div>
           </div>
-          <div class="small-label" id="timeSelectedLabel">선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)</div>
+          <div class="small-label" id="timeSelectedLabel">
+            선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
+          </div>
 
           <div class="calc-summary" style="margin-top: 1.2rem;">
             <div id="timeKorea" class="calc-main"></div>
@@ -372,26 +374,26 @@
   </div>
 
   <script>
-    // ===== 통화 + 시간대 목록 =====
+    // ===== 통화 + 시간대 목록 (countryKo 추가) =====
     const currencies = [
-      { code: "USD", nameKo: "미국 달러",     aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
-      { code: "EUR", nameKo: "유로",          aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
-      { code: "KRW", nameKo: "대한민국 원",   aliases: ["krw","원","한국","대한민국","won","seoul"], timeZone: "Asia/Seoul" },
-      { code: "HKD", nameKo: "홍콩 달러",     aliases: ["hkd","홍콩","hongkong","hong kong"], timeZone: "Asia/Hong_Kong" },
-      { code: "JPY", nameKo: "일본 엔",       aliases: ["jpy","엔","엔화","일본","japan","yen"], timeZone: "Asia/Tokyo" },
-      { code: "CNY", nameKo: "중국 위안",     aliases: ["cny","위안","rmb","중국","china","yuan"], timeZone: "Asia/Shanghai" },
-      { code: "GBP", nameKo: "영국 파운드",   aliases: ["gbp","파운드","영국","uk","london"], timeZone: "Europe/London" },
-      { code: "AUD", nameKo: "호주 달러",     aliases: ["aud","호주","australia","sydney"], timeZone: "Australia/Sydney" },
-      { code: "CAD", nameKo: "캐나다 달러",   aliases: ["cad","캐나다","canada","toronto"], timeZone: "America/Toronto" },
-      { code: "CHF", nameKo: "스위스 프랑",   aliases: ["chf","스위스","swiss","franc"], timeZone: "Europe/Zurich" },
-      { code: "SGD", nameKo: "싱가포르 달러", aliases: ["sgd","싱가포르","singapore"], timeZone: "Asia/Singapore" },
-      { code: "THB", nameKo: "태국 바트",     aliases: ["thb","태국","방콕","thailand"], timeZone: "Asia/Bangkok" },
-      { code: "TWD", nameKo: "대만 달러",     aliases: ["twd","대만","taiwan"], timeZone: "Asia/Taipei" },
-      { code: "NZD", nameKo: "뉴질랜드 달러", aliases: ["nzd","뉴질랜드","new zealand"], timeZone: "Pacific/Auckland" },
-      { code: "PHP", nameKo: "필리핀 페소",   aliases: ["php","필리핀","philippines"], timeZone: "Asia/Manila" },
-      { code: "MYR", nameKo: "말레이시아 링깃", aliases: ["myr","말레이시아","malaysia"], timeZone: "Asia/Kuala_Lumpur" },
-      { code: "IDR", nameKo: "인도네시아 루피아", aliases: ["idr","인도네시아","indonesia"], timeZone: "Asia/Jakarta" },
-      { code: "VND", nameKo: "베트남 동",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
+      { code: "USD", nameKo: "미국 달러",     countryKo: "미국",       aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
+      { code: "EUR", nameKo: "유로",          countryKo: "유로존",     aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
+      { code: "KRW", nameKo: "대한민국 원",   countryKo: "대한민국",   aliases: ["krw","원","한국","대한민국","won","seoul"], timeZone: "Asia/Seoul" },
+      { code: "HKD", nameKo: "홍콩 달러",     countryKo: "홍콩",       aliases: ["hkd","홍콩","hongkong","hong kong"], timeZone: "Asia/Hong_Kong" },
+      { code: "JPY", nameKo: "일본 엔",       countryKo: "일본",       aliases: ["jpy","엔","엔화","일본","japan","yen"], timeZone: "Asia/Tokyo" },
+      { code: "CNY", nameKo: "중국 위안",     countryKo: "중국",       aliases: ["cny","위안","rmb","중국","china","yuan"], timeZone: "Asia/Shanghai" },
+      { code: "GBP", nameKo: "영국 파운드",   countryKo: "영국",       aliases: ["gbp","파운드","영국","uk","london"], timeZone: "Europe/London" },
+      { code: "AUD", nameKo: "호주 달러",     countryKo: "호주",       aliases: ["aud","호주","australia","sydney"], timeZone: "Australia/Sydney" },
+      { code: "CAD", nameKo: "캐나다 달러",   countryKo: "캐나다",     aliases: ["cad","캐나다","canada","toronto"], timeZone: "America/Toronto" },
+      { code: "CHF", nameKo: "스위스 프랑",   countryKo: "스위스",     aliases: ["chf","스위스","swiss","franc"], timeZone: "Europe/Zurich" },
+      { code: "SGD", nameKo: "싱가포르 달러", countryKo: "싱가포르",   aliases: ["sgd","싱가포르","singapore"], timeZone: "Asia/Singapore" },
+      { code: "THB", nameKo: "태국 바트",     countryKo: "태국",       aliases: ["thb","태국","방콕","thailand"], timeZone: "Asia/Bangkok" },
+      { code: "TWD", nameKo: "대만 달러",     countryKo: "대만",       aliases: ["twd","대만","taiwan"], timeZone: "Asia/Taipei" },
+      { code: "NZD", nameKo: "뉴질랜드 달러", countryKo: "뉴질랜드",   aliases: ["nzd","뉴질랜드","new zealand"], timeZone: "Pacific/Auckland" },
+      { code: "PHP", nameKo: "필리핀 페소",   countryKo: "필리핀",     aliases: ["php","필리핀","philippines"], timeZone: "Asia/Manila" },
+      { code: "MYR", nameKo: "말레이시아 링깃", countryKo: "말레이시아", aliases: ["myr","말레이시아","malaysia"], timeZone: "Asia/Kuala_Lumpur" },
+      { code: "IDR", nameKo: "인도네시아 루피아", countryKo: "인도네시아", aliases: ["idr","인도네시아","indonesia"], timeZone: "Asia/Jakarta" },
+      { code: "VND", nameKo: "베트남 동",     countryKo: "베트남",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
     ];
 
     // ===== DOM: 환율 부분 =====
@@ -448,7 +450,7 @@
     let currentRate = null; // base → target
     let lastUpdateText = "";
 
-    let timeTargetCode = "HKD"; // 시차 조회 대상 통화/국가
+    let timeTargetCode = "HKD"; // 시차 조회 대상
 
     // ===== 공통 유틸 =====
     function findCurrency(code) {
@@ -708,20 +710,23 @@
         return;
       }
 
+      const country = c.countryKo || c.nameKo;
       const targetTimeStr = formatLocalTime(now, c.timeZone);
-      timeTargetEl.textContent = `${c.nameKo} 시간: ${targetTimeStr}`;
+      timeTargetEl.textContent = `${country} 시간: ${targetTimeStr}`;
 
       const baseOffset = getOffsetMinutes(baseTZ, now);
       const targetOffset = getOffsetMinutes(c.timeZone, now);
       const diffMin = targetOffset - baseOffset;
-      timeDiffEl.textContent = describeDiff(diffMin, c.nameKo);
+      timeDiffEl.textContent = describeDiff(diffMin, country);
     }
 
     function setTimeTarget(code) {
       timeTargetCode = code;
       const c = findCurrency(code);
       if (c) {
-        timeLabel.textContent = `선택된 국가: ${c.nameKo} (${c.code}, ${c.timeZone || "시간대 정보 없음"})`;
+        const country = c.countryKo || c.nameKo;
+        timeLabel.textContent =
+          `선택된 국가: ${country} (${c.code}, ${c.timeZone || "시간대 정보 없음"})`;
       } else {
         timeLabel.textContent = `선택된 국가 코드: ${code}`;
       }
