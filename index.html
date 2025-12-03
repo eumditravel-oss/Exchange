@@ -87,6 +87,39 @@
       color: #f9fafb;
     }
 
+    /* 통화 선택 방식 토글 */
+    .mode-toggle {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    .mode-label {
+      font-weight: 500;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .mode-btn.active {
+      background: #111827;
+      color: #f9fafb;
+    }
+
     .view {
       margin-top: 16px;
     }
@@ -95,15 +128,13 @@
       position: relative;
       z-index: 1;
       display: flex;
-      flex-wrap: nowrap;      /* 모바일에서도 가로 배치, 부족하면 가로 스크롤 */
+      flex-wrap: wrap;
       gap: 16px;
-      overflow-x: auto;
-      padding-bottom: 8px;
     }
 
     .panel {
-      flex: 0 0 50%;
-      min-width: 320px;
+      flex: 1 1 320px;
+      min-width: 0;
       border-radius: 16px;
       border: 1px solid var(--border);
       padding: 16px 18px 20px;
@@ -125,7 +156,7 @@
       font-size: 0.9rem;
     }
 
-    input {
+    input, select {
       width: 100%;
       padding: 8px 10px;
       margin-top: 0.4rem;
@@ -135,7 +166,7 @@
       background: rgba(255, 255, 255, 0.92);
     }
 
-    input:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 1px var(--accent-soft);
@@ -189,7 +220,7 @@
     }
 
     .rate-info {
-      margin-top: 0.4rem;
+      margin-top: 0.6rem;
       font-size: 0.8rem;
       color: var(--muted);
     }
@@ -219,6 +250,18 @@
       font-weight: 600;
     }
 
+    .section-divider {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px dashed rgba(148, 163, 184, 0.8);
+    }
+
+    .sub-heading {
+      margin: 0 0 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
     footer {
       position: relative;
       z-index: 1;
@@ -243,13 +286,20 @@
     .only-mobile  { display: none; }
 
     @media (max-width: 720px) {
-      .panel { min-width: 280px; }
+      .panel { flex: 1 1 100%; }
       .only-desktop { display: none; }
       .only-mobile  { display: block; }
     }
+
+    /* 선택 방식에 따른 표시 제어 */
+    body[data-pick-mode="search"] .select-mode { display: none; }
+    body[data-pick-mode="search"] .search-mode { display: block; }
+
+    body[data-pick-mode="select"] .select-mode { display: block; }
+    body[data-pick-mode="select"] .search-mode { display: none; }
   </style>
 </head>
-<body>
+<body data-pick-mode="search">
   <div class="app">
     <header>
       <h1>환율 계산기</h1>
@@ -260,76 +310,82 @@
         <button class="tab-button active" data-view="exchange">환율 계산</button>
         <button class="tab-button" data-view="time">시차 검색</button>
       </div>
+
+      <!-- 통화/국가 선택 방식 토글 -->
+      <div class="mode-toggle">
+        <span class="mode-label">선택 방식</span>
+        <button class="mode-btn active" data-mode="search">검색형</button>
+        <button class="mode-btn" data-mode="select">드롭다운형</button>
+      </div>
     </header>
 
     <!-- ===== 환율 계산 뷰 ===== -->
     <div class="view view-exchange">
       <div class="layout">
-        <!-- 왼쪽: 기본 환율 계산 -->
+        <!-- 통합 패널: 환율 + 텍스트 합산식 -->
         <section class="panel">
           <h2>1. 환율 계산</h2>
 
-          <label for="fromSearch">기준 통화 검색 (From)</label>
-          <div class="suggestions">
-            <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
-            <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
+          <!-- 기준 통화 -->
+          <label for="fromSearch">기준 통화 (From)</label>
+          <div class="search-mode">
+            <div class="suggestions">
+              <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
+              <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="select-mode">
+            <select id="fromSelect"></select>
           </div>
           <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
 
-          <label for="toSearch">변환 통화 검색 (To)</label>
-          <div class="suggestions">
-            <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
-            <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
+          <!-- 변환 통화 -->
+          <label for="toSearch" style="margin-top:0.9rem;">변환 통화 (To)</label>
+          <div class="search-mode">
+            <div class="suggestions">
+              <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
+              <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
+          </div>
+          <div class="select-mode">
+            <select id="toSelect"></select>
           </div>
           <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
 
-          <label for="singleAmount">금액</label>
-          <input
-            id="singleAmount"
-            type="text"
-            inputmode="decimal"
-            pattern="[0-9.,]*"
-            placeholder="예: 10000"
-          />
-
-          <div class="result-main" id="singleResult"></div>
+          <!-- 환율 정보 -->
           <div class="rate-info" id="rateInfo"></div>
           <div class="error" id="mainError"></div>
           <div class="ok" id="mainInfo"></div>
-        </section>
 
-        <!-- 오른쪽: 텍스트 합산식 + 환전 -->
-        <section class="panel">
-          <h2>2. 텍스트 합산식 → 환전</h2>
+          <!-- 텍스트 합산식 섹션 -->
+          <div class="section-divider">
+            <p class="sub-heading">텍스트 합산식 계산</p>
+            <p class="help only-desktop">
+              예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 금액이 실시간으로 계산됩니다.
+            </p>
+            <p class="help only-mobile">
+              예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
+            </p>
 
-          <!-- 데스크탑용 설명 -->
-          <p class="help only-desktop">
-            예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
-            합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
-          </p>
-          <!-- 모바일용 설명 -->
-          <p class="help only-mobile">
-            예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
-          </p>
+            <label for="calcExpr" style="margin-top:0.6rem;">합산할 식 (기준 통화 기준)</label>
+            <input
+              id="calcExpr"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9+\\-\\s.,]*"
+              placeholder="예: 500+30"
+            />
 
-          <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
-          <input
-            id="calcExpr"
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9+\\-\\s.,]*"
-            placeholder="예: 500+30"
-          />
-
-          <div class="calc-summary">
-            <div class="calc-main">
-              합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
-            </div>
-            <div>
-              환전 금액: <span id="calcConverted">-</span>
-            </div>
-            <div class="help">
-              * 여기서 사용하는 통화는 왼쪽의 <b>기준 통화</b>와 동일합니다.
+            <div class="calc-summary">
+              <div class="calc-main">
+                합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+              </div>
+              <div>
+                환전 금액: <span id="calcConverted">-</span>
+              </div>
+              <div class="help">
+                * 여기서 사용하는 통화는 위에서 선택한 <b>기준 통화</b>와 동일합니다.
+              </div>
             </div>
           </div>
         </section>
@@ -339,7 +395,7 @@
     <!-- ===== 시차 검색 뷰 ===== -->
     <div class="view view-time" style="display:none;">
       <div class="layout">
-        <section class="panel" style="flex: 0 0 100%; min-width: 320px;">
+        <section class="panel">
           <h2>시차 검색</h2>
 
           <p class="help only-desktop">
@@ -350,10 +406,17 @@
           </p>
 
           <label for="timeSearch">나라 / 통화 검색</label>
-          <div class="suggestions">
-            <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
-            <div id="timeSuggestions" class="suggestions-list" style="display:none;"></div>
+
+          <div class="search-mode">
+            <div class="suggestions">
+              <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
+              <div id="timeSuggestions" class="suggestions-list" style="display:none;"></div>
+            </div>
           </div>
+          <div class="select-mode">
+            <select id="timeSelect"></select>
+          </div>
+
           <div class="small-label" id="timeSelectedLabel">
             선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
           </div>
@@ -374,7 +437,7 @@
   </div>
 
   <script>
-    // ===== 통화 + 시간대 목록 (countryKo 추가) =====
+    // ===== 통화 + 시간대 목록 (countryKo 포함) =====
     const currencies = [
       { code: "USD", nameKo: "미국 달러",     countryKo: "미국",       aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
       { code: "EUR", nameKo: "유로",          countryKo: "유로존",     aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
@@ -404,29 +467,31 @@
     const fromLabel       = document.getElementById("fromSelectedLabel");
     const toLabel         = document.getElementById("toSelectedLabel");
 
-    const singleAmountInput = document.getElementById("singleAmount");
-    const singleResultEl    = document.getElementById("singleResult");
-    const rateInfoEl        = document.getElementById("rateInfo");
-    const mainErrorEl       = document.getElementById("mainError");
-    const mainInfoEl        = document.getElementById("mainInfo");
+    const fromSelect      = document.getElementById("fromSelect");
+    const toSelect        = document.getElementById("toSelect");
 
-    const calcExprInput     = document.getElementById("calcExpr");
-    const calcSumEl         = document.getElementById("calcSum");
+    const rateInfoEl      = document.getElementById("rateInfo");
+    const mainErrorEl     = document.getElementById("mainError");
+    const mainInfoEl      = document.getElementById("mainInfo");
+
+    const calcExprInput   = document.getElementById("calcExpr");
+    const calcSumEl       = document.getElementById("calcSum");
     const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
-    const calcConvertedEl   = document.getElementById("calcConverted");
+    const calcConvertedEl = document.getElementById("calcConverted");
 
     // ===== DOM: 시차 부분 =====
-    const timeSearchInput   = document.getElementById("timeSearch");
-    const timeSugBox        = document.getElementById("timeSuggestions");
-    const timeLabel         = document.getElementById("timeSelectedLabel");
-    const timeKoreaEl       = document.getElementById("timeKorea");
-    const timeTargetEl      = document.getElementById("timeTarget");
-    const timeDiffEl        = document.getElementById("timeDiff");
+    const timeSearchInput = document.getElementById("timeSearch");
+    const timeSugBox      = document.getElementById("timeSuggestions");
+    const timeSelect      = document.getElementById("timeSelect");
+    const timeLabel       = document.getElementById("timeSelectedLabel");
+    const timeKoreaEl     = document.getElementById("timeKorea");
+    const timeTargetEl    = document.getElementById("timeTarget");
+    const timeDiffEl      = document.getElementById("timeDiff");
 
     // ===== 탭 =====
-    const tabButtons = document.querySelectorAll(".tab-button");
+    const tabButtons   = document.querySelectorAll(".tab-button");
     const viewExchange = document.querySelector(".view-exchange");
-    const viewTime = document.querySelector(".view-time");
+    const viewTime     = document.querySelector(".view-time");
 
     tabButtons.forEach(btn => {
       btn.addEventListener("click", () => {
@@ -441,6 +506,23 @@
           viewTime.style.display = "block";
           updateTimeInfo(); // 탭 전환 시 시차 정보 갱신
         }
+      });
+    });
+
+    // ===== 선택 방식 토글 =====
+    const modeButtons = document.querySelectorAll(".mode-btn");
+    function setPickMode(mode) {
+      document.body.setAttribute("data-pick-mode", mode);
+      modeButtons.forEach(b => {
+        if (b.dataset.mode === mode) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+    }
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.mode;
+        setPickMode(mode);
       });
     });
 
@@ -463,6 +545,26 @@
       return `${c.nameKo} (${c.code})`;
     }
 
+    function optionLabel(c) {
+      return `${c.code} - ${c.nameKo}`;
+    }
+
+    function populateSelect(selectEl) {
+      selectEl.innerHTML = "";
+      currencies.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.code;
+        opt.textContent = optionLabel(c);
+        selectEl.appendChild(opt);
+      });
+    }
+
+    function setSelectValue(selectEl, code) {
+      const options = Array.from(selectEl.options);
+      const found = options.find(o => o.value === code);
+      if (found) selectEl.value = code;
+    }
+
     function searchCurrencies(query) {
       const q = query.trim().toLowerCase();
       if (!q) return currencies.slice(0, 10);
@@ -483,10 +585,10 @@
         for (const c of items) {
           const div = document.createElement("div");
           div.className = "suggestion-item";
-          div.textContent = `${c.code} - ${c.nameKo}`;
+          div.textContent = optionLabel(c);
           div.addEventListener("mousedown", (e) => {
             e.preventDefault();
-            inputEl.value = `${c.code} - ${c.nameKo}`;
+            inputEl.value = optionLabel(c);
             listEl.style.display = "none";
             onSelect(c.code);
           });
@@ -509,7 +611,7 @@
           const items = searchCurrencies(inputEl.value);
           if (items.length > 0) {
             const c = items[0];
-            inputEl.value = `${c.code} - ${c.nameKo}`;
+            inputEl.value = optionLabel(c);
             listEl.style.display = "none";
             onSelect(c.code);
           }
@@ -522,7 +624,6 @@
       mainErrorEl.textContent = "";
       mainInfoEl.textContent = "";
       rateInfoEl.textContent = "";
-      singleResultEl.textContent = "";
       calcConvertedEl.textContent = "-";
       currentRate = null;
 
@@ -552,33 +653,11 @@
         rateInfoEl.textContent =
           `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
         mainInfoEl.textContent = "환율 정보를 정상적으로 불러왔습니다.";
-        updateSingleAmountResult();
         updateCalcResult();
       } catch (err) {
         console.error(err);
         mainErrorEl.textContent = "환율 정보를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.";
       }
-    }
-
-    // ===== 환율 계산 =====
-    function parseNumberInput(str) {
-      const cleaned = str.replace(/,/g, "").trim();
-      if (!cleaned) return null;
-      const num = Number(cleaned);
-      if (!Number.isFinite(num)) return null;
-      return num;
-    }
-
-    function updateSingleAmountResult() {
-      const amount = parseNumberInput(singleAmountInput.value);
-      if (amount == null || !currentRate) {
-        singleResultEl.textContent = "";
-        return;
-      }
-      const converted = amount * currentRate;
-      singleResultEl.textContent =
-        `${amount.toLocaleString()} ${baseCode} ≈ ` +
-        `${converted.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${targetCode}`;
     }
 
     // "1000+5000-300" 같은 식 파싱
@@ -620,26 +699,37 @@
       baseCode = code;
       fromLabel.textContent = `선택된 기준 통화: ${formatCurrencyLabel(code)}`;
       calcSumCurrencyEl.textContent = baseCode;
+      setSelectValue(fromSelect, code);
       fetchRate();
     }
 
     function setTarget(code) {
       targetCode = code;
       toLabel.textContent = `선택된 변환 통화: ${formatCurrencyLabel(code)}`;
+      setSelectValue(toSelect, code);
       fetchRate();
     }
 
+    // 검색 박스 세팅
     setupSearchBox(fromSearchInput, fromSugBox, setBase);
     setupSearchBox(toSearchInput, toSugBox, setTarget);
 
+    // select 박스 세팅
+    populateSelect(fromSelect);
+    populateSelect(toSelect);
+
+    fromSelect.addEventListener("change", () => setBase(fromSelect.value));
+    toSelect.addEventListener("change", () => setTarget(toSelect.value));
+
     // 초기 값 설정 (환율)
-    fromSearchInput.value = "HKD - 홍콩 달러";
-    toSearchInput.value   = "KRW - 대한민국 원";
+    fromSearchInput.value = optionLabel(findCurrency("HKD"));
+    toSearchInput.value   = optionLabel(findCurrency("KRW"));
     fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
     toLabel.textContent   = "선택된 변환 통화: 대한민국 원 (KRW)";
     calcSumCurrencyEl.textContent = baseCode;
+    setSelectValue(fromSelect, "HKD");
+    setSelectValue(toSelect, "KRW");
 
-    singleAmountInput.addEventListener("input", updateSingleAmountResult);
     calcExprInput.addEventListener("input", updateCalcResult);
 
     // ===== 시차 계산 =====
@@ -730,17 +820,23 @@
       } else {
         timeLabel.textContent = `선택된 국가 코드: ${code}`;
       }
+      setSelectValue(timeSelect, code);
       updateTimeInfo();
     }
 
     setupSearchBox(timeSearchInput, timeSugBox, setTimeTarget);
+    populateSelect(timeSelect);
+    timeSelect.addEventListener("change", () => setTimeTarget(timeSelect.value));
 
     // 초기 값 설정 (시차: 홍콩)
-    timeSearchInput.value = "HKD - 홍콩 달러";
+    timeSearchInput.value = optionLabel(findCurrency("HKD"));
+    setSelectValue(timeSelect, "HKD");
     setTimeTarget("HKD");
 
     // 시작 시 환율 한번 가져오기
     fetchRate();
+    // 기본 선택 방식: 검색형
+    setPickMode("search");
   </script>
 </body>
 </html>
