@@ -22,7 +22,6 @@
       padding: 24px 8px;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
-      /* 전체 배경 이미지 (같은 폴더에 plane-window.png 업로드) */
       background:
         linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.3)),
         url("plane-window.png") center/cover fixed no-repeat;
@@ -52,25 +51,53 @@
     h1 {
       font-size: 1.9rem;
       margin: 0 0 0.2rem;
-      color: #111827;                 /* 진한 글자색으로 변경 */
-      text-shadow: none;
+      color: #111827;
     }
 
     p.desc {
       margin: 0;
-      color: #374151;                 /* 좀 더 진한 회색 */
+      color: #374151;
       font-size: 0.95rem;
-      text-shadow: none;
+    }
+
+    /* 상단 탭 */
+    .tabs {
+      margin-top: 12px;
+      display: inline-flex;
+      padding: 2px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
+      gap: 4px;
+    }
+
+    .tab-button {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+
+    .tab-button.active {
+      background: #111827;
+      color: #f9fafb;
+    }
+
+    .view {
+      margin-top: 16px;
     }
 
     .layout {
       position: relative;
       z-index: 1;
       display: flex;
-      flex-wrap: nowrap;      /* 모바일에서도 항상 가로로 */
+      flex-wrap: nowrap;      /* 모바일에서도 항상 가로 배치, 필요시 가로 스크롤 */
       gap: 16px;
-      margin-top: 18px;
-      overflow-x: auto;       /* 화면이 좁으면 가로 스크롤 */
+      overflow-x: auto;
       padding-bottom: 8px;
     }
 
@@ -165,21 +192,18 @@
       margin-top: 0.4rem;
       font-size: 0.8rem;
       color: var(--muted);
-      /* "1 HKD" 같이 단위는 JS에서 줄바꿈 안 되는 공백 사용 */
     }
 
     .error {
       margin-top: 0.7rem;
       color: #b91c1c;
       font-size: 0.85rem;
-      text-shadow: none;
     }
 
     .ok {
       margin-top: 0.7rem;
       color: #2563eb;
       font-size: 0.85rem;
-      text-shadow: none;
     }
 
     .calc-summary {
@@ -214,7 +238,7 @@
       text-decoration: underline;
     }
 
-    /* PC/모바일용 텍스트 분리 */
+    /* PC/모바일용 설명 분리 */
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
@@ -229,78 +253,116 @@
   <div class="app">
     <header>
       <h1>환율 계산기</h1>
-      <p class="desc">여행·송금 전에 환율을 확인하고, 텍스트로 입력한 합산식까지 한 번에 계산해 보세요.</p>
+      <p class="desc">여행·송금 전에 환율을 확인하고, 텍스트 합산식과 시차까지 한 번에 계산해 보세요.</p>
+
+      <!-- 상단 탭 -->
+      <div class="tabs">
+        <button class="tab-button active" data-view="exchange">환율 계산</button>
+        <button class="tab-button" data-view="time">시차 검색</button>
+      </div>
     </header>
 
-    <div class="layout">
-      <!-- 왼쪽: 기본 환율 계산 -->
-      <section class="panel">
-        <h2>1. 환율 계산</h2>
+    <!-- ===== 환율 계산 뷰 ===== -->
+    <div class="view view-exchange">
+      <div class="layout">
+        <!-- 왼쪽: 기본 환율 계산 -->
+        <section class="panel">
+          <h2>1. 환율 계산</h2>
 
-        <label for="fromSearch">기준 통화 검색 (From)</label>
-        <div class="suggestions">
-          <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
-          <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
-        </div>
-        <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
-
-        <label for="toSearch">변환 통화 검색 (To)</label>
-        <div class="suggestions">
-          <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
-          <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
-        </div>
-        <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
-
-        <label for="singleAmount">금액</label>
-        <input
-          id="singleAmount"
-          type="text"
-          inputmode="decimal"
-          pattern="[0-9.,]*"
-          placeholder="예: 10000"
-        />
-
-        <div class="result-main" id="singleResult"></div>
-        <div class="rate-info" id="rateInfo"></div>
-        <div class="error" id="mainError"></div>
-        <div class="ok" id="mainInfo"></div>
-      </section>
-
-      <!-- 오른쪽: 텍스트 합산식 + 환전 -->
-      <section class="panel">
-        <h2>2. 텍스트 합산식 → 환전</h2>
-
-        <!-- 데스크탑용 설명 -->
-        <p class="help only-desktop">
-          예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
-          합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
-        </p>
-        <!-- 모바일용 설명 (줄바꿈 없이 짧게) -->
-        <p class="help only-mobile">
-          예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
-        </p>
-
-        <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
-        <input
-          id="calcExpr"
-          type="text"
-          inputmode="numeric"
-          pattern="[0-9+\\-\\s.,]*"
-          placeholder="예: 500+30"
-        />
-
-        <div class="calc-summary">
-          <div class="calc-main">
-            합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+          <label for="fromSearch">기준 통화 검색 (From)</label>
+          <div class="suggestions">
+            <input id="fromSearch" type="text" placeholder="예: hkd, 홍콩, usd, 미국…" autocomplete="off" />
+            <div id="fromSuggestions" class="suggestions-list" style="display:none;"></div>
           </div>
-          <div>
-            환전 금액: <span id="calcConverted">-</span>
+          <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
+
+          <label for="toSearch">변환 통화 검색 (To)</label>
+          <div class="suggestions">
+            <input id="toSearch" type="text" placeholder="예: krw, 원, usd, eur…" autocomplete="off" />
+            <div id="toSuggestions" class="suggestions-list" style="display:none;"></div>
           </div>
-          <div class="help">
-            * 여기서 사용하는 통화는 왼쪽의 <b>기준 통화</b>와 동일합니다.
+          <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
+
+          <label for="singleAmount">금액</label>
+          <input
+            id="singleAmount"
+            type="text"
+            inputmode="decimal"
+            pattern="[0-9.,]*"
+            placeholder="예: 10000"
+          />
+
+          <div class="result-main" id="singleResult"></div>
+          <div class="rate-info" id="rateInfo"></div>
+          <div class="error" id="mainError"></div>
+          <div class="ok" id="mainInfo"></div>
+        </section>
+
+        <!-- 오른쪽: 텍스트 합산식 + 환전 -->
+        <section class="panel">
+          <h2>2. 텍스트 합산식 → 환전</h2>
+
+          <!-- 데스크탑용 설명 -->
+          <p class="help only-desktop">
+            예: <code>1000+5000-300+12000</code> 처럼 식을 입력하면<br>
+            합계와 그 합계의 환전 결과를 실시간으로 보여줍니다.
+          </p>
+          <!-- 모바일용 설명 -->
+          <p class="help only-mobile">
+            예: <code>1000+5000-300+12000</code> 처럼 입력하면 합계와 환전 결과를 바로 확인할 수 있습니다.
+          </p>
+
+          <label for="calcExpr">합산할 식 (기준 통화 기준)</label>
+          <input
+            id="calcExpr"
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9+\\-\\s.,]*"
+            placeholder="예: 500+30"
+          />
+
+          <div class="calc-summary">
+            <div class="calc-main">
+              합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
+            </div>
+            <div>
+              환전 금액: <span id="calcConverted">-</span>
+            </div>
+            <div class="help">
+              * 여기서 사용하는 통화는 왼쪽의 <b>기준 통화</b>와 동일합니다.
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+    </div>
+
+    <!-- ===== 시차 검색 뷰 ===== -->
+    <div class="view view-time" style="display:none;">
+      <div class="layout">
+        <section class="panel" style="flex: 0 0 100%; min-width: 320px;">
+          <h2>시차 검색</h2>
+
+          <p class="help only-desktop">
+            한국(서울) 기준으로 선택한 국가의 현재 시간과 시차를 확인할 수 있습니다.
+          </p>
+          <p class="help only-mobile">
+            한국 기준 현재 시간과 선택한 나라의 시간, 시차를 한 번에 보여줍니다.
+          </p>
+
+          <label for="timeSearch">나라 / 통화 검색</label>
+          <div class="suggestions">
+            <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
+            <div id="timeSuggestions" class="suggestions-list" style="display:none;"></div>
+          </div>
+          <div class="small-label" id="timeSelectedLabel">선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)</div>
+
+          <div class="calc-summary" style="margin-top: 1.2rem;">
+            <div id="timeKorea" class="calc-main"></div>
+            <div id="timeTarget" style="margin-top:0.4rem;"></div>
+            <div id="timeDiff" class="help" style="margin-top:0.8rem;"></div>
+          </div>
+        </section>
+      </div>
     </div>
 
     <footer>
@@ -310,29 +372,29 @@
   </div>
 
   <script>
-    // ===== 통화 목록 (HKD, KRW 포함 여러 국가) =====
+    // ===== 통화 + 시간대 목록 =====
     const currencies = [
-      { code: "USD", nameKo: "미국 달러",     aliases: ["usd","dollar","달러","미국"] },
-      { code: "EUR", nameKo: "유로",          aliases: ["eur","euro","유로"] },
-      { code: "KRW", nameKo: "대한민국 원",   aliases: ["krw","원","한국","대한민국","won"] },
-      { code: "HKD", nameKo: "홍콩 달러",     aliases: ["hkd","홍콩","hongkong","hong kong","달러"] },
-      { code: "JPY", nameKo: "일본 엔",       aliases: ["jpy","엔","엔화","일본","yen"] },
-      { code: "CNY", nameKo: "중국 위안",     aliases: ["cny","위안","rmb","중국","yuan"] },
-      { code: "GBP", nameKo: "영국 파운드",   aliases: ["gbp","파운드","영국","pound"] },
-      { code: "AUD", nameKo: "호주 달러",     aliases: ["aud","호주","australia"] },
-      { code: "CAD", nameKo: "캐나다 달러",   aliases: ["cad","캐나다","canada"] },
-      { code: "CHF", nameKo: "스위스 프랑",   aliases: ["chf","스위스","franc"] },
-      { code: "SGD", nameKo: "싱가포르 달러", aliases: ["sgd","싱가포르"] },
-      { code: "THB", nameKo: "태국 바트",     aliases: ["thb","태국","바트"] },
-      { code: "TWD", nameKo: "대만 달러",     aliases: ["twd","대만"] },
-      { code: "NZD", nameKo: "뉴질랜드 달러", aliases: ["nzd","뉴질랜드"] },
-      { code: "PHP", nameKo: "필리핀 페소",   aliases: ["php","필리핀","페소"] },
-      { code: "MYR", nameKo: "말레이시아 링깃", aliases: ["myr","말레이시아"] },
-      { code: "IDR", nameKo: "인도네시아 루피아", aliases: ["idr","인도네시아"] },
-      { code: "VND", nameKo: "베트남 동",     aliases: ["vnd","베트남","동"] }
+      { code: "USD", nameKo: "미국 달러",     aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
+      { code: "EUR", nameKo: "유로",          aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
+      { code: "KRW", nameKo: "대한민국 원",   aliases: ["krw","원","한국","대한민국","won","seoul"], timeZone: "Asia/Seoul" },
+      { code: "HKD", nameKo: "홍콩 달러",     aliases: ["hkd","홍콩","hongkong","hong kong"], timeZone: "Asia/Hong_Kong" },
+      { code: "JPY", nameKo: "일본 엔",       aliases: ["jpy","엔","엔화","일본","japan","yen"], timeZone: "Asia/Tokyo" },
+      { code: "CNY", nameKo: "중국 위안",     aliases: ["cny","위안","rmb","중국","china","yuan"], timeZone: "Asia/Shanghai" },
+      { code: "GBP", nameKo: "영국 파운드",   aliases: ["gbp","파운드","영국","uk","london"], timeZone: "Europe/London" },
+      { code: "AUD", nameKo: "호주 달러",     aliases: ["aud","호주","australia","sydney"], timeZone: "Australia/Sydney" },
+      { code: "CAD", nameKo: "캐나다 달러",   aliases: ["cad","캐나다","canada","toronto"], timeZone: "America/Toronto" },
+      { code: "CHF", nameKo: "스위스 프랑",   aliases: ["chf","스위스","swiss","franc"], timeZone: "Europe/Zurich" },
+      { code: "SGD", nameKo: "싱가포르 달러", aliases: ["sgd","싱가포르","singapore"], timeZone: "Asia/Singapore" },
+      { code: "THB", nameKo: "태국 바트",     aliases: ["thb","태국","방콕","thailand"], timeZone: "Asia/Bangkok" },
+      { code: "TWD", nameKo: "대만 달러",     aliases: ["twd","대만","taiwan"], timeZone: "Asia/Taipei" },
+      { code: "NZD", nameKo: "뉴질랜드 달러", aliases: ["nzd","뉴질랜드","new zealand"], timeZone: "Pacific/Auckland" },
+      { code: "PHP", nameKo: "필리핀 페소",   aliases: ["php","필리핀","philippines"], timeZone: "Asia/Manila" },
+      { code: "MYR", nameKo: "말레이시아 링깃", aliases: ["myr","말레이시아","malaysia"], timeZone: "Asia/Kuala_Lumpur" },
+      { code: "IDR", nameKo: "인도네시아 루피아", aliases: ["idr","인도네시아","indonesia"], timeZone: "Asia/Jakarta" },
+      { code: "VND", nameKo: "베트남 동",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
     ];
 
-    // ===== DOM =====
+    // ===== DOM: 환율 부분 =====
     const fromSearchInput = document.getElementById("fromSearch");
     const toSearchInput   = document.getElementById("toSearch");
     const fromSugBox      = document.getElementById("fromSuggestions");
@@ -351,13 +413,44 @@
     const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
     const calcConvertedEl   = document.getElementById("calcConverted");
 
+    // ===== DOM: 시차 부분 =====
+    const timeSearchInput   = document.getElementById("timeSearch");
+    const timeSugBox        = document.getElementById("timeSuggestions");
+    const timeLabel         = document.getElementById("timeSelectedLabel");
+    const timeKoreaEl       = document.getElementById("timeKorea");
+    const timeTargetEl      = document.getElementById("timeTarget");
+    const timeDiffEl        = document.getElementById("timeDiff");
+
+    // ===== 탭 =====
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const viewExchange = document.querySelector(".view-exchange");
+    const viewTime = document.querySelector(".view-time");
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const v = btn.dataset.view;
+        if (v === "exchange") {
+          viewExchange.style.display = "block";
+          viewTime.style.display = "none";
+        } else {
+          viewExchange.style.display = "none";
+          viewTime.style.display = "block";
+          updateTimeInfo(); // 탭 전환 시 시차 정보 갱신
+        }
+      });
+    });
+
     // ===== 상태 =====
     let baseCode   = "HKD"; // 기준 통화
     let targetCode = "KRW"; // 변환 통화
     let currentRate = null; // base → target
     let lastUpdateText = "";
 
-    // ===== 유틸 =====
+    let timeTargetCode = "HKD"; // 시차 조회 대상 통화/국가
+
+    // ===== 공통 유틸 =====
     function findCurrency(code) {
       return currencies.find(c => c.code === code);
     }
@@ -422,7 +515,7 @@
       });
     }
 
-    // ===== 환율 가져오기 (open.er-api.com 사용) =====
+    // ===== 환율 API (open.er-api.com) =====
     async function fetchRate() {
       mainErrorEl.textContent = "";
       mainInfoEl.textContent = "";
@@ -450,7 +543,7 @@
         currentRate = rate;
         lastUpdateText = data.time_last_update_utc || "";
 
-        // 숫자와 통화 단위 사이에 줄바꿈 안 되는 공백(\u00a0)을 사용
+        // 줄바꿈 안 되는 공백(\u00a0) 사용
         const baseStr = `1\u00a0${baseCode}`;
         const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
 
@@ -465,6 +558,7 @@
       }
     }
 
+    // ===== 환율 계산 =====
     function parseNumberInput(str) {
       const cleaned = str.replace(/,/g, "").trim();
       if (!cleaned) return null;
@@ -536,7 +630,7 @@
     setupSearchBox(fromSearchInput, fromSugBox, setBase);
     setupSearchBox(toSearchInput, toSugBox, setTarget);
 
-    // 초기 값
+    // 초기 값 설정 (환율)
     fromSearchInput.value = "HKD - 홍콩 달러";
     toSearchInput.value   = "KRW - 대한민국 원";
     fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
@@ -545,6 +639,100 @@
 
     singleAmountInput.addEventListener("input", updateSingleAmountResult);
     calcExprInput.addEventListener("input", updateCalcResult);
+
+    // ===== 시차 계산 =====
+    function formatLocalTime(date, timeZone) {
+      return new Intl.DateTimeFormat("ko-KR", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      }).format(date);
+    }
+
+    function getOffsetMinutes(timeZone, date) {
+      const fmt = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
+      });
+      const parts = fmt.formatToParts(date);
+      const map = {};
+      for (const p of parts) map[p.type] = p.value;
+      const asUTC = Date.UTC(
+        Number(map.year),
+        Number(map.month) - 1,
+        Number(map.day),
+        Number(map.hour),
+        Number(map.minute),
+        Number(map.second)
+      );
+      const diffMs = asUTC - date.getTime();
+      return diffMs / 60000; // 분
+    }
+
+    function describeDiff(diffMin, countryName) {
+      if (Math.abs(diffMin) < 0.5) {
+        return `${countryName}은(는) 한국과 시차가 없습니다.`;
+      }
+      const ahead = diffMin > 0;
+      const abs = Math.round(Math.abs(diffMin));
+      const hours = Math.floor(abs / 60);
+      const minutes = abs % 60;
+      let parts = [];
+      if (hours) parts.push(`${hours}시간`);
+      if (minutes) parts.push(`${minutes}분`);
+      const span = parts.join(" ");
+      return `${countryName}은(는) 한국보다 ${span} ${ahead ? "빠릅니다" : "느립니다"}.`;
+    }
+
+    function updateTimeInfo() {
+      const baseTZ = "Asia/Seoul";
+      const now = new Date();
+
+      const baseTimeStr = formatLocalTime(now, baseTZ);
+      timeKoreaEl.textContent = `한국 시간: ${baseTimeStr}`;
+
+      const c = findCurrency(timeTargetCode);
+      if (!c || !c.timeZone) {
+        timeTargetEl.textContent = "선택한 국가의 시간대를 찾을 수 없습니다.";
+        timeDiffEl.textContent = "";
+        return;
+      }
+
+      const targetTimeStr = formatLocalTime(now, c.timeZone);
+      timeTargetEl.textContent = `${c.nameKo} 시간: ${targetTimeStr}`;
+
+      const baseOffset = getOffsetMinutes(baseTZ, now);
+      const targetOffset = getOffsetMinutes(c.timeZone, now);
+      const diffMin = targetOffset - baseOffset;
+      timeDiffEl.textContent = describeDiff(diffMin, c.nameKo);
+    }
+
+    function setTimeTarget(code) {
+      timeTargetCode = code;
+      const c = findCurrency(code);
+      if (c) {
+        timeLabel.textContent = `선택된 국가: ${c.nameKo} (${c.code}, ${c.timeZone || "시간대 정보 없음"})`;
+      } else {
+        timeLabel.textContent = `선택된 국가 코드: ${code}`;
+      }
+      updateTimeInfo();
+    }
+
+    setupSearchBox(timeSearchInput, timeSugBox, setTimeTarget);
+
+    // 초기 값 설정 (시차: 홍콩)
+    timeSearchInput.value = "HKD - 홍콩 달러";
+    setTimeTarget("HKD");
 
     // 시작 시 환율 한번 가져오기
     fetchRate();
