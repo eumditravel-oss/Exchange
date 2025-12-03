@@ -5,19 +5,20 @@
   <title>환율, 시차 계산기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<meta name="description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
+  <!-- 카카오톡 / 미리보기용 메타 -->
+  <meta name="description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
 
-<meta property="og:type" content="website" />
-<meta property="og:title" content="환율, 시차 계산기" />
-<meta property="og:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
-<meta property="og:url" content="https://eumditravel-oss.github.io/Exchange/" />
-<meta property="og:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
-<meta property="og:locale" content="ko_KR" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="환율, 시차 계산기" />
+  <meta property="og:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
+  <meta property="og:url" content="https://eumditravel-oss.github.io/Exchange/" />
+  <meta property="og:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
+  <meta property="og:locale" content="ko_KR" />
 
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="환율, 시차 계산기" />
-<meta name="twitter:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
-<meta name="twitter:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="환율, 시차 계산기" />
+  <meta name="twitter:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
+  <meta name="twitter:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
 
   <style>
     :root {
@@ -63,20 +64,19 @@
       z-index: 1;
     }
 
-/* 데스크탑 기본 크기 */
-h1 {
-  font-size: 1.45rem;   /* 기존 1.7rem → 1.45rem */
-  margin: 0 0 0.15rem;
-  color: #111827;
-}
+    /* 데스크탑 기본 크기 */
+    h1 {
+      font-size: 1.45rem;
+      margin: 0 0 0.15rem;
+      color: #111827;
+    }
 
-/* 모바일 화면에서 더 작게 */
-@media (max-width: 720px) {
-  h1 {
-    font-size: 1.25rem;  /* 모바일에서는 더 작게! */
-  }
-}
-
+    /* 모바일 화면에서 더 작게 */
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 1.25rem;
+      }
+    }
 
     p.desc {
       margin: 0;
@@ -198,14 +198,12 @@ h1 {
       background: rgba(255, 255, 255, 0.92);
     }
 
-    
     /* iPhone에서 input 클릭 시 자동 확대 방지 */
-@media (max-width: 720px) {
-  input, select {
-    font-size: 16px !important;
-  }
-}
-
+    @media (max-width: 720px) {
+      input, select {
+        font-size: 16px !important;
+      }
+    }
 
     input:focus, select:focus {
       outline: none;
@@ -320,44 +318,41 @@ h1 {
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
-@media (max-width: 720px) {
-  .panel { flex: 1 1 100%; }
+    @media (max-width: 720px) {
+      .panel { flex: 1 1 100%; }
 
-  /* 📌 탭(대분류) + 선택방식(소분류) 한 줄 고정 */
-  .top-bar {
-    flex-direction: row;
-    flex-wrap: nowrap;           /* ← 줄바꿈 금지 */
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px;
-  }
+      /* 탭(대분류) + 선택방식(소분류) 한 줄 고정 */
+      .top-bar {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 4px;
+      }
 
-  /* 📌 대분류 탭(환율 계산 / 시차 검색) 살짝 축소 */
-  .tab-button {
-    padding: 4px 10px;
-    font-size: 0.8rem;
-  }
+      .tab-button {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+      }
 
-  /* 📌 소분류 선택방식(검색형 / 드롭다운형) 더 컴팩트하게 */
-  .mode-toggle {
-    font-size: 0.7rem;
-    padding: 2px 6px;
-    gap: 4px;
-  }
+      .mode-toggle {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        gap: 4px;
+      }
 
-  .mode-label {
-    font-size: 0.7rem;      /* "선택 방식" 글씨 한 단계 줄임 */
-  }
+      .mode-label {
+        font-size: 0.7rem;
+      }
 
-  .mode-btn {
-    padding: 3px 6px;
-    font-size: 0.7rem;
-  }
+      .mode-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+      }
 
-  .only-desktop { display: none; }
-  .only-mobile  { display: block; }
-}
-
+      .only-desktop { display: none; }
+      .only-mobile  { display: block; }
+    }
 
     /* 선택 방식에 따른 표시 제어 */
     body[data-pick-mode="search"] .select-mode { display: none; }
@@ -366,51 +361,32 @@ h1 {
     body[data-pick-mode="select"] .select-mode { display: block; }
     body[data-pick-mode="select"] .search-mode { display: none; }
 
+    /* + / - 버튼 + 안내 문구 */
+    .calc-keys-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 6px;
+      white-space: nowrap;  /* 줄바꿈 방지 */
+    }
 
-.calc-keypad {
-  margin-top: 6px;
-  display: inline-flex;
-  gap: 6px;
-}
+    .calc-keys button {
+      padding: 4px 10px;
+      font-size: 1rem;
+      border-radius: 999px;
+      border: 1px solid #cbd5e1;
+      background: #f9fafb;
+      cursor: pointer;
+    }
 
-.calc-key {
-  min-width: 32px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.9);
-  background: #f9fafb;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
+    .calc-keys button:active {
+      background: #e5e7eb;
+    }
 
-.calc-key:active {
-  background: #e5e7eb;
-}
-
-.calc-keys-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 6px;
-  white-space: nowrap;  /* 🔥 줄바꿈 방지 */
-}
-
-.calc-keys button {
-  padding: 4px 10px;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #cbd5e1;
-  background: #ffffffd9;
-  cursor: pointer;
-}
-
-.calc-hint {
-  font-size: 0.78rem;
-  color: #6b7280;
-}
-
-
-    
+    .calc-hint {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
   </style>
 </head>
 <body data-pick-mode="search">
@@ -482,22 +458,23 @@ h1 {
               예: <code>10+50-3</code> 처럼 입력하면 합계, 환전 값을 확인가능.
             </p>
 
-           <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
-<input
-  id="calcExpr"
-  type="text"
-  inputmode="numeric"
-  pattern="[0-9+\\-\\s.,]*"
-  placeholder="예: 10+50-3"
-/>
+            <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
+            <input
+              id="calcExpr"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9+\\-\\s.,]*"
+              placeholder="예: 10+50-3"
+            />
 
-<!-- + / - 직접 넣는 버튼들 -->
-<div class="calc-keypad">
-  <button type="button" class="calc-key" data-op="+">+</button>
-  <button type="button" class="calc-key" data-op="-">−</button>
-</div>
-
-
+            <!-- + / - 버튼 + 안내 문구 -->
+            <div class="calc-keys-wrapper">
+              <div class="calc-keys">
+                <button type="button" class="calc-key" data-op="+">＋</button>
+                <button type="button" class="calc-key" data-op="-">−</button>
+              </div>
+              <span class="calc-hint">(+,-를 눌러 합산 또는 빼기 가능합니다.)</span>
+            </div>
 
             <div class="calc-summary">
               <div class="calc-main">
@@ -602,38 +579,8 @@ h1 {
     const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
     const calcConvertedEl = document.getElementById("calcConverted");
 
-    // ===== 합산식용 + / - 버튼 입력 =====
-const calcKeyButtons = document.querySelectorAll(".calc-key");
-
-calcKeyButtons.forEach(btn => {
-  btn.addEventListener("click", () => {
-    const op = btn.dataset.op; // "+" 또는 "-"
-    const input = calcExprInput;
-
-    <div class="calc-keys-wrapper">
-  <div class="calc-keys">
-    <button class="calc-key" data-op="+">＋</button>
-    <button class="calc-key" data-op="-">−</button>
-  </div>
-  <span class="calc-hint">(+,-를 눌러 합산 또는 빼기 가능합니다.)</span>
-</div>
-
-    
-    const start = input.selectionStart ?? input.value.length;
-    const end   = input.selectionEnd ?? input.value.length;
-    const before = input.value.slice(0, start);
-    const after  = input.value.slice(end);
-
-    input.value = before + op + after;
-
-    const newPos = start + 1;
-    input.focus();
-    input.setSelectionRange(newPos, newPos);
-
-    updateCalcResult();
-  });
-});
-
+    // + / - 버튼 DOM
+    const calcKeyButtons = document.querySelectorAll(".calc-key");
 
     // ===== DOM: 시차 부분 =====
     const timeSearchInput = document.getElementById("timeSearch");
@@ -756,12 +703,12 @@ calcKeyButtons.forEach(btn => {
       inputEl.addEventListener("input", () => {
         renderList(searchCurrencies(inputEl.value));
       });
-        inputEl.addEventListener("focus", () => {
-    // 한 번 클릭하면 기존 텍스트 지우고,
-    // 빈 상태 기준으로 추천 목록을 보여준다.
-    inputEl.value = "";
-    renderList(searchCurrencies(""));
-  });
+
+      inputEl.addEventListener("focus", () => {
+        // 클릭하면 기존 텍스트 삭제 + 기본 추천 목록
+        inputEl.value = "";
+        renderList(searchCurrencies(""));
+      });
 
       inputEl.addEventListener("blur", () => {
         setTimeout(() => { listEl.style.display = "none"; }, 150);
@@ -880,6 +827,27 @@ calcKeyButtons.forEach(btn => {
 
     fromSelect.addEventListener("change", () => setBase(fromSelect.value));
     toSelect.addEventListener("change", () => setTarget(toSelect.value));
+
+    // 합산식용 + / - 버튼 입력 처리
+    calcKeyButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const op = btn.dataset.op; // "+" 또는 "-"
+        const input = calcExprInput;
+
+        const start = input.selectionStart ?? input.value.length;
+        const end   = input.selectionEnd ?? input.value.length;
+        const before = input.value.slice(0, start);
+        const after  = input.value.slice(end);
+
+        input.value = before + op + after;
+
+        const newPos = start + 1;
+        input.focus();
+        input.setSelectionRange(newPos, newPos);
+
+        updateCalcResult();
+      });
+    });
 
     // 초기 값 설정 (환율)
     fromSearchInput.value = optionLabel(findCurrency("HKD"));
