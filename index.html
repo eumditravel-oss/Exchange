@@ -365,6 +365,31 @@ h1 {
 
     body[data-pick-mode="select"] .select-mode { display: block; }
     body[data-pick-mode="select"] .search-mode { display: none; }
+
+
+.calc-keypad {
+  margin-top: 6px;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.calc-key {
+  min-width: 32px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #f9fafb;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.calc-key:active {
+  background: #e5e7eb;
+}
+
+
+
+    
   </style>
 </head>
 <body data-pick-mode="search">
@@ -436,14 +461,21 @@ h1 {
               예: <code>10+50-3</code> 처럼 입력하면 합계, 환전 값을 확인가능.
             </p>
 
-            <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
+           <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
 <input
   id="calcExpr"
   type="text"
-  inputmode="tel"
+  inputmode="numeric"
   pattern="[0-9+\\-\\s.,]*"
   placeholder="예: 10+50-3"
 />
+
+<!-- + / - 직접 넣는 버튼들 -->
+<div class="calc-keypad">
+  <button type="button" class="calc-key" data-op="+">+</button>
+  <button type="button" class="calc-key" data-op="-">−</button>
+</div>
+
 
 
             <div class="calc-summary">
@@ -548,6 +580,30 @@ h1 {
     const calcSumEl       = document.getElementById("calcSum");
     const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
     const calcConvertedEl = document.getElementById("calcConverted");
+
+    // ===== 합산식용 + / - 버튼 입력 =====
+const calcKeyButtons = document.querySelectorAll(".calc-key");
+
+calcKeyButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const op = btn.dataset.op; // "+" 또는 "-"
+    const input = calcExprInput;
+
+    const start = input.selectionStart ?? input.value.length;
+    const end   = input.selectionEnd ?? input.value.length;
+    const before = input.value.slice(0, start);
+    const after  = input.value.slice(end);
+
+    input.value = before + op + after;
+
+    const newPos = start + 1;
+    input.focus();
+    input.setSelectionRange(newPos, newPos);
+
+    updateCalcResult();
+  });
+});
+
 
     // ===== DOM: 시차 부분 =====
     const timeSearchInput = document.getElementById("timeSearch");
