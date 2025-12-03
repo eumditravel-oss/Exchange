@@ -5,16 +5,14 @@
   <title>환율, 시차 계산기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- SNS / 카카오톡 미리보기용 메타태그 -->
+  <!-- 미리보기 / SNS 공유용 메타 -->
   <meta name="description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
-
   <meta property="og:type" content="website" />
   <meta property="og:title" content="환율, 시차 계산기" />
   <meta property="og:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
   <meta property="og:url" content="https://eumditravel-oss.github.io/Exchange/" />
   <meta property="og:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
   <meta property="og:locale" content="ko_KR" />
-
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="환율, 시차 계산기" />
   <meta name="twitter:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
@@ -39,10 +37,8 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top, rgba(59,130,246,0.35), transparent 55%),
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.4), rgba(15, 23, 42, 0.85)),
+        linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.3)),
         url("plane-window.png") center/cover fixed no-repeat;
-      min-height: 100vh;
     }
 
     .app {
@@ -59,27 +55,17 @@
       overflow: hidden;
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      animation: appFadeIn 0.5s ease-out;
     }
 
-    @keyframes appFadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    header { position: relative; z-index: 1; }
 
-    header {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* 데스크탑 기본 크기 */
+    /* 제목 */
     h1 {
       font-size: 1.45rem;
       margin: 0 0 0.15rem;
       color: #111827;
     }
 
-    /* 모바일 화면에서 더 작게 */
     @media (max-width: 720px) {
       h1 { font-size: 1.25rem; }
     }
@@ -90,20 +76,20 @@
       font-size: 0.9rem;
     }
 
-    /* 상단 탭만 배치 (선택방식은 패널 안으로 이동) */
+    /* 상단 탭 */
     .top-bar {
       margin-top: 10px;
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       gap: 8px;
-      justify-content: flex-start;
     }
 
     .tabs {
       display: inline-flex;
       padding: 2px;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.7);
       box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
       gap: 4px;
     }
@@ -117,23 +103,14 @@
       cursor: pointer;
       color: #6b7280;
       white-space: nowrap;
-      transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
-    }
-
-    .tab-button:hover {
-      background: rgba(15,23,42,0.05);
-      transform: translateY(-1px);
     }
 
     .tab-button.active {
-      background: linear-gradient(135deg, #111827, #2563eb);
+      background: #111827;
       color: #f9fafb;
-      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.35);
     }
 
-    .view {
-      margin-top: 12px;
-    }
+    .view { margin-top: 12px; }
 
     .layout {
       position: relative;
@@ -154,30 +131,45 @@
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       position: relative;
-      overflow: hidden;
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at top right, rgba(37,99,235,0.08), transparent 55%);
-      pointer-events: none;
-      opacity: 0.9;
-    }
-
-    .panel:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.24);
-      border-color: rgba(129, 140, 248, 0.9);
     }
 
     .panel h2 {
       font-size: 1.05rem;
       margin: 0 0 0.35rem;
-      position: relative;
-      z-index: 1;
+    }
+
+    /* 패널 우측 상단 선택방식 토글 */
+    .panel-mode-toggle {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+      font-size: 0.72rem;
+      color: #4b5563;
+    }
+
+    .panel-mode-label { font-weight: 500; font-size: 0.72rem; }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 3px 6px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: #111827;
+      color: #f9fafb;
     }
 
     label {
@@ -185,30 +177,24 @@
       margin-top: 0.9rem;
       font-weight: 600;
       font-size: 0.88rem;
-      position: relative;
-      z-index: 1;
     }
 
-    input, select, textarea {
+    input, select {
       width: 100%;
       padding: 7px 9px;
       margin-top: 0.35rem;
       border: 1px solid rgba(148, 163, 184, 0.9);
       border-radius: 8px;
       font-size: 0.9rem;
-      background: rgba(255, 255, 255, 0.94);
-      position: relative;
-      z-index: 1;
+      background: rgba(255, 255, 255, 0.92);
     }
 
-    /* iPhone에서 input 클릭 시 자동 확대 방지 */
+    /* iPhone 확대 방지 */
     @media (max-width: 720px) {
-      input, select, textarea {
-        font-size: 16px !important;
-      }
+      input, select { font-size: 16px !important; }
     }
 
-    input:focus, select:focus, textarea:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 1px var(--accent-soft);
@@ -218,68 +204,15 @@
       font-size: 0.78rem;
       color: var(--muted);
       margin-top: 0.15rem;
-      position: relative;
-      z-index: 1;
     }
 
     .small-label {
       margin-top: 0.35rem;
       font-size: 0.78rem;
       color: var(--muted);
-      position: relative;
-      z-index: 1;
     }
 
-    /* 패널 상단 우측 컨트롤 (선택 방식) */
-    .panel-top-controls {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 4px;
-    }
-
-    .mode-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
-      font-size: 0.78rem;
-      color: #4b5563;
-    }
-
-    .mode-label {
-      font-weight: 500;
-    }
-
-    .mode-btn {
-      border: none;
-      background: transparent;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      color: #6b7280;
-      white-space: nowrap;
-      transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
-    }
-
-    .mode-btn:hover {
-      background: rgba(15,23,42,0.05);
-    }
-
-    .mode-btn.active {
-      background: #111827;
-      color: #f9fafb;
-    }
-
-    .suggestions {
-      position: relative;
-      z-index: 5;
-    }
+    .suggestions { position: relative; }
 
     .suggestions-list {
       position: absolute;
@@ -302,55 +235,39 @@
       cursor: pointer;
     }
 
-    .suggestion-item:hover {
-      background: var(--accent-soft);
-    }
+    .suggestion-item:hover { background: var(--accent-soft); }
 
     .rate-info {
       margin-top: 0.45rem;
       font-size: 0.78rem;
       color: var(--muted);
-      position: relative;
-      z-index: 1;
     }
 
     .error {
       margin-top: 0.5rem;
       color: #b91c1c;
       font-size: 0.8rem;
-      position: relative;
-      z-index: 1;
     }
 
     .ok {
       margin-top: 0.45rem;
       color: #2563eb;
       font-size: 0.8rem;
-      position: relative;
-      z-index: 1;
     }
 
     .calc-summary {
       margin-top: 0.7rem;
       font-size: 0.9rem;
-      position: relative;
-      z-index: 1;
     }
 
-    .calc-summary div {
-      margin-top: 0.25rem;
-    }
+    .calc-summary div { margin-top: 0.25rem; }
 
-    .calc-main {
-      font-weight: 600;
-    }
+    .calc-main { font-weight: 600; }
 
     .section-divider {
       margin-top: 0.9rem;
       padding-top: 0.7rem;
       border-top: 1px dashed rgba(148, 163, 184, 0.8);
-      position: relative;
-      z-index: 1;
     }
 
     .sub-heading {
@@ -374,44 +291,23 @@
       text-decoration: none;
     }
 
-    footer a:hover {
-      text-decoration: underline;
-    }
+    footer a:hover { text-decoration: underline; }
 
-    /* PC/모바일용 설명 분리 */
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
     @media (max-width: 720px) {
       .panel { flex: 1 1 100%; }
-
       .top-bar {
-        flex-wrap: nowrap;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: center;
-        justify-content: flex-start;
-        gap: 4px;
+        gap: 6px;
       }
-
       .tab-button {
         padding: 4px 10px;
         font-size: 0.8rem;
       }
-
-      .mode-toggle {
-        font-size: 0.7rem;
-        padding: 2px 6px;
-        gap: 4px;
-      }
-
-      .mode-label {
-        font-size: 0.7rem;
-      }
-
-      .mode-btn {
-        padding: 3px 6px;
-        font-size: 0.7rem;
-      }
-
       .only-desktop { display: none; }
       .only-mobile  { display: block; }
     }
@@ -419,13 +315,19 @@
     /* 선택 방식에 따른 표시 제어 */
     body[data-pick-mode="search"] .select-mode { display: none; }
     body[data-pick-mode="search"] .search-mode { display: block; }
-
     body[data-pick-mode="select"] .select-mode { display: block; }
     body[data-pick-mode="select"] .search-mode { display: none; }
 
-    /* 텍스트 합산식용 + / - 키패드 + 안내문 한 줄 */
-    .calc-keypad {
+    /* 합산식 +,- 키 */
+    .calc-keys-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       margin-top: 6px;
+      white-space: nowrap;
+    }
+
+    .calc-keypad {
       display: inline-flex;
       gap: 6px;
     }
@@ -438,127 +340,141 @@
       background: #f9fafb;
       font-size: 0.9rem;
       cursor: pointer;
-      transition: background 0.12s ease, transform 0.12s ease;
     }
 
-    .calc-key:hover {
-      background: #eef2ff;
-    }
-
-    .calc-key:active {
-      background: #e5e7eb;
-      transform: translateY(1px);
-    }
-
-    .calc-keys-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 6px;
-      white-space: nowrap;  /* 줄바꿈 방지 */
-      position: relative;
-      z-index: 1;
-    }
+    .calc-key:active { background: #e5e7eb; }
 
     .calc-hint {
       font-size: 0.78rem;
       color: #6b7280;
     }
 
-    /* 일정 관리용 스타일 */
-    .plan-toolbar {
+    /* ===== 일정 관리 탭 ===== */
+    .schedule-header-text {
+      margin-top: 0.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .day-toolbar {
+      margin-top: 0.85rem;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 0.6rem;
-      position: relative;
-      z-index: 1;
     }
 
-    .btn {
+    .day-toolbar button,
+    .schedule-export-btn,
+    .schedule-import-btn {
       padding: 5px 10px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.9);
       background: #f9fafb;
       font-size: 0.8rem;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #2563eb, #4f46e5);
+    .day-toolbar button.active-day {
+      background: #111827;
       color: #f9fafb;
-      border-color: transparent;
-      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
-    }
-
-    .btn:hover {
-      background: #eef2ff;
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:hover {
-      background: linear-gradient(135deg, #1d4ed8, #4338ca);
+      border-color: #111827;
     }
 
     .day-tabs {
-      margin-top: 0.6rem;
+      margin-top: 8px;
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      position: relative;
-      z-index: 1;
     }
 
-    .day-tab {
-      padding: 4px 10px;
+    .day-tab-btn {
+      padding: 4px 9px;
       border-radius: 999px;
       border: 1px solid rgba(148, 163, 184, 0.9);
+      background: #ffffff;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .day-tab-btn.active {
+      background: #111827;
+      color: #f9fafb;
+      border-color: #111827;
+    }
+
+    .schedule-table-header {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 80px minmax(140px, 1.2fr) minmax(120px, 1fr) 80px;
+      gap: 6px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .schedule-rows {
+      margin-top: 4px;
+    }
+
+    .schedule-row {
+      display: grid;
+      grid-template-columns: 80px minmax(140px, 1.2fr) minmax(120px, 1fr) 80px;
+      gap: 6px;
+      margin-top: 6px;
+      align-items: center;
+    }
+
+    .schedule-row input {
+      width: 100%;
+      padding: 6px 7px;
+      font-size: 0.82rem;
+    }
+
+    .map-btn {
+      padding: 6px 6px;
+      font-size: 0.76rem;
+      border-radius: 8px;
+      border: 1px solid rgba(37, 99, 235, 0.7);
+      background: rgba(37, 99, 235, 0.06);
+      color: #1d4ed8;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .add-row-btn {
+      margin-top: 8px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.9);
       background: #f9fafb;
       font-size: 0.8rem;
       cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.12s ease, color 0.12s ease, transform 0.12s ease;
     }
 
-    .day-tab.active {
-      background: #111827;
-      color: #f9fafb;
-      transform: translateY(-1px);
+    .schedule-footer {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--muted);
     }
 
-    .plan-textarea {
-      margin-top: 0.6rem;
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .plan-export {
-      margin-top: 0.6rem;
-      font-size: 0.8rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .plan-export textarea {
-      margin-top: 0.3rem;
-      min-height: 80px;
-      font-size: 0.8rem;
-    }
-
-    /* 일정 관리 탭에서는 선택 방식 숨김 */
-    .view-plan .panel-top-controls {
-      display: none;
+    @media (max-width: 720px) {
+      .schedule-table-header,
+      .schedule-row {
+        grid-template-columns: 70px minmax(120px, 1.4fr) minmax(100px, 1fr) 70px;
+      }
     }
   </style>
 </head>
+
 <body data-pick-mode="search">
   <div class="app">
     <header>
       <h1>환율, 시차 계산기</h1>
       <p class="desc">여행·송금 전에 환율, 환전금액 합산, 시차, 일정까지 한 번에 확인하기.</p>
 
-      <!-- 상단: 탭만 배치 -->
       <div class="top-bar">
         <div class="tabs">
           <button class="tab-button active" data-view="exchange">환율 계산</button>
@@ -572,17 +488,15 @@
     <div class="view view-exchange">
       <div class="layout">
         <section class="panel">
-          <div class="panel-top-controls">
-            <div class="mode-toggle">
-              <span class="mode-label">선택 방식</span>
-              <button class="mode-btn active" data-mode="search">검색형</button>
-              <button class="mode-btn" data-mode="select">드롭다운형</button>
-            </div>
-          </div>
-
           <h2>환율 계산</h2>
 
-          <!-- 기준 통화 -->
+          <!-- 패널 내부 선택 방식 토글 -->
+          <div class="panel-mode-toggle">
+            <span class="panel-mode-label">선택 방식</span>
+            <button class="mode-btn active" data-mode="search">검색형</button>
+            <button class="mode-btn" data-mode="select">드롭다운형</button>
+          </div>
+
           <label for="fromSearch">기준 통화 (From)</label>
           <div class="search-mode">
             <div class="suggestions">
@@ -595,7 +509,6 @@
           </div>
           <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
 
-          <!-- 변환 통화 -->
           <label for="toSearch" style="margin-top:0.8rem;">변환 통화 (To)</label>
           <div class="search-mode">
             <div class="suggestions">
@@ -608,12 +521,11 @@
           </div>
           <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
 
-          <!-- 환율 정보 -->
           <div class="rate-info" id="rateInfo"></div>
           <div class="error" id="mainError"></div>
           <div class="ok" id="mainInfo"></div>
 
-          <!-- 텍스트 합산식 섹션 -->
+          <!-- 텍스트 합산식 -->
           <div class="section-divider">
             <p class="sub-heading">텍스트 합산식 계산</p>
             <p class="help only-desktop">
@@ -632,7 +544,7 @@
               placeholder="예: 10+50-3"
             />
 
-            <!-- + / - 버튼 + 안내문 한 줄 -->
+            <!-- + / - 버튼 + 안내 문구 -->
             <div class="calc-keys-wrapper">
               <div class="calc-keypad">
                 <button type="button" class="calc-key" data-op="+">+</button>
@@ -645,9 +557,7 @@
               <div class="calc-main">
                 합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
               </div>
-              <div>
-                환전 금액: <span id="calcConverted">-</span>
-              </div>
+              <div>환전 금액: <span id="calcConverted">-</span></div>
               <div class="help">
                 * 여기서 사용하는 통화는 위에 선택된 <b>통화</b>와 동일합니다.
               </div>
@@ -661,14 +571,6 @@
     <div class="view view-time" style="display:none;">
       <div class="layout">
         <section class="panel">
-          <div class="panel-top-controls">
-            <div class="mode-toggle">
-              <span class="mode-label">선택 방식</span>
-              <button class="mode-btn active" data-mode="search">검색형</button>
-              <button class="mode-btn" data-mode="select">드롭다운형</button>
-            </div>
-          </div>
-
           <h2>시차 검색</h2>
 
           <p class="help only-desktop">
@@ -678,8 +580,14 @@
             한국 기준 현재 시간과 선택한 나라의 시간, 시차를 한 번에 보여줍니다.
           </p>
 
-          <label for="timeSearch">나라 / 통화 검색</label>
+          <!-- 패널 선택 방식 토글 (시차도 동일하게 사용) -->
+          <div class="panel-mode-toggle">
+            <span class="panel-mode-label">선택 방식</span>
+            <button class="mode-btn active" data-mode="search">검색형</button>
+            <button class="mode-btn" data-mode="select">드롭다운형</button>
+          </div>
 
+          <label for="timeSearch">나라 / 통화 검색</label>
           <div class="search-mode">
             <div class="suggestions">
               <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
@@ -694,7 +602,7 @@
             선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
           </div>
 
-          <div class="calc-summary" style="margin-top: 0.9rem;">
+          <div class="calc-summary" style="margin-top:0.9rem;">
             <div id="timeKorea" class="calc-main"></div>
             <div id="timeTarget" style="margin-top:0.35rem;"></div>
             <div id="timeDiff" class="help" style="margin-top:0.7rem;"></div>
@@ -708,30 +616,46 @@
       <div class="layout">
         <section class="panel">
           <h2>일정 관리</h2>
-
-          <p class="help">
-            여행 일자를 Day 단위로 나누어 메모하고, 텍스트로 내보내거나 다시 불러올 수 있습니다.
+          <p class="schedule-header-text">
+            여행 전체 타이틀을 입력하고 Day 단위로 시간/장소/메모를 정리하세요. 각 행의
+            <b>구글맵 열기</b>를 누르면 자동으로 지도 검색이 됩니다.
           </p>
 
-          <div class="plan-toolbar">
-            <button type="button" class="btn btn-primary" id="addDayBtn">Day 추가</button>
-            <button type="button" class="btn" id="removeDayBtn">현재 Day 삭제</button>
-            <button type="button" class="btn" id="renameDayBtn">현재 Day 이름 변경</button>
+          <!-- 여행 타이틀 / 국가 -->
+          <label for="tripTitle">여행 타이틀 / 방문 국가</label>
+          <input id="tripTitle" type="text" placeholder="예: 홍콩 3박 4일 여행" />
+
+          <!-- Day 관리 버튼 -->
+          <div class="day-toolbar">
+            <button type="button" id="addDayBtn">Day 추가</button>
+            <button type="button" id="deleteDayBtn">현재 Day 삭제</button>
+            <button type="button" id="renameDayBtn">현재 Day 이름 변경</button>
           </div>
 
+          <!-- Day 탭 -->
           <div class="day-tabs" id="dayTabs"></div>
 
-          <label for="dayContent" style="margin-top:0.7rem;">선택된 Day 메모</label>
-          <textarea id="dayContent" class="plan-textarea" placeholder="예: 아침 - 호텔 조식 / 오후 - 쇼핑 / 저녁 - 야시장"></textarea>
-
-          <div class="plan-export">
-            <button type="button" class="btn" id="exportTextBtn">텍스트로 내보내기</button>
-            <button type="button" class="btn" id="importTextBtn">텍스트 불러오기</button>
-            <div class="help">
-              * 내보낸 내용을 복사해서 메모앱이나 텍스트 파일로 보관하고, 나중에 다시 붙여넣어 불러올 수 있습니다.
+          <!-- 일정 테이블 -->
+          <div class="schedule-rows">
+            <div class="schedule-table-header">
+              <span>시간</span>
+              <span>지명</span>
+              <span>비고</span>
+              <span>구글맵</span>
             </div>
-            <textarea id="planTextArea" placeholder="[Day.1] 형식으로 내보내기/불러오기용 텍스트가 표시됩니다."></textarea>
+            <div id="rowsContainer"></div>
+            <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
           </div>
+
+          <!-- 내보내기 / 불러오기 -->
+          <div class="schedule-footer">
+            <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
+            <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
+            <span>※ 텍스트 파일로 저장해 두었다가 다시 불러와서 이어서 수정할 수 있습니다.</span>
+          </div>
+
+          <!-- 파일 업로드용 숨김 input -->
+          <input type="file" id="importFileInput" accept=".txt,text/plain" style="display:none;" />
         </section>
       </div>
     </div>
@@ -743,7 +667,7 @@
   </div>
 
   <script>
-    // ===== 통화 + 시간대 목록 (countryKo 포함) =====
+    /* ===== 통화 + 시간대 목록 ===== */
     const currencies = [
       { code: "USD", nameKo: "미국 달러",     countryKo: "미국",       aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
       { code: "EUR", nameKo: "유로",          countryKo: "유로존",     aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
@@ -765,48 +689,7 @@
       { code: "VND", nameKo: "베트남 동",     countryKo: "베트남",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
     ];
 
-    // ===== DOM: 환율 부분 =====
-    const fromSearchInput = document.getElementById("fromSearch");
-    const toSearchInput   = document.getElementById("toSearch");
-    const fromSugBox      = document.getElementById("fromSuggestions");
-    const toSugBox        = document.getElementById("toSuggestions");
-    const fromLabel       = document.getElementById("fromSelectedLabel");
-    const toLabel         = document.getElementById("toSelectedLabel");
-
-    const fromSelect      = document.getElementById("fromSelect");
-    const toSelect        = document.getElementById("toSelect");
-
-    const rateInfoEl      = document.getElementById("rateInfo");
-    const mainErrorEl     = document.getElementById("mainError");
-    const mainInfoEl      = document.getElementById("mainInfo");
-
-    const calcExprInput   = document.getElementById("calcExpr");
-    const calcSumEl       = document.getElementById("calcSum");
-    const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
-    const calcConvertedEl = document.getElementById("calcConverted");
-
-    const calcKeyButtons  = document.querySelectorAll(".calc-key");
-
-    // ===== DOM: 시차 부분 =====
-    const timeSearchInput = document.getElementById("timeSearch");
-    const timeSugBox      = document.getElementById("timeSuggestions");
-    const timeSelect      = document.getElementById("timeSelect");
-    const timeLabel       = document.getElementById("timeSelectedLabel");
-    const timeKoreaEl     = document.getElementById("timeKorea");
-    const timeTargetEl    = document.getElementById("timeTarget");
-    const timeDiffEl      = document.getElementById("timeDiff");
-
-    // ===== DOM: 일정 관리 부분 =====
-    const dayTabsEl       = document.getElementById("dayTabs");
-    const dayContentEl    = document.getElementById("dayContent");
-    const addDayBtn       = document.getElementById("addDayBtn");
-    const removeDayBtn    = document.getElementById("removeDayBtn");
-    const renameDayBtn    = document.getElementById("renameDayBtn");
-    const exportTextBtn   = document.getElementById("exportTextBtn");
-    const importTextBtn   = document.getElementById("importTextBtn");
-    const planTextArea    = document.getElementById("planTextArea");
-
-    // ===== 탭 =====
+    /* ===== 공통 DOM ===== */
     const tabButtons   = document.querySelectorAll(".tab-button");
     const viewExchange = document.querySelector(".view-exchange");
     const viewTime     = document.querySelector(".view-time");
@@ -817,26 +700,15 @@
         tabButtons.forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
         const v = btn.dataset.view;
-        if (v === "exchange") {
-          viewExchange.style.display = "block";
-          viewTime.style.display = "none";
-          viewPlan.style.display = "none";
-        } else if (v === "time") {
-          viewExchange.style.display = "none";
-          viewTime.style.display = "block";
-          viewPlan.style.display = "none";
-          updateTimeInfo();
-        } else {
-          viewExchange.style.display = "none";
-          viewTime.style.display = "none";
-          viewPlan.style.display = "block";
-        }
+        viewExchange.style.display = (v === "exchange") ? "block" : "none";
+        viewTime.style.display     = (v === "time")     ? "block" : "none";
+        viewPlan.style.display     = (v === "plan")     ? "block" : "none";
+        if (v === "time") updateTimeInfo();
       });
     });
 
-    // ===== 선택 방식 토글 (검색형 / 드롭다운형) =====
+    /* ===== 선택 방식 토글 (환율/시차 패널 공통) ===== */
     const modeButtons = document.querySelectorAll(".mode-btn");
-
     function setPickMode(mode) {
       document.body.setAttribute("data-pick-mode", mode);
       modeButtons.forEach(b => {
@@ -844,28 +716,55 @@
         else b.classList.remove("active");
       });
     }
-
     modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => setPickMode(btn.dataset.mode));
+    });
+
+    /* ===== 환율 DOM ===== */
+    const fromSearchInput = document.getElementById("fromSearch");
+    const toSearchInput   = document.getElementById("toSearch");
+    const fromSugBox      = document.getElementById("fromSuggestions");
+    const toSugBox        = document.getElementById("toSuggestions");
+    const fromLabel       = document.getElementById("fromSelectedLabel");
+    const toLabel         = document.getElementById("toSelectedLabel");
+    const fromSelect      = document.getElementById("fromSelect");
+    const toSelect        = document.getElementById("toSelect");
+    const rateInfoEl      = document.getElementById("rateInfo");
+    const mainErrorEl     = document.getElementById("mainError");
+    const mainInfoEl      = document.getElementById("mainInfo");
+    const calcExprInput   = document.getElementById("calcExpr");
+    const calcSumEl       = document.getElementById("calcSum");
+    const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
+    const calcConvertedEl = document.getElementById("calcConverted");
+
+    /* ===== 합산식 + / - 버튼 ===== */
+    const calcKeyButtons = document.querySelectorAll(".calc-key");
+    calcKeyButtons.forEach(btn => {
       btn.addEventListener("click", () => {
-        const mode = btn.dataset.mode;
-        setPickMode(mode);
+        const op = btn.dataset.op; // "+" 또는 "-"
+        const input = calcExprInput;
+        const start = input.selectionStart ?? input.value.length;
+        const end   = input.selectionEnd ?? input.value.length;
+        const before = input.value.slice(0, start);
+        const after  = input.value.slice(end);
+        input.value = before + op + after;
+        const newPos = start + 1;
+        input.focus();
+        input.setSelectionRange(newPos, newPos);
+        updateCalcResult();
       });
     });
 
-    // ===== 상태 =====
-    let baseCode   = "HKD"; // 기준 통화
-    let targetCode = "KRW"; // 변환 통화
-    let currentRate = null; // base → target
-    let lastUpdateText = "";
+    /* ===== 시차 DOM ===== */
+    const timeSearchInput = document.getElementById("timeSearch");
+    const timeSugBox      = document.getElementById("timeSuggestions");
+    const timeSelect      = document.getElementById("timeSelect");
+    const timeLabel       = document.getElementById("timeSelectedLabel");
+    const timeKoreaEl     = document.getElementById("timeKorea");
+    const timeTargetEl    = document.getElementById("timeTarget");
+    const timeDiffEl      = document.getElementById("timeDiff");
 
-    let timeTargetCode = "HKD"; // 시차 조회 대상
-
-    // 일정 관리용 상태
-    let scheduleData = [];
-    let currentDayId = null;
-    const STORAGE_KEY = "eumdi_exchange_schedule_v1";
-
-    // ===== 공통 유틸 =====
+    /* ===== 유틸 ===== */
     function findCurrency(code) {
       return currencies.find(c => c.code === code);
     }
@@ -933,7 +832,6 @@
       });
 
       inputEl.addEventListener("focus", () => {
-        // 클릭하면 기존 텍스트 지우고, 추천 목록 표시
         inputEl.value = "";
         renderList(searchCurrencies(""));
       });
@@ -955,7 +853,12 @@
       });
     }
 
-    // ===== 환율 API (open.er-api.com) =====
+    /* ===== 환율 API ===== */
+    let baseCode   = "HKD";
+    let targetCode = "KRW";
+    let currentRate = null;
+    let lastUpdateText = "";
+
     async function fetchRate() {
       mainErrorEl.textContent = "";
       mainInfoEl.textContent = "";
@@ -966,28 +869,18 @@
       try {
         const url = `https://open.er-api.com/v6/latest/${encodeURIComponent(baseCode)}`;
         const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error("HTTP 오류: " + res.status);
-        }
+        if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
-        if (data.result !== "success") {
-          throw new Error("API 오류: " + (data["error-type"] || "unknown"));
-        }
+        if (data.result !== "success") throw new Error("API error");
 
         const rate = data.rates?.[targetCode];
-        if (typeof rate !== "number") {
-          throw new Error("해당 통화 쌍의 환율을 찾을 수 없습니다.");
-        }
+        if (typeof rate !== "number") throw new Error("rate not found");
 
         currentRate = rate;
         lastUpdateText = data.time_last_update_utc || "";
-
-        // 줄바꿈 안 되는 공백(\u00a0) 사용
         const baseStr = `1\u00a0${baseCode}`;
         const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
-
-        rateInfoEl.textContent =
-          `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
+        rateInfoEl.textContent = `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
         mainInfoEl.textContent = "환율 정보를 정상적으로 불러왔습니다.";
         updateCalcResult();
       } catch (err) {
@@ -996,7 +889,6 @@
       }
     }
 
-    // "1000+5000-300" 같은 식 파싱
     function parseExpression(raw) {
       const str = raw.replace(/,/g, "");
       if (!str.trim()) return 0;
@@ -1021,7 +913,6 @@
       }
       calcSumEl.textContent = sum.toLocaleString();
       calcSumCurrencyEl.textContent = baseCode;
-
       if (!currentRate) {
         calcConvertedEl.textContent = "환율 정보를 먼저 불러와야 합니다.";
         return;
@@ -1046,38 +937,13 @@
       fetchRate();
     }
 
-    // + / - 버튼 클릭 시 입력창에 추가
-    calcKeyButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const op = btn.dataset.op;
-        const input = calcExprInput;
-        const start = input.selectionStart ?? input.value.length;
-        const end   = input.selectionEnd ?? input.value.length;
-        const before = input.value.slice(0, start);
-        const after  = input.value.slice(end);
-
-        input.value = before + op + after;
-
-        const newPos = start + op.length;
-        input.focus();
-        input.setSelectionRange(newPos, newPos);
-
-        updateCalcResult();
-      });
-    });
-
-    // 검색 박스 세팅
     setupSearchBox(fromSearchInput, fromSugBox, setBase);
     setupSearchBox(toSearchInput, toSugBox, setTarget);
-
-    // select 박스 세팅
     populateSelect(fromSelect);
     populateSelect(toSelect);
-
     fromSelect.addEventListener("change", () => setBase(fromSelect.value));
     toSelect.addEventListener("change", () => setTarget(toSelect.value));
 
-    // 초기 값 설정 (환율)
     fromSearchInput.value = optionLabel(findCurrency("HKD"));
     toSearchInput.value   = optionLabel(findCurrency("KRW"));
     fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
@@ -1085,46 +951,33 @@
     calcSumCurrencyEl.textContent = baseCode;
     setSelectValue(fromSelect, "HKD");
     setSelectValue(toSelect, "KRW");
-
     calcExprInput.addEventListener("input", updateCalcResult);
 
-    // ===== 시차 계산 =====
+    /* ===== 시차 계산 ===== */
+    let timeTargetCode = "HKD";
+
     function formatLocalTime(date, timeZone) {
       return new Intl.DateTimeFormat("ko-KR", {
         timeZone,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        weekday: "short",
-        hour: "2-digit",
-        minute: "2-digit"
+        year: "numeric", month: "2-digit", day: "2-digit",
+        weekday: "short", hour: "2-digit", minute: "2-digit"
       }).format(date);
     }
 
     function getOffsetMinutes(timeZone, date) {
       const fmt = new Intl.DateTimeFormat("en-US", {
-        timeZone,
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false
+        timeZone, year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
       });
       const parts = fmt.formatToParts(date);
       const map = {};
       for (const p of parts) map[p.type] = p.value;
       const asUTC = Date.UTC(
-        Number(map.year),
-        Number(map.month) - 1,
-        Number(map.day),
-        Number(map.hour),
-        Number(map.minute),
-        Number(map.second)
+        Number(map.year), Number(map.month) - 1, Number(map.day),
+        Number(map.hour), Number(map.minute), Number(map.second)
       );
       const diffMs = asUTC - date.getTime();
-      return diffMs / 60000; // 분
+      return diffMs / 60000;
     }
 
     function describeDiff(diffMin, countryName) {
@@ -1184,192 +1037,212 @@
     populateSelect(timeSelect);
     timeSelect.addEventListener("change", () => setTimeTarget(timeSelect.value));
 
-    // 초기 값 설정 (시차: 홍콩)
     timeSearchInput.value = optionLabel(findCurrency("HKD"));
     setSelectValue(timeSelect, "HKD");
     setTimeTarget("HKD");
 
-    // ===== 일정 관리 기능 =====
-    function saveSchedule() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(scheduleData));
-      } catch (e) {
-        console.warn("localStorage 저장 실패", e);
-      }
-    }
+    /* ===== 일정 관리 ===== */
+    const tripTitleInput = document.getElementById("tripTitle");
+    const dayTabsContainer = document.getElementById("dayTabs");
+    const rowsContainer = document.getElementById("rowsContainer");
+    const addDayBtn = document.getElementById("addDayBtn");
+    const deleteDayBtn = document.getElementById("deleteDayBtn");
+    const renameDayBtn = document.getElementById("renameDayBtn");
+    const addRowBtn = document.getElementById("addRowBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const importBtn = document.getElementById("importBtn");
+    const importFileInput = document.getElementById("importFileInput");
 
-    function loadSchedule() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (!raw) {
-          scheduleData = [
-            { id: "day1", title: "Day.1", content: "" }
-          ];
-          currentDayId = "day1";
-          return;
-        }
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          scheduleData = parsed;
-          currentDayId = parsed[0].id;
-        } else {
-          scheduleData = [
-            { id: "day1", title: "Day.1", content: "" }
-          ];
-          currentDayId = "day1";
-        }
-      } catch (e) {
-        console.warn("localStorage 로드 실패", e);
-        scheduleData = [
-          { id: "day1", title: "Day.1", content: "" }
-        ];
-        currentDayId = "day1";
-      }
-    }
+    let scheduleDays = [
+      { name: "Day.1", rows: [ { time: "", place: "", note: "" } ] }
+    ];
+    let currentDayIndex = 0;
 
     function renderDayTabs() {
-      dayTabsEl.innerHTML = "";
-      scheduleData.forEach(day => {
+      dayTabsContainer.innerHTML = "";
+      scheduleDays.forEach((day, idx) => {
         const btn = document.createElement("button");
         btn.type = "button";
-        btn.className = "day-tab" + (day.id === currentDayId ? " active" : "");
-        btn.textContent = day.title;
+        btn.className = "day-tab-btn" + (idx === currentDayIndex ? " active" : "");
+        btn.textContent = day.name;
         btn.addEventListener("click", () => {
-          saveCurrentDayContent();
-          currentDayId = day.id;
-          updateDayContent();
+          currentDayIndex = idx;
           renderDayTabs();
+          renderRows();
         });
-        dayTabsEl.appendChild(btn);
+        dayTabsContainer.appendChild(btn);
       });
     }
 
-    function getCurrentDay() {
-      return scheduleData.find(d => d.id === currentDayId);
+    function renderRows() {
+      rowsContainer.innerHTML = "";
+      const day = scheduleDays[currentDayIndex];
+      day.rows.forEach((row, idx) => {
+        const div = document.createElement("div");
+        div.className = "schedule-row";
+
+        const timeInput = document.createElement("input");
+        timeInput.placeholder = "예: 09:00";
+        timeInput.value = row.time || "";
+        timeInput.addEventListener("input", () => {
+          row.time = timeInput.value;
+        });
+
+        const placeInput = document.createElement("input");
+        placeInput.placeholder = "예: 침사추이 스타의 거리";
+        placeInput.value = row.place || "";
+        placeInput.addEventListener("input", () => {
+          row.place = placeInput.value;
+        });
+
+        const noteInput = document.createElement("input");
+        noteInput.placeholder = "예: 야경 감상";
+        noteInput.value = row.note || "";
+        noteInput.addEventListener("input", () => {
+          row.note = noteInput.value;
+        });
+
+        const mapBtn = document.createElement("button");
+        mapBtn.type = "button";
+        mapBtn.className = "map-btn";
+        mapBtn.textContent = "구글맵 열기";
+        mapBtn.addEventListener("click", () => {
+          const title = tripTitleInput.value.trim();
+          const place = placeInput.value.trim();
+          const queryParts = [];
+          if (title) queryParts.push(title);
+          if (place) queryParts.push(place);
+          if (!queryParts.length) return;
+          const url = "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(queryParts.join(" "));
+          window.open(url, "_blank");
+        });
+
+        div.appendChild(timeInput);
+        div.appendChild(placeInput);
+        div.appendChild(noteInput);
+        div.appendChild(mapBtn);
+        rowsContainer.appendChild(div);
+      });
     }
 
-    function updateDayContent() {
-      const day = getCurrentDay();
-      if (!day) {
-        dayContentEl.value = "";
-        return;
-      }
-      dayContentEl.value = day.content || "";
-    }
-
-    function saveCurrentDayContent() {
-      const day = getCurrentDay();
-      if (!day) return;
-      day.content = dayContentEl.value;
-      saveSchedule();
-    }
-
-    addDayBtn.addEventListener("click", () => {
-      saveCurrentDayContent();
-      const index = scheduleData.length + 1;
-      const newId = "day" + index;
-      const newTitle = "Day." + index;
-      scheduleData.push({ id: newId, title: newTitle, content: "" });
-      currentDayId = newId;
-      renderDayTabs();
-      updateDayContent();
-      saveSchedule();
+    addRowBtn.addEventListener("click", () => {
+      scheduleDays[currentDayIndex].rows.push({ time: "", place: "", note: "" });
+      renderRows();
     });
 
-    removeDayBtn.addEventListener("click", () => {
-      if (!currentDayId) return;
-      if (scheduleData.length === 1) {
-        alert("마지막 Day는 삭제할 수 없습니다.");
+    addDayBtn.addEventListener("click", () => {
+      const n = scheduleDays.length + 1;
+      scheduleDays.push({ name: `Day.${n}`, rows: [ { time: "", place: "", note: "" } ] });
+      currentDayIndex = scheduleDays.length - 1;
+      renderDayTabs();
+      renderRows();
+    });
+
+    deleteDayBtn.addEventListener("click", () => {
+      if (scheduleDays.length === 1) {
+        alert("Day는 최소 1개는 있어야 합니다.");
         return;
       }
       if (!confirm("현재 Day를 삭제하시겠습니까?")) return;
-      scheduleData = scheduleData.filter(d => d.id !== currentDayId);
-      currentDayId = scheduleData[0]?.id || null;
+      scheduleDays.splice(currentDayIndex, 1);
+      if (currentDayIndex >= scheduleDays.length) currentDayIndex = scheduleDays.length - 1;
       renderDayTabs();
-      updateDayContent();
-      saveSchedule();
+      renderRows();
     });
 
     renameDayBtn.addEventListener("click", () => {
-      const day = getCurrentDay();
-      if (!day) return;
-      const next = prompt("새로운 Day 이름을 입력하세요.", day.title);
-      if (!next) return;
-      day.title = next;
+      const current = scheduleDays[currentDayIndex];
+      const newName = prompt("현재 Day 이름을 입력하세요.", current.name);
+      if (!newName) return;
+      current.name = newName;
       renderDayTabs();
-      saveSchedule();
     });
 
-    dayContentEl.addEventListener("input", () => {
-      saveCurrentDayContent();
-    });
-
-    // 텍스트 내보내기: [Day.x] 형태로 출력
-    function exportScheduleToText() {
-      saveCurrentDayContent();
+    // 텍스트 내보내기 (파일 다운로드)
+    exportBtn.addEventListener("click", () => {
       const lines = [];
-      scheduleData.forEach(day => {
-        lines.push(`[${day.title}]`);
-        if (day.content) {
-          const contentLines = day.content.split(/\r?\n/);
-          contentLines.forEach(line => lines.push(line));
-        }
-        lines.push(""); // Day 사이 빈 줄
+      const title = tripTitleInput.value || "";
+      lines.push(`[TripTitle] ${title}`);
+      scheduleDays.forEach(day => {
+        lines.push("");
+        lines.push(`[${day.name}]`);
+        day.rows.forEach(r => {
+          if (!r.time && !r.place && !r.note) return;
+          lines.push(`${r.time || ""} | ${r.place || ""} | ${r.note || ""}`);
+        });
       });
-      planTextArea.value = lines.join("\n");
-    }
+      const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "travel-schedule.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
 
-    function importScheduleFromText() {
-      const raw = planTextArea.value;
-      if (!raw.trim()) {
-        alert("불러올 텍스트가 없습니다.");
-        return;
-      }
-      const lines = raw.split(/\r?\n/);
-      const newData = [];
-      let current = null;
+    // 텍스트 불러오기 (파일 → 일정 복원)
+    importBtn.addEventListener("click", () => {
+      importFileInput.value = "";
+      importFileInput.click();
+    });
 
-      lines.forEach(line => {
-        const m = line.match(/^\s*\[(.+?)\]\s*$/);
-        if (m) {
-          if (current) {
-            newData.push(current);
+    importFileInput.addEventListener("change", () => {
+      const file = importFileInput.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const text = reader.result;
+          const lines = String(text).split(/\r?\n/);
+          let newTitle = "";
+          const newDays = [];
+          let currentDay = null;
+
+          for (let raw of lines) {
+            const line = raw.trim();
+            if (!line) continue;
+            if (line.startsWith("[TripTitle]")) {
+              newTitle = line.replace("[TripTitle]", "").trim();
+            } else if (line.startsWith("[") && line.endsWith("]")) {
+              const name = line.slice(1, -1).trim();
+              currentDay = { name, rows: [] };
+              newDays.push(currentDay);
+            } else if (currentDay) {
+              const parts = line.split("|").map(s => s.trim());
+              currentDay.rows.push({
+                time: parts[0] || "",
+                place: parts[1] || "",
+                note: parts[2] || ""
+              });
+            }
           }
-          const title = m[1].trim();
-          const id = "day" + (newData.length + 1);
-          current = { id, title, content: "" };
-        } else {
-          if (!current) return;
-          if (current.content) current.content += "\n" + line;
-          else current.content = line;
+
+          if (!newDays.length) {
+            alert("불러올 일정 정보를 찾지 못했습니다.");
+            return;
+          }
+
+          tripTitleInput.value = newTitle;
+          scheduleDays = newDays;
+          currentDayIndex = 0;
+          renderDayTabs();
+          renderRows();
+          alert("텍스트에서 일정을 불러왔습니다.");
+        } catch (e) {
+          console.error(e);
+          alert("텍스트 형식을 해석하는 중 오류가 발생했습니다.");
         }
-      });
-      if (current) newData.push(current);
+      };
+      reader.readAsText(file, "utf-8");
+    });
 
-      if (!newData.length) {
-        alert("형식에 맞는 [Day] 블록을 찾지 못했습니다.");
-        return;
-      }
-
-      scheduleData = newData;
-      currentDayId = scheduleData[0].id;
-      renderDayTabs();
-      updateDayContent();
-      saveSchedule();
-      alert("텍스트에서 일정을 불러왔습니다.");
-    }
-
-    exportTextBtn.addEventListener("click", exportScheduleToText);
-    importTextBtn.addEventListener("click", importScheduleFromText);
-
-    // 일정 데이터 초기 로드
-    loadSchedule();
+    // 초기 렌더링
     renderDayTabs();
-    updateDayContent();
-
-    // 시작 시 환율 한번 가져오기
+    renderRows();
     fetchRate();
-    // 기본 선택 방식: 검색형
     setPickMode("search");
   </script>
 </body>
