@@ -299,32 +299,41 @@ h1 {
 @media (max-width: 720px) {
   .panel { flex: 1 1 100%; }
 
-  /* 탭 + 선택방식 한 줄 유지 */
+  /* 📌 탭(대분류) + 선택방식(소분류) 한 줄 고정 */
   .top-bar {
     flex-direction: row;
+    flex-wrap: nowrap;           /* ← 줄바꿈 금지 */
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
+    gap: 4px;
   }
 
-  /* 모바일에선 선택방식 토글을 조금 더 컴팩트하게 */
+  /* 📌 대분류 탭(환율 계산 / 시차 검색) 살짝 축소 */
+  .tab-button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* 📌 소분류 선택방식(검색형 / 드롭다운형) 더 컴팩트하게 */
   .mode-toggle {
-    font-size: 0.72rem;
-    padding: 2px 7px;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    gap: 4px;
   }
 
   .mode-label {
-    font-size: 0.72rem;
+    font-size: 0.7rem;      /* "선택 방식" 글씨 한 단계 줄임 */
   }
 
   .mode-btn {
-    padding: 3px 7px;
-    font-size: 0.72rem;
+    padding: 3px 6px;
+    font-size: 0.7rem;
   }
 
   .only-desktop { display: none; }
   .only-mobile  { display: block; }
 }
+
 
     /* 선택 방식에 따른 표시 제어 */
     body[data-pick-mode="search"] .select-mode { display: none; }
@@ -636,9 +645,13 @@ h1 {
       inputEl.addEventListener("input", () => {
         renderList(searchCurrencies(inputEl.value));
       });
-      inputEl.addEventListener("focus", () => {
-        renderList(searchCurrencies(inputEl.value));
-      });
+        inputEl.addEventListener("focus", () => {
+    // 한 번 클릭하면 기존 텍스트 지우고,
+    // 빈 상태 기준으로 추천 목록을 보여준다.
+    inputEl.value = "";
+    renderList(searchCurrencies(""));
+  });
+
       inputEl.addEventListener("blur", () => {
         setTimeout(() => { listEl.style.display = "none"; }, 150);
       });
