@@ -48,11 +48,20 @@
       z-index: 1;
     }
 
-    h1 {
-      font-size: 1.7rem;
-      margin: 0 0 0.15rem;
-      color: #111827;
-    }
+/* 데스크탑 기본 크기 */
+h1 {
+  font-size: 1.45rem;   /* 기존 1.7rem → 1.45rem */
+  margin: 0 0 0.15rem;
+  color: #111827;
+}
+
+/* 모바일 화면에서 더 작게 */
+@media (max-width: 720px) {
+  h1 {
+    font-size: 1.25rem;  /* 모바일에서는 더 작게! */
+  }
+}
+
 
     p.desc {
       margin: 0;
@@ -388,7 +397,7 @@
           <div class="section-divider">
             <p class="sub-heading">텍스트 합산식 계산</p>
             <p class="help only-desktop">
-              예: <code>10+50-3</code> 처럼 입력하면 합계, 환전 값을 확인 가능합니다.
+              예: <code>10+50-3</code> 처럼 계산하면 총 합의 환전 값 확인 가능.
             </p>
             <p class="help only-mobile">
               예: <code>10+50-3</code> 처럼 입력하면 합계, 환전 값을 확인가능합니다.
@@ -400,7 +409,7 @@
               type="text"
               inputmode="numeric"
               pattern="[0-9+\\-\\s.,]*"
-              placeholder="예: 500+30"
+              placeholder="예: 10+50-3"
             />
 
             <div class="calc-summary">
