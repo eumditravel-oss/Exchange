@@ -493,17 +493,16 @@
       line-height: 1.3;
     }
 
-.map-btn {
-  width: 100%;
-  padding: 6px 0;      /* 좌우 패딩 줄이기 */
-  font-size: 1rem;     /* 아이콘이니까 글씨 조금 키워도 됨 */
-  border-radius: 8px;
-  border: 1px solid rgba(37, 99, 235, 0.7);
-  background: rgba(37, 99, 235, 0.06);
-  color: #1d4ed8;
-  cursor: pointer;
-}
-
+    .map-btn {
+      width: 100%;
+      padding: 6px 0;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid rgba(37, 99, 235, 0.7);
+      background: rgba(37, 99, 235, 0.06);
+      color: #1d4ed8;
+      cursor: pointer;
+    }
 
     .add-row-btn {
       margin-top: 8px;
@@ -705,7 +704,7 @@
 
           <p class="schedule-header-text">
             여행 전체 타이틀을 입력하고 Day 단위로 시간/장소/메모를 정리하세요. 각 행의
-            <b>구글맵 열기</b>를 누르면 자동으로 지도 검색이 됩니다.
+            <b>📍 버튼</b>을 누르면 자동으로 구글맵 검색이 됩니다.
           </p>
 
           <label for="tripTitle">여행 타이틀 / 방문 국가</label>
@@ -726,7 +725,7 @@
             <div>시간</div>
             <div>지명</div>
             <div>비고</div>
-            <div>구글맵</div>
+            <div>📍</div>
           </div>
 
           <!-- 일정 행 -->
@@ -1250,28 +1249,26 @@
           row.note = noteTextarea.value;
         });
 
-// 구글맵 버튼
-const mapBtn = document.createElement("button");
-mapBtn.type = "button";
-mapBtn.className = "map-btn";
-// 🚩 아이콘 사용 + 툴팁/접근성용 설명
-mapBtn.textContent = "🚩";
-mapBtn.title = "구글맵 열기";
-mapBtn.setAttribute("aria-label", "구글맵 열기");
+        // 구글맵 버튼
+        const mapBtn = document.createElement("button");
+        mapBtn.type = "button";
+        mapBtn.className = "map-btn";
+        mapBtn.textContent = "📍";
+        mapBtn.title = "구글맵 열기";
+        mapBtn.setAttribute("aria-label", "구글맵 열기");
 
-mapBtn.addEventListener("click", () => {
-  const title = tripTitleInput.value.trim();
-  const place = placeTextarea.value.trim();
-  const queryParts = [];
-  if (title) queryParts.push(title);
-  if (place) queryParts.push(place);
-  if (!queryParts.length) return;
-  const url =
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent(queryParts.join(" "));
-  window.open(url, "_blank");
-});
-
+        mapBtn.addEventListener("click", () => {
+          const title = tripTitleInput.value.trim();
+          const place = placeTextarea.value.trim();
+          const queryParts = [];
+          if (title) queryParts.push(title);
+          if (place) queryParts.push(place);
+          if (!queryParts.length) return;
+          const url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(queryParts.join(" "));
+          window.open(url, "_blank");
+        });
 
         div.appendChild(timeInput);
         div.appendChild(placeTextarea);
