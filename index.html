@@ -3,16 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <title>환율, 시차 계산기</title>
+
+  <!-- 모바일 줌 방지 & 반응형 -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- 미리보기 / SNS 공유용 메타 -->
+  <!-- 카카오톡 / 미리보기용 메타 -->
   <meta name="description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
+
   <meta property="og:type" content="website" />
   <meta property="og:title" content="환율, 시차 계산기" />
   <meta property="og:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
   <meta property="og:url" content="https://eumditravel-oss.github.io/Exchange/" />
   <meta property="og:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
   <meta property="og:locale" content="ko_KR" />
+
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="환율, 시차 계산기" />
   <meta name="twitter:description" content="간편하게 환율,시차 계산하려면 여기를 눌러 확인하세요." />
@@ -57,7 +61,10 @@
       -webkit-backdrop-filter: blur(18px);
     }
 
-    header { position: relative; z-index: 1; }
+    header {
+      position: relative;
+      z-index: 1;
+    }
 
     /* 제목 */
     h1 {
@@ -80,9 +87,8 @@
     .top-bar {
       margin-top: 10px;
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      justify-content: flex-start;
     }
 
     .tabs {
@@ -110,7 +116,9 @@
       color: #f9fafb;
     }
 
-    .view { margin-top: 12px; }
+    .view {
+      margin-top: 12px;
+    }
 
     .layout {
       position: relative;
@@ -130,46 +138,20 @@
       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      position: relative;
     }
 
-    .panel h2 {
-      font-size: 1.05rem;
-      margin: 0 0 0.35rem;
-    }
-
-    /* 패널 우측 상단 선택방식 토글 */
-    .panel-mode-toggle {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      display: inline-flex;
+    /* 패널 상단 : 제목 + 선택방식 */
+    .panel-header {
+      display: flex;
       align-items: center;
-      gap: 4px;
-      padding: 2px 7px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.92);
-      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
-      font-size: 0.72rem;
-      color: #4b5563;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
-    .panel-mode-label { font-weight: 500; font-size: 0.72rem; }
-
-    .mode-btn {
-      border: none;
-      background: transparent;
-      padding: 3px 6px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      cursor: pointer;
-      color: #6b7280;
-      white-space: nowrap;
-    }
-
-    .mode-btn.active {
-      background: #111827;
-      color: #f9fafb;
+    .panel-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
     }
 
     label {
@@ -179,7 +161,7 @@
       font-size: 0.88rem;
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 7px 9px;
       margin-top: 0.35rem;
@@ -189,12 +171,14 @@
       background: rgba(255, 255, 255, 0.92);
     }
 
-    /* iPhone 확대 방지 */
+    /* iPhone에서 input 클릭 시 확대 방지 */
     @media (max-width: 720px) {
-      input, select { font-size: 16px !important; }
+      input, select, textarea {
+        font-size: 16px !important;
+      }
     }
 
-    input:focus, select:focus {
+    input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 1px var(--accent-soft);
@@ -212,7 +196,9 @@
       color: var(--muted);
     }
 
-    .suggestions { position: relative; }
+    .suggestions {
+      position: relative;
+    }
 
     .suggestions-list {
       position: absolute;
@@ -235,7 +221,9 @@
       cursor: pointer;
     }
 
-    .suggestion-item:hover { background: var(--accent-soft); }
+    .suggestion-item:hover {
+      background: var(--accent-soft);
+    }
 
     .rate-info {
       margin-top: 0.45rem;
@@ -260,9 +248,13 @@
       font-size: 0.9rem;
     }
 
-    .calc-summary div { margin-top: 0.25rem; }
+    .calc-summary div {
+      margin-top: 0.25rem;
+    }
 
-    .calc-main { font-weight: 600; }
+    .calc-main {
+      font-weight: 600;
+    }
 
     .section-divider {
       margin-top: 0.9rem;
@@ -291,40 +283,94 @@
       text-decoration: none;
     }
 
-    footer a:hover { text-decoration: underline; }
+    footer a:hover {
+      text-decoration: underline;
+    }
 
+    /* PC/모바일 설명 분리 */
     .only-desktop { display: block; }
     .only-mobile  { display: none; }
 
     @media (max-width: 720px) {
       .panel { flex: 1 1 100%; }
+
       .top-bar {
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 6px;
+        justify-content: flex-start;
       }
+
       .tab-button {
         padding: 4px 10px;
         font-size: 0.8rem;
       }
+
       .only-desktop { display: none; }
       .only-mobile  { display: block; }
+    }
+
+    /* 통화/국가 선택 방식 토글 – 패널 우측 상단 */
+    .mode-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+      font-size: 0.78rem;
+      color: #4b5563;
+      white-space: nowrap;
+    }
+
+    .mode-label {
+      font-weight: 500;
+      font-size: 0.78rem;
+    }
+
+    .mode-btn {
+      border: none;
+      background: transparent;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      color: #6b7280;
+      white-space: nowrap;
+    }
+
+    .mode-btn.active {
+      background: #111827;
+      color: #f9fafb;
+    }
+
+    @media (max-width: 720px) {
+      .mode-toggle {
+        font-size: 0.7rem;
+        padding: 2px 6px;
+        gap: 4px;
+      }
+      .mode-label {
+        font-size: 0.7rem;
+      }
+      .mode-btn {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+      }
     }
 
     /* 선택 방식에 따른 표시 제어 */
     body[data-pick-mode="search"] .select-mode { display: none; }
     body[data-pick-mode="search"] .search-mode { display: block; }
+
     body[data-pick-mode="select"] .select-mode { display: block; }
     body[data-pick-mode="select"] .search-mode { display: none; }
 
-    /* 합산식 +,- 키 */
-    .calc-keys-wrapper {
+    /* 합산식 + / - 키패드 */
+    .calc-keypad-row {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-top: 6px;
-      white-space: nowrap;
+      font-size: 0.78rem;
     }
 
     .calc-keypad {
@@ -345,8 +391,8 @@
     .calc-key:active { background: #e5e7eb; }
 
     .calc-hint {
-      font-size: 0.78rem;
-      color: #6b7280;
+      color: var(--muted);
+      white-space: nowrap;
     }
 
     /* ===== 일정 관리 탭 ===== */
@@ -402,36 +448,55 @@
       border-color: #111827;
     }
 
+    .schedule-rows {
+      margin-top: 6px;
+    }
+
+    /* 헤더/행 그리드 폭 – 구글맵 버튼 포함 */
     .schedule-table-header {
-      margin-top: 10px;
       display: grid;
-      grid-template-columns: 80px minmax(140px, 1.2fr) minmax(120px, 1fr) 80px;
+      grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 72px;
       gap: 6px;
       font-size: 0.8rem;
       color: var(--muted);
-    }
-
-    .schedule-rows {
-      margin-top: 4px;
+      margin-top: 12px;
     }
 
     .schedule-row {
       display: grid;
-      grid-template-columns: 80px minmax(140px, 1.2fr) minmax(120px, 1fr) 80px;
+      grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 72px;
       gap: 6px;
       margin-top: 6px;
-      align-items: center;
+      align-items: stretch;
     }
 
     .schedule-row input {
       width: 100%;
       padding: 6px 7px;
       font-size: 0.82rem;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-sizing: border-box;
+    }
+
+    .schedule-textarea {
+      width: 100%;
+      padding: 6px 7px;
+      font-size: 0.82rem;
+      border: 1px solid rgba(148, 163, 184, 0.9);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      box-sizing: border-box;
+      resize: vertical;
+      min-height: 32px;
+      line-height: 1.3;
     }
 
     .map-btn {
-      padding: 6px 6px;
-      font-size: 0.76rem;
+      width: 100%;
+      padding: 6px 4px;
+      font-size: 0.74rem;
       border-radius: 8px;
       border: 1px solid rgba(37, 99, 235, 0.7);
       background: rgba(37, 99, 235, 0.06);
@@ -460,10 +525,23 @@
       color: var(--muted);
     }
 
+    .schedule-footer-note {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .schedule-export-area {
+      margin-top: 8px;
+      width: 100%;
+      min-height: 80px;
+      font-size: 0.8rem;
+    }
+
     @media (max-width: 720px) {
       .schedule-table-header,
       .schedule-row {
-        grid-template-columns: 70px minmax(120px, 1.4fr) minmax(100px, 1fr) 70px;
+        grid-template-columns: 60px minmax(100px, 2fr) minmax(100px, 2fr) 64px;
       }
     }
   </style>
@@ -479,7 +557,7 @@
         <div class="tabs">
           <button class="tab-button active" data-view="exchange">환율 계산</button>
           <button class="tab-button" data-view="time">시차 검색</button>
-          <button class="tab-button" data-view="plan">일정 관리</button>
+          <button class="tab-button" data-view="schedule">일정 관리</button>
         </div>
       </div>
     </header>
@@ -488,15 +566,16 @@
     <div class="view view-exchange">
       <div class="layout">
         <section class="panel">
-          <h2>환율 계산</h2>
-
-          <!-- 패널 내부 선택 방식 토글 -->
-          <div class="panel-mode-toggle">
-            <span class="panel-mode-label">선택 방식</span>
-            <button class="mode-btn active" data-mode="search">검색형</button>
-            <button class="mode-btn" data-mode="select">드롭다운형</button>
+          <div class="panel-header">
+            <h2>환율 계산</h2>
+            <div class="mode-toggle">
+              <span class="mode-label">선택 방식</span>
+              <button class="mode-btn active" data-mode="search">검색형</button>
+              <button class="mode-btn" data-mode="select">드롭다운형</button>
+            </div>
           </div>
 
+          <!-- 기준 통화 -->
           <label for="fromSearch">기준 통화 (From)</label>
           <div class="search-mode">
             <div class="suggestions">
@@ -509,6 +588,7 @@
           </div>
           <div class="small-label" id="fromSelectedLabel">선택된 기준 통화: 홍콩 달러 (HKD)</div>
 
+          <!-- 변환 통화 -->
           <label for="toSearch" style="margin-top:0.8rem;">변환 통화 (To)</label>
           <div class="search-mode">
             <div class="suggestions">
@@ -521,18 +601,19 @@
           </div>
           <div class="small-label" id="toSelectedLabel">선택된 변환 통화: 대한민국 원 (KRW)</div>
 
+          <!-- 환율 정보 -->
           <div class="rate-info" id="rateInfo"></div>
           <div class="error" id="mainError"></div>
           <div class="ok" id="mainInfo"></div>
 
-          <!-- 텍스트 합산식 -->
+          <!-- 텍스트 합산식 섹션 -->
           <div class="section-divider">
             <p class="sub-heading">텍스트 합산식 계산</p>
             <p class="help only-desktop">
-              예: <code>10+50-3</code> 처럼 계산하면 총 합의 환전 값 확인 가능.
+              예: <code>10+50-3</code> 처럼 계산하면 총 합의 환전 값을 확인할 수 있습니다.
             </p>
             <p class="help only-mobile">
-              예: <code>10+50-3</code> 처럼 입력하면 합계, 환전 값을 확인가능.
+              예: <code>10+50-3</code> 처럼 입력하면 합계와 환전 값을 한 번에 확인할 수 있습니다.
             </p>
 
             <label for="calcExpr" style="margin-top:0.5rem;">합산할 식 (기준 통화 기준)</label>
@@ -544,8 +625,8 @@
               placeholder="예: 10+50-3"
             />
 
-            <!-- + / - 버튼 + 안내 문구 -->
-            <div class="calc-keys-wrapper">
+            <!-- + / - 키패드 + 안내 문구 -->
+            <div class="calc-keypad-row">
               <div class="calc-keypad">
                 <button type="button" class="calc-key" data-op="+">+</button>
                 <button type="button" class="calc-key" data-op="-">−</button>
@@ -557,7 +638,9 @@
               <div class="calc-main">
                 합계: <span id="calcSum">0</span> <span id="calcSumCurrency">HKD</span>
               </div>
-              <div>환전 금액: <span id="calcConverted">-</span></div>
+              <div>
+                환전 금액: <span id="calcConverted">-</span>
+              </div>
               <div class="help">
                 * 여기서 사용하는 통화는 위에 선택된 <b>통화</b>와 동일합니다.
               </div>
@@ -571,7 +654,14 @@
     <div class="view view-time" style="display:none;">
       <div class="layout">
         <section class="panel">
-          <h2>시차 검색</h2>
+          <div class="panel-header">
+            <h2>시차 검색</h2>
+            <div class="mode-toggle">
+              <span class="mode-label">선택 방식</span>
+              <button class="mode-btn active" data-mode="search">검색형</button>
+              <button class="mode-btn" data-mode="select">드롭다운형</button>
+            </div>
+          </div>
 
           <p class="help only-desktop">
             한국(서울) 기준으로 선택한 국가의 현재 시간과 시차를 확인할 수 있습니다.
@@ -580,14 +670,8 @@
             한국 기준 현재 시간과 선택한 나라의 시간, 시차를 한 번에 보여줍니다.
           </p>
 
-          <!-- 패널 선택 방식 토글 (시차도 동일하게 사용) -->
-          <div class="panel-mode-toggle">
-            <span class="panel-mode-label">선택 방식</span>
-            <button class="mode-btn active" data-mode="search">검색형</button>
-            <button class="mode-btn" data-mode="select">드롭다운형</button>
-          </div>
-
           <label for="timeSearch">나라 / 통화 검색</label>
+
           <div class="search-mode">
             <div class="suggestions">
               <input id="timeSearch" type="text" placeholder="예: 미국, 홍콩, 일본, usd…" autocomplete="off" />
@@ -602,7 +686,7 @@
             선택된 국가: 홍콩 (HKD, Asia/Hong_Kong)
           </div>
 
-          <div class="calc-summary" style="margin-top:0.9rem;">
+          <div class="calc-summary" style="margin-top: 0.9rem;">
             <div id="timeKorea" class="calc-main"></div>
             <div id="timeTarget" style="margin-top:0.35rem;"></div>
             <div id="timeDiff" class="help" style="margin-top:0.7rem;"></div>
@@ -612,18 +696,20 @@
     </div>
 
     <!-- ===== 일정 관리 뷰 ===== -->
-    <div class="view view-plan" style="display:none;">
+    <div class="view view-schedule" style="display:none;">
       <div class="layout">
         <section class="panel">
-          <h2>일정 관리</h2>
+          <div class="panel-header">
+            <h2>일정 관리</h2>
+          </div>
+
           <p class="schedule-header-text">
             여행 전체 타이틀을 입력하고 Day 단위로 시간/장소/메모를 정리하세요. 각 행의
             <b>구글맵 열기</b>를 누르면 자동으로 지도 검색이 됩니다.
           </p>
 
-          <!-- 여행 타이틀 / 국가 -->
           <label for="tripTitle">여행 타이틀 / 방문 국가</label>
-          <input id="tripTitle" type="text" placeholder="예: 홍콩 3박 4일 여행" />
+          <input id="tripTitle" type="text" placeholder="예: 홍콩, 오사카, 유럽 여행" />
 
           <!-- Day 관리 버튼 -->
           <div class="day-toolbar">
@@ -635,27 +721,39 @@
           <!-- Day 탭 -->
           <div class="day-tabs" id="dayTabs"></div>
 
-          <!-- 일정 테이블 -->
-          <div class="schedule-rows">
-            <div class="schedule-table-header">
-              <span>시간</span>
-              <span>지명</span>
-              <span>비고</span>
-              <span>구글맵</span>
-            </div>
-            <div id="rowsContainer"></div>
-            <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
+          <!-- 일정 헤더 -->
+          <div class="schedule-table-header">
+            <div>시간</div>
+            <div>지명</div>
+            <div>비고</div>
+            <div>구글맵</div>
           </div>
+
+          <!-- 일정 행 -->
+          <div class="schedule-rows" id="scheduleRows"></div>
+
+          <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
 
           <!-- 내보내기 / 불러오기 -->
           <div class="schedule-footer">
             <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
             <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
-            <span>※ 텍스트 파일로 저장해 두었다가 다시 불러와서 이어서 수정할 수 있습니다.</span>
           </div>
 
-          <!-- 파일 업로드용 숨김 input -->
-          <input type="file" id="importFileInput" accept=".txt,text/plain" style="display:none;" />
+          <textarea
+            id="exportTextArea"
+            class="schedule-export-area"
+            placeholder="[Title] 홍콩 여행
+[Day.1]
+09:00 | 침사추이 스타의 거리 | 야경 감상"
+          ></textarea>
+
+          <p class="schedule-footer-note">
+            ※ 텍스트 파일로 저장해 두었다가 다시 불러와 이어서 수정할 수 있습니다.
+          </p>
+
+          <!-- 숨겨진 파일 입력 (불러오기용) -->
+          <input type="file" id="importFileInput" accept=".txt" style="display:none;" />
         </section>
       </div>
     </div>
@@ -667,7 +765,7 @@
   </div>
 
   <script>
-    /* ===== 통화 + 시간대 목록 ===== */
+    // ===== 통화 + 시간대 목록 (countryKo 포함) =====
     const currencies = [
       { code: "USD", nameKo: "미국 달러",     countryKo: "미국",       aliases: ["usd","dollar","달러","미국","usa"], timeZone: "America/New_York" },
       { code: "EUR", nameKo: "유로",          countryKo: "유로존",     aliases: ["eur","euro","유로","유럽"],        timeZone: "Europe/Berlin" },
@@ -689,56 +787,29 @@
       { code: "VND", nameKo: "베트남 동",     countryKo: "베트남",     aliases: ["vnd","베트남","vietnam","동"], timeZone: "Asia/Ho_Chi_Minh" }
     ];
 
-    /* ===== 공통 DOM ===== */
-    const tabButtons   = document.querySelectorAll(".tab-button");
-    const viewExchange = document.querySelector(".view-exchange");
-    const viewTime     = document.querySelector(".view-time");
-    const viewPlan     = document.querySelector(".view-plan");
-
-    tabButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        tabButtons.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        const v = btn.dataset.view;
-        viewExchange.style.display = (v === "exchange") ? "block" : "none";
-        viewTime.style.display     = (v === "time")     ? "block" : "none";
-        viewPlan.style.display     = (v === "plan")     ? "block" : "none";
-        if (v === "time") updateTimeInfo();
-      });
-    });
-
-    /* ===== 선택 방식 토글 (환율/시차 패널 공통) ===== */
-    const modeButtons = document.querySelectorAll(".mode-btn");
-    function setPickMode(mode) {
-      document.body.setAttribute("data-pick-mode", mode);
-      modeButtons.forEach(b => {
-        if (b.dataset.mode === mode) b.classList.add("active");
-        else b.classList.remove("active");
-      });
-    }
-    modeButtons.forEach(btn => {
-      btn.addEventListener("click", () => setPickMode(btn.dataset.mode));
-    });
-
-    /* ===== 환율 DOM ===== */
+    // ===== DOM: 환율 부분 =====
     const fromSearchInput = document.getElementById("fromSearch");
     const toSearchInput   = document.getElementById("toSearch");
     const fromSugBox      = document.getElementById("fromSuggestions");
     const toSugBox        = document.getElementById("toSuggestions");
     const fromLabel       = document.getElementById("fromSelectedLabel");
     const toLabel         = document.getElementById("toSelectedLabel");
+
     const fromSelect      = document.getElementById("fromSelect");
     const toSelect        = document.getElementById("toSelect");
+
     const rateInfoEl      = document.getElementById("rateInfo");
     const mainErrorEl     = document.getElementById("mainError");
     const mainInfoEl      = document.getElementById("mainInfo");
+
     const calcExprInput   = document.getElementById("calcExpr");
     const calcSumEl       = document.getElementById("calcSum");
     const calcSumCurrencyEl = document.getElementById("calcSumCurrency");
     const calcConvertedEl = document.getElementById("calcConverted");
 
-    /* ===== 합산식 + / - 버튼 ===== */
+    // ===== 합산식용 + / - 버튼 =====
     const calcKeyButtons = document.querySelectorAll(".calc-key");
+
     calcKeyButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         const op = btn.dataset.op; // "+" 또는 "-"
@@ -755,7 +826,7 @@
       });
     });
 
-    /* ===== 시차 DOM ===== */
+    // ===== DOM: 시차 부분 =====
     const timeSearchInput = document.getElementById("timeSearch");
     const timeSugBox      = document.getElementById("timeSuggestions");
     const timeSelect      = document.getElementById("timeSelect");
@@ -764,7 +835,64 @@
     const timeTargetEl    = document.getElementById("timeTarget");
     const timeDiffEl      = document.getElementById("timeDiff");
 
-    /* ===== 유틸 ===== */
+    // ===== DOM: 일정 부분 =====
+    const tripTitleInput   = document.getElementById("tripTitle");
+    const dayTabsContainer = document.getElementById("dayTabs");
+    const rowsContainer    = document.getElementById("scheduleRows");
+    const addDayBtn        = document.getElementById("addDayBtn");
+    const deleteDayBtn     = document.getElementById("deleteDayBtn");
+    const renameDayBtn     = document.getElementById("renameDayBtn");
+    const addRowBtn        = document.getElementById("addRowBtn");
+    const exportBtn        = document.getElementById("exportBtn");
+    const importBtn        = document.getElementById("importBtn");
+    const exportTextArea   = document.getElementById("exportTextArea");
+    const importFileInput  = document.getElementById("importFileInput");
+
+    // ===== 탭 전환 =====
+    const tabButtons   = document.querySelectorAll(".tab-button");
+    const viewExchange = document.querySelector(".view-exchange");
+    const viewTime     = document.querySelector(".view-time");
+    const viewSchedule = document.querySelector(".view-schedule");
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const v = btn.dataset.view;
+        viewExchange.style.display = (v === "exchange") ? "block" : "none";
+        viewTime.style.display     = (v === "time")     ? "block"  : "none";
+        viewSchedule.style.display = (v === "schedule") ? "block" : "none";
+        if (v === "time") updateTimeInfo();
+      });
+    });
+
+    // ===== 선택 방식 토글 (환율/시차 공통) =====
+    const modeButtons = document.querySelectorAll(".mode-btn");
+
+    function setPickMode(mode) {
+      document.body.setAttribute("data-pick-mode", mode);
+      modeButtons.forEach(b => {
+        if (b.dataset.mode === mode) b.classList.add("active");
+        else b.classList.remove("active");
+      });
+    }
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.mode;
+        setPickMode(mode);
+      });
+    });
+
+    // ===== 상태 =====
+    let baseCode   = "HKD"; // 기준 통화
+    let targetCode = "KRW"; // 변환 통화
+    let currentRate = null; // base → target
+    let lastUpdateText = "";
+
+    let timeTargetCode = "HKD"; // 시차 조회 대상
+
+    // ===== 공통 유틸 =====
     function findCurrency(code) {
       return currencies.find(c => c.code === code);
     }
@@ -853,12 +981,7 @@
       });
     }
 
-    /* ===== 환율 API ===== */
-    let baseCode   = "HKD";
-    let targetCode = "KRW";
-    let currentRate = null;
-    let lastUpdateText = "";
-
+    // ===== 환율 API (open.er-api.com) =====
     async function fetchRate() {
       mainErrorEl.textContent = "";
       mainInfoEl.textContent = "";
@@ -869,18 +992,27 @@
       try {
         const url = `https://open.er-api.com/v6/latest/${encodeURIComponent(baseCode)}`;
         const res = await fetch(url);
-        if (!res.ok) throw new Error("HTTP " + res.status);
+        if (!res.ok) {
+          throw new Error("HTTP 오류: " + res.status);
+        }
         const data = await res.json();
-        if (data.result !== "success") throw new Error("API error");
+        if (data.result !== "success") {
+          throw new Error("API 오류: " + (data["error-type"] || "unknown"));
+        }
 
         const rate = data.rates?.[targetCode];
-        if (typeof rate !== "number") throw new Error("rate not found");
+        if (typeof rate !== "number") {
+          throw new Error("해당 통화 쌍의 환율을 찾을 수 없습니다.");
+        }
 
         currentRate = rate;
         lastUpdateText = data.time_last_update_utc || "";
+
         const baseStr = `1\u00a0${baseCode}`;
         const rateStr = `${rate.toLocaleString(undefined, { maximumFractionDigits: 4 })}\u00a0${targetCode}`;
-        rateInfoEl.textContent = `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
+
+        rateInfoEl.textContent =
+          `${lastUpdateText || "최근"} 기준 ${baseStr} ≈ ${rateStr}`;
         mainInfoEl.textContent = "환율 정보를 정상적으로 불러왔습니다.";
         updateCalcResult();
       } catch (err) {
@@ -889,6 +1021,7 @@
       }
     }
 
+    // "1000+5000-300" 같은 식 파싱
     function parseExpression(raw) {
       const str = raw.replace(/,/g, "");
       if (!str.trim()) return 0;
@@ -913,6 +1046,7 @@
       }
       calcSumEl.textContent = sum.toLocaleString();
       calcSumCurrencyEl.textContent = baseCode;
+
       if (!currentRate) {
         calcConvertedEl.textContent = "환율 정보를 먼저 불러와야 합니다.";
         return;
@@ -937,13 +1071,18 @@
       fetchRate();
     }
 
+    // 검색 박스 세팅
     setupSearchBox(fromSearchInput, fromSugBox, setBase);
     setupSearchBox(toSearchInput, toSugBox, setTarget);
+
+    // select 박스 세팅
     populateSelect(fromSelect);
     populateSelect(toSelect);
+
     fromSelect.addEventListener("change", () => setBase(fromSelect.value));
     toSelect.addEventListener("change", () => setTarget(toSelect.value));
 
+    // 초기 값 설정 (환율)
     fromSearchInput.value = optionLabel(findCurrency("HKD"));
     toSearchInput.value   = optionLabel(findCurrency("KRW"));
     fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
@@ -951,33 +1090,46 @@
     calcSumCurrencyEl.textContent = baseCode;
     setSelectValue(fromSelect, "HKD");
     setSelectValue(toSelect, "KRW");
+
     calcExprInput.addEventListener("input", updateCalcResult);
 
-    /* ===== 시차 계산 ===== */
-    let timeTargetCode = "HKD";
-
+    // ===== 시차 계산 =====
     function formatLocalTime(date, timeZone) {
       return new Intl.DateTimeFormat("ko-KR", {
         timeZone,
-        year: "numeric", month: "2-digit", day: "2-digit",
-        weekday: "short", hour: "2-digit", minute: "2-digit"
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit"
       }).format(date);
     }
 
     function getOffsetMinutes(timeZone, date) {
       const fmt = new Intl.DateTimeFormat("en-US", {
-        timeZone, year: "numeric", month: "2-digit", day: "2-digit",
-        hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false
+        timeZone,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: false
       });
       const parts = fmt.formatToParts(date);
       const map = {};
       for (const p of parts) map[p.type] = p.value;
       const asUTC = Date.UTC(
-        Number(map.year), Number(map.month) - 1, Number(map.day),
-        Number(map.hour), Number(map.minute), Number(map.second)
+        Number(map.year),
+        Number(map.month) - 1,
+        Number(map.day),
+        Number(map.hour),
+        Number(map.minute),
+        Number(map.second)
       );
       const diffMs = asUTC - date.getTime();
-      return diffMs / 60000;
+      return diffMs / 60000; // 분
     }
 
     function describeDiff(diffMin, countryName) {
@@ -1037,24 +1189,14 @@
     populateSelect(timeSelect);
     timeSelect.addEventListener("change", () => setTimeTarget(timeSelect.value));
 
+    // 초기 값 설정 (시차: 홍콩)
     timeSearchInput.value = optionLabel(findCurrency("HKD"));
     setSelectValue(timeSelect, "HKD");
     setTimeTarget("HKD");
 
-    /* ===== 일정 관리 ===== */
-    const tripTitleInput = document.getElementById("tripTitle");
-    const dayTabsContainer = document.getElementById("dayTabs");
-    const rowsContainer = document.getElementById("rowsContainer");
-    const addDayBtn = document.getElementById("addDayBtn");
-    const deleteDayBtn = document.getElementById("deleteDayBtn");
-    const renameDayBtn = document.getElementById("renameDayBtn");
-    const addRowBtn = document.getElementById("addRowBtn");
-    const exportBtn = document.getElementById("exportBtn");
-    const importBtn = document.getElementById("importBtn");
-    const importFileInput = document.getElementById("importFileInput");
-
+    // ===== 일정 관리 로직 =====
     let scheduleDays = [
-      { name: "Day.1", rows: [ { time: "", place: "", note: "" } ] }
+      { name: "Day.1", rows: [] }
     ];
     let currentDayIndex = 0;
 
@@ -1077,10 +1219,12 @@
     function renderRows() {
       rowsContainer.innerHTML = "";
       const day = scheduleDays[currentDayIndex];
+
       day.rows.forEach((row, idx) => {
         const div = document.createElement("div");
         div.className = "schedule-row";
 
+        // 시간
         const timeInput = document.createElement("input");
         timeInput.placeholder = "예: 09:00";
         timeInput.value = row.time || "";
@@ -1088,160 +1232,188 @@
           row.time = timeInput.value;
         });
 
-        const placeInput = document.createElement("input");
-        placeInput.placeholder = "예: 침사추이 스타의 거리";
-        placeInput.value = row.place || "";
-        placeInput.addEventListener("input", () => {
-          row.place = placeInput.value;
+        // 지명
+        const placeTextarea = document.createElement("textarea");
+        placeTextarea.className = "schedule-textarea";
+        placeTextarea.placeholder = "예: 침사추이 스타의 거리";
+        placeTextarea.value = row.place || "";
+        placeTextarea.addEventListener("input", () => {
+          row.place = placeTextarea.value;
         });
 
-        const noteInput = document.createElement("input");
-        noteInput.placeholder = "예: 야경 감상";
-        noteInput.value = row.note || "";
-        noteInput.addEventListener("input", () => {
-          row.note = noteInput.value;
+        // 비고
+        const noteTextarea = document.createElement("textarea");
+        noteTextarea.className = "schedule-textarea";
+        noteTextarea.placeholder = "예: 야경 감상";
+        noteTextarea.value = row.note || "";
+        noteTextarea.addEventListener("input", () => {
+          row.note = noteTextarea.value;
         });
 
+        // 구글맵 버튼
         const mapBtn = document.createElement("button");
         mapBtn.type = "button";
         mapBtn.className = "map-btn";
         mapBtn.textContent = "구글맵 열기";
         mapBtn.addEventListener("click", () => {
           const title = tripTitleInput.value.trim();
-          const place = placeInput.value.trim();
+          const place = placeTextarea.value.trim();
           const queryParts = [];
           if (title) queryParts.push(title);
           if (place) queryParts.push(place);
           if (!queryParts.length) return;
-          const url = "https://www.google.com/maps/search/?api=1&query=" +
+          const url =
+            "https://www.google.com/maps/search/?api=1&query=" +
             encodeURIComponent(queryParts.join(" "));
           window.open(url, "_blank");
         });
 
         div.appendChild(timeInput);
-        div.appendChild(placeInput);
-        div.appendChild(noteInput);
+        div.appendChild(placeTextarea);
+        div.appendChild(noteTextarea);
         div.appendChild(mapBtn);
+
         rowsContainer.appendChild(div);
       });
     }
 
-    addRowBtn.addEventListener("click", () => {
-      scheduleDays[currentDayIndex].rows.push({ time: "", place: "", note: "" });
+    function addRow() {
+      const day = scheduleDays[currentDayIndex];
+      day.rows.push({ time: "", place: "", note: "" });
       renderRows();
-    });
+    }
 
-    addDayBtn.addEventListener("click", () => {
-      const n = scheduleDays.length + 1;
-      scheduleDays.push({ name: `Day.${n}`, rows: [ { time: "", place: "", note: "" } ] });
+    function addDay() {
+      const newIndex = scheduleDays.length + 1;
+      scheduleDays.push({ name: `Day.${newIndex}`, rows: [] });
       currentDayIndex = scheduleDays.length - 1;
       renderDayTabs();
       renderRows();
-    });
+    }
 
-    deleteDayBtn.addEventListener("click", () => {
+    function deleteCurrentDay() {
       if (scheduleDays.length === 1) {
-        alert("Day는 최소 1개는 있어야 합니다.");
+        alert("최소 1개의 Day는 유지해야 합니다.");
         return;
       }
       if (!confirm("현재 Day를 삭제하시겠습니까?")) return;
       scheduleDays.splice(currentDayIndex, 1);
-      if (currentDayIndex >= scheduleDays.length) currentDayIndex = scheduleDays.length - 1;
+      if (currentDayIndex >= scheduleDays.length) {
+        currentDayIndex = scheduleDays.length - 1;
+      }
       renderDayTabs();
       renderRows();
-    });
+    }
 
-    renameDayBtn.addEventListener("click", () => {
-      const current = scheduleDays[currentDayIndex];
-      const newName = prompt("현재 Day 이름을 입력하세요.", current.name);
+    function renameCurrentDay() {
+      const day = scheduleDays[currentDayIndex];
+      const newName = prompt("현재 Day 이름을 입력하세요.", day.name);
       if (!newName) return;
-      current.name = newName;
+      day.name = newName;
       renderDayTabs();
-    });
+    }
 
-    // 텍스트 내보내기 (파일 다운로드)
-    exportBtn.addEventListener("click", () => {
+    function buildExportText() {
       const lines = [];
-      const title = tripTitleInput.value || "";
-      lines.push(`[TripTitle] ${title}`);
+      const title = tripTitleInput.value.trim();
+      if (title) {
+        lines.push(`[Title] ${title}`);
+      }
       scheduleDays.forEach(day => {
-        lines.push("");
-        lines.push(`[${day.name}]`);
-        day.rows.forEach(r => {
-          if (!r.time && !r.place && !r.note) return;
-          lines.push(`${r.time || ""} | ${r.place || ""} | ${r.note || ""}`);
+        lines.push(`\n[${day.name}]`);
+        day.rows.forEach(row => {
+          const time = (row.time || "").replace(/\n/g, " ");
+          const place = (row.place || "").replace(/\n/g, " ");
+          const note = (row.note || "").replace(/\n/g, " ");
+          if (!time && !place && !note) return;
+          lines.push(`${time} | ${place} | ${note}`);
         });
       });
-      const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+      return lines.join("\n");
+    }
+
+    function exportToFile() {
+      const text = buildExportText();
+      exportTextArea.value = text;
+
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "travel-schedule.txt";
+      a.download = "travel-plan.txt";
       document.body.appendChild(a);
       a.click();
-      a.remove();
+      document.body.removeChild(a);
       URL.revokeObjectURL(url);
-    });
+    }
 
-    // 텍스트 불러오기 (파일 → 일정 복원)
-    importBtn.addEventListener("click", () => {
-      importFileInput.value = "";
-      importFileInput.click();
-    });
+    function parseImportText(text) {
+      const lines = text.split(/\r?\n/);
+      const newDays = [];
+      let currentDay = null;
 
-    importFileInput.addEventListener("change", () => {
-      const file = importFileInput.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const text = reader.result;
-          const lines = String(text).split(/\r?\n/);
-          let newTitle = "";
-          const newDays = [];
-          let currentDay = null;
+      lines.forEach(rawLine => {
+        const line = rawLine.trim();
+        if (!line) return;
 
-          for (let raw of lines) {
-            const line = raw.trim();
-            if (!line) continue;
-            if (line.startsWith("[TripTitle]")) {
-              newTitle = line.replace("[TripTitle]", "").trim();
-            } else if (line.startsWith("[") && line.endsWith("]")) {
-              const name = line.slice(1, -1).trim();
-              currentDay = { name, rows: [] };
-              newDays.push(currentDay);
-            } else if (currentDay) {
-              const parts = line.split("|").map(s => s.trim());
-              currentDay.rows.push({
-                time: parts[0] || "",
-                place: parts[1] || "",
-                note: parts[2] || ""
-              });
-            }
-          }
-
-          if (!newDays.length) {
-            alert("불러올 일정 정보를 찾지 못했습니다.");
-            return;
-          }
-
-          tripTitleInput.value = newTitle;
-          scheduleDays = newDays;
-          currentDayIndex = 0;
-          renderDayTabs();
-          renderRows();
-          alert("텍스트에서 일정을 불러왔습니다.");
-        } catch (e) {
-          console.error(e);
-          alert("텍스트 형식을 해석하는 중 오류가 발생했습니다.");
+        if (line.startsWith("[Title]")) {
+          const title = line.replace("[Title]", "").trim();
+          tripTitleInput.value = title;
+          return;
         }
+
+        const dayMatch = line.match(/^\[(Day\.\d+.*)\]$/);
+        if (dayMatch) {
+          currentDay = { name: dayMatch[1], rows: [] };
+          newDays.push(currentDay);
+          return;
+        }
+
+        if (!currentDay) return;
+        const parts = line.split("|").map(p => p.trim());
+        const time = parts[0] || "";
+        const place = parts[1] || "";
+        const note = parts[2] || "";
+        currentDay.rows.push({ time, place, note });
+      });
+
+      if (newDays.length === 0) {
+        alert("불러올 Day 정보를 찾지 못했습니다.");
+        return;
+      }
+
+      scheduleDays = newDays;
+      currentDayIndex = 0;
+      renderDayTabs();
+      renderRows();
+    }
+
+    function handleImportFile(files) {
+      if (!files || !files.length) return;
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result || "";
+        exportTextArea.value = text;
+        parseImportText(text);
       };
       reader.readAsText(file, "utf-8");
-    });
+    }
+
+    // 일정 이벤트 연결
+    addRowBtn.addEventListener("click", addRow);
+    addDayBtn.addEventListener("click", addDay);
+    deleteDayBtn.addEventListener("click", deleteCurrentDay);
+    renameDayBtn.addEventListener("click", renameCurrentDay);
+    exportBtn.addEventListener("click", exportToFile);
+    importBtn.addEventListener("click", () => importFileInput.click());
+    importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
 
     // 초기 렌더링
     renderDayTabs();
     renderRows();
+
+    // 시작 시 환율 한번 가져오기 & 기본 선택 방식
     fetchRate();
     setPickMode("search");
   </script>
