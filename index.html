@@ -387,6 +387,27 @@ h1 {
   background: #e5e7eb;
 }
 
+.calc-keys-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+  white-space: nowrap;  /* 🔥 줄바꿈 방지 */
+}
+
+.calc-keys button {
+  padding: 4px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffffd9;
+  cursor: pointer;
+}
+
+.calc-hint {
+  font-size: 0.78rem;
+  color: #6b7280;
+}
 
 
     
@@ -589,6 +610,15 @@ calcKeyButtons.forEach(btn => {
     const op = btn.dataset.op; // "+" 또는 "-"
     const input = calcExprInput;
 
+    <div class="calc-keys-wrapper">
+  <div class="calc-keys">
+    <button class="calc-key" data-op="+">＋</button>
+    <button class="calc-key" data-op="-">−</button>
+  </div>
+  <span class="calc-hint">(+,-를 눌러 합산 또는 빼기 가능합니다.)</span>
+</div>
+
+    
     const start = input.selectionStart ?? input.value.length;
     const end   = input.selectionEnd ?? input.value.length;
     const before = input.value.slice(0, start);
