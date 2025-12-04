@@ -1283,67 +1283,92 @@
       });
     }
 
-    function renderRows() {
-      rowsContainer.innerHTML = "";
-      const day = scheduleDays[currentDayIndex];
-      if (!day) return;
+function renderRows() {
+  rowsContainer.innerHTML = "";
+  const day = scheduleDays[currentDayIndex];
+  if (!day) return;
 
-      day.rows.forEach((row) => {
-        const div = document.createElement("div");
-        div.className = "schedule-row";
+  day.rows.forEach((row) => {
+    const div = document.createElement("div");
+    div.className = "schedule-row";
 
-        const timeInput = document.createElement("input");
-        timeInput.type = "text";
-        timeInput.placeholder = "예: 09:00";
-        timeInput.value = row.time || "";
-        timeInput.addEventListener("input", () => {
-          row.time = timeInput.value;
-        });
+    const timeInput = document.createElement("input");
+    timeInput.type = "text";
+    timeInput.placeholder = "예: 09:00";
+    timeInput.value = row.time || "";
+    timeInput.addEventListener("input", () => {
+      row.time = timeInput.value;
+    });
 
-        const placeTextarea = document.createElement("textarea");
-        placeTextarea.className = "schedule-textarea";
-        placeTextarea.placeholder = "예: 침사추이 스타의 거리";
-        placeTextarea.value = row.place || "";
-        placeTextarea.addEventListener("input", () => {
-          row.place = placeTextarea.value;
-        });
+    const placeTextarea = document.createElement("textarea");
+    placeTextarea.className = "schedule-textarea";
+    placeTextarea.placeholder = "예: 침사추이 스타의 거리";
+    placeTextarea.value = row.place || "";
 
-        const noteTextarea = document.createElement("textarea");
-        noteTextarea.className = "schedule-textarea";
-        noteTextarea.placeholder = "예: 야경 감상";
-        noteTextarea.value = row.note || "";
-        noteTextarea.addEventListener("input", () => {
-          row.note = noteTextarea.value;
-        });
+    // 🔧 한글 마지막 글자가 다음 칸으로 딸려오는 현상 보정
+    placeTextarea.addEventListener("input", () => {
+      let v = placeTextarea.value;
+      // 이 필드에 처음 입력할 때만 검사
+      if (!placeTextarea.dataset.cleaned && v.length >= 2) {
+        const prevLast = (timeInput.value || "").slice(-1); // 앞 칸(시간) 마지막 글자
+        if (prevLast && v[0] === prevLast) {
+          // "시침사추이" 같이 시작 글자가 앞 칸 마지막 글자면 잘라냄
+          v = v.slice(1);
+          placeTextarea.value = v;
+        }
+        placeTextarea.dataset.cleaned = "1";
+      }
+      row.place = v;
+    });
 
-        const mapBtn = document.createElement("button");
-        mapBtn.type = "button";
-        mapBtn.className = "map-btn";
-        mapBtn.textContent = "📍";
-        mapBtn.title = "구글맵 열기";
-        mapBtn.setAttribute("aria-label", "구글맵 열기");
+    const noteTextarea = document.createElement("textarea");
+    noteTextarea.className = "schedule-textarea";
+    noteTextarea.placeholder = "예: 야경 감상";
+    noteTextarea.value = row.note || "";
 
-        mapBtn.addEventListener("click", () => {
-          const title = tripTitleInput.value.trim();
-          const place = (row.place || "").trim();
-          const queryParts = [];
-          if (title) queryParts.push(title);
-          if (place) queryParts.push(place);
-          if (!queryParts.length) return;
-          const url =
-            "https://www.google.com/maps/search/?api=1&query=" +
-            encodeURIComponent(queryParts.join(" "));
-          window.open(url, "_blank");
-        });
+    // 🔧 비고 칸도 앞 지명 칸 마지막 글자 딸려오는 것 보정
+    noteTextarea.addEventListener("input", () => {
+      let v = noteTextarea.value;
+      if (!noteTextarea.dataset.cleaned && v.length >= 2) {
+        const prevLast = (placeTextarea.value || "").slice(-1); // 앞 칸(지명) 마지막 글자
+        if (prevLast && v[0] === prevLast) {
+          v = v.slice(1);
+          noteTextarea.value = v;
+        }
+        noteTextarea.dataset.cleaned = "1";
+      }
+      row.note = v;
+    });
 
-        div.appendChild(timeInput);
-        div.appendChild(placeTextarea);
-        div.appendChild(noteTextarea);
-        div.appendChild(mapBtn);
+    const mapBtn = document.createElement("button");
+    mapBtn.type = "button";
+    mapBtn.className = "map-btn";
+    mapBtn.textContent = "📍";
+    mapBtn.title = "구글맵 열기";
+    mapBtn.setAttribute("aria-label", "구글맵 열기");
 
-        rowsContainer.appendChild(div);
-      });
-    }
+    mapBtn.addEventListener("click", () => {
+      const title = tripTitleInput.value.trim();
+      const place = (row.place || "").trim();
+      const queryParts = [];
+      if (title) queryParts.push(title);
+      if (place) queryParts.push(place);
+      if (!queryParts.length) return;
+      const url =
+        "https://www.google.com/maps/search/?api=1&query=" +
+        encodeURIComponent(queryParts.join(" "));
+      window.open(url, "_blank");
+    });
+
+    div.appendChild(timeInput);
+    div.appendChild(placeTextarea);
+    div.appendChild(noteTextarea);
+    div.appendChild(mapBtn);
+
+    rowsContainer.appendChild(div);
+  });
+}
+
 
     function addRow() {
       const day = scheduleDays[currentDayIndex];
