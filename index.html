@@ -23,582 +23,580 @@
   <meta name="twitter:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
 
 
-<!-- 테마는 여기에 -->
-<style>
+  <!-- 테마는 여기에 -->
+  <style>
+  /* 🌈 인스타 감성 파스텔 테마 */
+  :root {
+    --panel-bg: rgba(255, 248, 242, 0.55);        /* 전체 페널 배경 */
+    --panel-inner-bg: rgba(255, 253, 249, 0.85); /* 박스 안 배경 */
+    --border: rgba(230, 215, 200, 0.6);          /* 연한 베이지 테두리 */
+    --accent: #ff8a7a;                           /* 인스타 감성 코랄 */
+    --accent-soft: rgba(255, 138, 122, 0.18);
+    --text: #4a3f38;                             /* 다크 브라운 텍스트 */
+    --muted: #7b6a5d;                            /* 부드러운 브라운 회색 */
+  }
 
-/* 🌈 인스타 감성 파스텔 테마 */
-:root {
-  --panel-bg: rgba(255, 248, 242, 0.55);
-  --panel-inner-bg: rgba(255, 253, 249, 0.85);
-  --border: rgba(230, 215, 200, 0.6);
-  --accent: #ff8a7a;
-  --accent-soft: rgba(255, 138, 122, 0.18);
-  --text: #4a3f38;
-  --muted: #7b6a5d;
-}
+  /* ✨ 인스타 감성 배경 */
+  body {
+    margin: 0;
+    padding: 16px 8px;
+    font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+    color: var(--text);
 
-/* ✨ 인스타 감성 배경 */
-body {
-  margin: 0;
-  padding: 16px 8px;
-  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
-  color: var(--text);
-  background:
-    linear-gradient(
-      to bottom right,
-      rgba(255, 241, 230, 0.9),
-      rgba(255, 250, 245, 0.85)
-    ),
-    url("plane-window.png") center/cover fixed no-repeat;
-}
+    /* 부드러운 크림 베이지 그라데이션 */
+    background:
+      linear-gradient(
+        to bottom right,
+        rgba(255, 241, 230, 0.9),
+        rgba(255, 250, 245, 0.85)
+      ),
+      url("plane-window.png") center/cover fixed no-repeat;
+  }
 
-</style>
-<!-- 테마는 여기에 --끝 -->
-    
-    .app {
-      max-width: 1040px;
-      margin: 0 auto;
-      padding: 18px 20px 14px;
-      background: var(--panel-bg);
-      border-radius: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow:
-        0 16px 38px rgba(15, 23, 42, 0.32),
-        0 0 0 1px rgba(255, 255, 255, 0.15);
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
+  .app {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 18px 20px 14px;
+    background: var(--panel-bg);
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow:
+      0 16px 38px rgba(15, 23, 42, 0.32),
+      0 0 0 1px rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
 
-    header {
-      position: relative;
-      z-index: 1;
-    }
+  header {
+    position: relative;
+    z-index: 1;
+  }
 
-    h1 {
-      font-size: 1.45rem;
-      margin: 0 0 0.15rem;
-      color: #111827;
-    }
+  h1 {
+    font-size: 1.45rem;
+    margin: 0 0 0.15rem;
+    color: #111827;
+  }
 
-    @media (max-width: 720px) {
-      h1 { font-size: 1.25rem; }
-    }
+  @media (max-width: 720px) {
+    h1 { font-size: 1.25rem; }
+  }
 
-    p.desc {
-      margin: 0;
-      color: #374151;
-      font-size: 0.9rem;
-    }
+  p.desc {
+    margin: 0;
+    color: #374151;
+    font-size: 0.9rem;
+  }
 
-    /* 상단 탭 */
-    .top-bar {
-      margin-top: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-    }
+  /* 상단 탭 */
+  .top-bar {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
 
-    .tabs {
-      display: inline-flex;
-      padding: 2px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.7);
-      box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
-      gap: 4px;
-    }
+  .tabs {
+    display: inline-flex;
+    padding: 2px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
+    gap: 4px;
+  }
 
-    .tab-button {
-      border: none;
-      background: transparent;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.86rem;
-      cursor: pointer;
-      color: #6b7280;
-      white-space: nowrap;
-    }
+  .tab-button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    cursor: pointer;
+    color: #6b7280;
+    white-space: nowrap;
+  }
 
-    .tab-button.active {
-      background: #111827;
-      color: #f9fafb;
-    }
+  .tab-button.active {
+    background: #111827;
+    color: #f9fafb;
+  }
 
-    .view {
-      margin-top: 12px;
-    }
+  .view {
+    margin-top: 12px;
+  }
 
-    /* 패널 공통 */
-    .layout {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
+  /* 패널 공통 */
+  .layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
 
-    .panel {
-      flex: 1 1 320px;
-      min-width: 0;
-      border-radius: 16px;
-      border: 1px solid var(--border);
-      padding: 14px 16px 16px;
-      background: var(--panel-inner-bg);
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+  .panel {
+    flex: 1 1 320px;
+    min-width: 0;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 14px 16px 16px;
+    background: var(--panel-inner-bg);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
 
-    .panel-header h2 {
-      margin: 0;
-      font-size: 1.05rem;
-    }
+  .panel-header h2 {
+    margin: 0;
+    font-size: 1.05rem;
+  }
 
-    label {
-      display: block;
-      margin-top: 0.9rem;
-      font-weight: 600;
-      font-size: 0.88rem;
-    }
+  label {
+    display: block;
+    margin-top: 0.9rem;
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
 
+  input, select, textarea {
+    width: 100%;
+    padding: 7px 9px;
+    margin-top: 0.35rem;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.92);
+  }
+
+  @media (max-width: 720px) {
     input, select, textarea {
-      width: 100%;
-      padding: 7px 9px;
-      margin-top: 0.35rem;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      background: rgba(255, 255, 255, 0.92);
+      font-size: 16px !important;
     }
+  }
 
-    @media (max-width: 720px) {
-      input, select, textarea {
-        font-size: 16px !important;
-      }
-    }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent-soft);
+  }
 
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 1px var(--accent-soft);
-    }
+  .help {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.15rem;
+  }
 
-    .help {
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-top: 0.15rem;
-    }
+  .small-label {
+    margin-top: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
 
-    .small-label {
-      margin-top: 0.35rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
+  /* ===== 검색 제안 리스트 (환율/시차용) ===== */
+  .suggestions {
+    position: relative;
+  }
 
-    /* ===== 검색 제안 리스트 (환율/시차용) ===== */
-    .suggestions {
-      position: relative;
-    }
+  .suggestions-list {
+    position: absolute;
+    z-index: 10;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(209, 213, 219, 0.9);
+    border-top: none;
+    max-height: 200px;
+    overflow-y: auto;
+    font-size: 0.82rem;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+  }
 
-    .suggestions-list {
-      position: absolute;
-      z-index: 10;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      border-top: none;
-      max-height: 200px;
-      overflow-y: auto;
-      font-size: 0.82rem;
-      border-radius: 0 0 8px 8px;
-      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-    }
+  .suggestion-item {
+    padding: 6px 9px;
+    cursor: pointer;
+  }
 
-    .suggestion-item {
-      padding: 6px 9px;
-      cursor: pointer;
-    }
+  .suggestion-item:hover {
+    background: var(--accent-soft);
+  }
 
-    .suggestion-item:hover {
-      background: var(--accent-soft);
-    }
+  .rate-info {
+    margin-top: 0.45rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
 
-    .rate-info {
-      margin-top: 0.45rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
+  .error {
+    margin-top: 0.5rem;
+    color: #b91c1c;
+    font-size: 0.8rem;
+  }
 
-    .error {
-      margin-top: 0.5rem;
-      color: #b91c1c;
-      font-size: 0.8rem;
-    }
+  .ok {
+    margin-top: 0.45rem;
+    color: #2563eb;
+    font-size: 0.8rem;
+  }
 
-    .ok {
-      margin-top: 0.45rem;
-      color: #2563eb;
-      font-size: 0.8rem;
-    }
+  .calc-summary {
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+  }
 
-    .calc-summary {
-      margin-top: 0.7rem;
-      font-size: 0.9rem;
-    }
+  .calc-summary div {
+    margin-top: 0.25rem;
+  }
 
-    .calc-summary div {
-      margin-top: 0.25rem;
-    }
+  .calc-main {
+    font-weight: 600;
+  }
 
-    .calc-main {
-      font-weight: 600;
-    }
+  .section-divider {
+    margin-top: 0.9rem;
+    padding-top: 0.7rem;
+    border-top: 1px dashed rgba(148, 163, 184, 0.8);
+  }
 
-    .section-divider {
-      margin-top: 0.9rem;
-      padding-top: 0.7rem;
-      border-top: 1px dashed rgba(148, 163, 184, 0.8);
-    }
+  .sub-heading {
+    margin: 0 0 0.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 
-    .sub-heading {
-      margin: 0 0 0.3rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
+  /* PC/모바일 설명 분리 */
+  .only-desktop { display: block; }
+  .only-mobile  { display: none; }
 
-    /* PC/모바일 설명 분리 */
-    .only-desktop { display: block; }
-    .only-mobile  { display: none; }
+  @media (max-width: 720px) {
+    .only-desktop { display: none; }
+    .only-mobile  { display: block; }
+  }
 
-    @media (max-width: 720px) {
-      .only-desktop { display: none; }
-      .only-mobile  { display: block; }
-    }
+  /* 선택 방식 토글 */
+  .mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+    font-size: 0.78rem;
+    color: #4b5563;
+    white-space: nowrap;
+  }
 
-    /* 선택 방식 토글 */
-    .mode-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
-      font-size: 0.78rem;
-      color: #4b5563;
-      white-space: nowrap;
-    }
+  .mode-label {
+    font-weight: 500;
+    font-size: 0.78rem;
+  }
 
-    .mode-label {
-      font-weight: 500;
-      font-size: 0.78rem;
-    }
+  .mode-btn {
+    border: none;
+    background: transparent;
+    padding: 4px 9px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    color: #6b7280;
+    white-space: nowrap;
+  }
 
-    .mode-btn {
-      border: none;
-      background: transparent;
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      color: #6b7280;
-      white-space: nowrap;
-    }
+  .mode-btn.active {
+    background: #111827;
+    color: #f9fafb;
+  }
 
-    .mode-btn.active {
-      background: #111827;
-      color: #f9fafb;
-    }
+  /* 모드 전환 */
+  body[data-pick-mode="search"] .select-mode { display: none; }
+  body[data-pick-mode="search"] .search-mode { display: block; }
 
-    /* 모드 전환 */
-    body[data-pick-mode="search"] .select-mode { display: none; }
-    body[data-pick-mode="search"] .search-mode { display: block; }
+  body[data-pick-mode="select"] .select-mode { display: block; }
+  body[data-pick-mode="select"] .search-mode { display: none; }
 
-    body[data-pick-mode="select"] .select-mode { display: block; }
-    body[data-pick-mode="select"] .search-mode { display: none; }
+  /* 합산식 + / - 키패드 */
+  .calc-keypad-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    font-size: 0.78rem;
+  }
 
-    /* 합산식 + / - 키패드 */
-    .calc-keypad-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 6px;
-      font-size: 0.78rem;
-    }
+  .calc-keypad {
+    display: inline-flex;
+    gap: 6px;
+  }
 
-    .calc-keypad {
-      display: inline-flex;
-      gap: 6px;
-    }
+  .calc-key {
+    min-width: 32px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    background: #f9fafb;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
 
-    .calc-key {
-      min-width: 32px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: #f9fafb;
-      font-size: 0.9rem;
-      cursor: pointer;
-    }
+  .calc-key:active { background: #e5e7eb; }
 
-    .calc-key:active { background: #e5e7eb; }
+  .calc-hint {
+    color: var(--muted);
+    white-space: nowrap;
+  }
 
-    .calc-hint {
-      color: var(--muted);
-      white-space: nowrap;
-    }
+  /* ===== 일정 관리 ===== */
+  .schedule-header-text {
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
 
-    /* ===== 일정 관리 ===== */
-    .schedule-header-text {
-      margin-top: 0.2rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-    }
+  .day-toolbar {
+    margin-top: 0.85rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 
-    .day-toolbar {
-      margin-top: 0.85rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
+  .day-toolbar button,
+  .schedule-export-btn,
+  .schedule-import-btn {
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    background: #f9fafb;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
 
-    .day-toolbar button,
-    .schedule-export-btn,
-    .schedule-import-btn {
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: #f9fafb;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
+  .day-tabs {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
 
-    .day-tabs {
-      margin-top: 8px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
+  .day-tab-btn {
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    background: #ffffff;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
 
-    .day-tab-btn {
-      padding: 4px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      background: #ffffff;
-      font-size: 0.78rem;
-      cursor: pointer;
-    }
+  .day-tab-btn.active {
+    background: #111827;
+    color: #f9fafb;
+    border-color: #111827;
+  }
 
-    .day-tab-btn.active {
-      background: #111827;
-      color: #f9fafb;
-      border-color: #111827;
-    }
+  .schedule-table-header {
+    display: grid;
+    grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
+    gap: 6px;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 12px;
+    align-items: center;
+  }
 
+  .schedule-row {
+    display: grid;
+    grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
+    gap: 6px;
+    margin-top: 6px;
+    align-items: stretch;
+  }
+
+  .schedule-row input {
+    width: 100%;
+    padding: 6px 7px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    box-sizing: border-box;
+  }
+
+  .schedule-textarea {
+    width: 100%;
+    padding: 6px 7px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(148, 163, 184, 0.9);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.92);
+    resize: vertical;
+    min-height: 32px;
+    line-height: 1.3;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .map-btn {
+    width: 100%;
+    padding: 0;
+    height: 32px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 1.25rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .map-btn:active {
+    transform: scale(0.9);
+  }
+
+  .add-row-btn {
+    margin-top: 8px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px dashed rgba(148, 163, 184, 0.9);
+    background: #f9fafb;
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+
+  .schedule-footer {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .schedule-footer-note {
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .schedule-export-area {
+    margin-top: 8px;
+    width: 100%;
+    min-height: 80px;
+    font-size: 0.8rem;
+  }
+
+  .weather-box {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.8);
+    background: rgba(239, 246, 255, 0.9);
+    font-size: 0.8rem;
+    color: #1f2937;
+    line-height: 1.4;
+  }
+
+  .weather-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  footer {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    text-align: right;
+  }
+
+  footer a {
+    color: #93c5fd;
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* 여행 타이틀 자동완성 래퍼 */
+  .search-wrapper {
+    position: relative;
+  }
+
+  /* 여행 타이틀 자동완성 리스트 (일정용) */
+  #titleSuggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(209, 213, 219, 0.9);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 20;
+    font-size: 0.85rem;
+  }
+
+  #titleSuggestions div {
+    padding: 7px 10px;
+    cursor: pointer;
+  }
+
+  #titleSuggestions div:hover {
+    background: rgba(37, 99, 235, 0.15);
+  }
+
+  /* 여행 타이틀 아래 간격 줄이기 & 날씨 박스 붙이기 */
+  #tripTitle {
+    margin-bottom: 4px;
+  }
+
+  .weather-box {
+    margin-top: 4px;
+    min-width: 0;
+    max-width: none;
+    box-sizing: border-box;
+  }
+
+  /* 모바일에서 시간/지명/비고 크기 줄이고 📍 버튼 보이게 */
+  @media (max-width: 600px) {
     .schedule-table-header {
-      display: grid;
-      grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
-      gap: 6px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 12px;
-      align-items: center;
+      grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
+      font-size: 0.75rem;
     }
 
     .schedule-row {
-      display: grid;
-      grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
-      gap: 6px;
-      margin-top: 6px;
-      align-items: stretch;
+      grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
+      gap: 4px;
     }
 
-    .schedule-row input {
-      width: 100%;
-      padding: 6px 7px;
-      font-size: 0.82rem;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.92);
-      box-sizing: border-box;
-    }
-
+    .schedule-row input,
     .schedule-textarea {
-      width: 100%;
-      padding: 6px 7px;
-      font-size: 0.82rem;
-      border: 1px solid rgba(148, 163, 184, 0.9);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.92);
-      resize: vertical;
-      min-height: 32px;
-      line-height: 1.3;
-      overflow-wrap: break-word;
-      word-break: break-word;
+      font-size: 0.78rem;
+      padding: 4px 5px;
     }
 
     .map-btn {
-      width: 100%;
-      padding: 0;
-      height: 32px;
-      border-radius: 8px;
-      border: none;
-      background: transparent;
-      font-size: 1.25rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 26px;
+      font-size: 0.95rem;
     }
-
-    .map-btn:active {
-      transform: scale(0.9);
-    }
-
-    .add-row-btn {
-      margin-top: 8px;
-      padding: 5px 10px;
-      border-radius: 999px;
-      border: 1px dashed rgba(148, 163, 184, 0.9);
-      background: #f9fafb;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-
-    .schedule-footer {
-      margin-top: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .schedule-footer-note {
-      margin-top: 8px;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-
-    .schedule-export-area {
-      margin-top: 8px;
-      width: 100%;
-      min-height: 80px;
-      font-size: 0.8rem;
-    }
-
-    .weather-box {
-      margin-top: 8px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(148, 163, 184, 0.8);
-      background: rgba(239, 246, 255, 0.9);
-      font-size: 0.8rem;
-      color: #1f2937;
-      line-height: 1.4;
-    }
-
-    .weather-title {
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    footer {
-      margin-top: 12px;
-      font-size: 0.8rem;
-      color: #9ca3af;
-      text-align: right;
-    }
-
-    footer a {
-      color: #93c5fd;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-
-    /* ===== 여기서부터 추가 스타일 ===== */
-
-    /* 여행 타이틀 자동완성 래퍼 */
-    .search-wrapper {
-      position: relative;
-    }
-
-    /* 여행 타이틀 자동완성 리스트 (일정용) */
-    #titleSuggestions {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(209, 213, 219, 0.9);
-      border-top: none;
-      border-radius: 0 0 8px 8px;
-      max-height: 180px;
-      overflow-y: auto;
-      z-index: 20;
-      font-size: 0.85rem;
-    }
-
-    #titleSuggestions div {
-      padding: 7px 10px;
-      cursor: pointer;
-    }
-
-    #titleSuggestions div:hover {
-      background: rgba(37, 99, 235, 0.15);
-    }
-
-    /* 여행 타이틀 아래 간격 줄이기 & 날씨 박스 붙이기 */
-    #tripTitle {
-      margin-bottom: 4px;
-    }
-
-    .weather-box {
-      margin-top: 4px;
-      min-width: 0;
-      max-width: none;
-      box-sizing: border-box;
-    }
-
-    /* 모바일에서 시간/지명/비고 크기 줄이고 📍 버튼 보이게 */
-    @media (max-width: 600px) {
-      .schedule-table-header {
-        grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
-        font-size: 0.75rem;
-      }
-
-      .schedule-row {
-        grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
-        gap: 4px;
-      }
-
-      .schedule-row input,
-      .schedule-textarea {
-        font-size: 0.78rem;
-        padding: 4px 5px;
-      }
-
-      .map-btn {
-        height: 26px;
-        font-size: 0.95rem;
-      }
-    }
+  }
   </style>
+  <!-- 테마는 여기에 --끝 -->
+
 </head>
 <body data-pick-mode="search">
   <div class="app">
