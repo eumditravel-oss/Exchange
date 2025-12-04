@@ -194,7 +194,7 @@
       color: var(--muted);
     }
 
-    /* ===== 검색 제안 리스트 ===== */
+    /* ===== 검색 제안 리스트 (환율/시차용) ===== */
     .suggestions {
       position: relative;
     }
@@ -362,31 +362,6 @@
       flex-wrap: wrap;
       gap: 6px;
     }
-    /* 일정 상단: 타이틀 + 날씨 박스 나란히 */
-    .schedule-top-row {
-      margin-top: 0.4rem;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-    }
-
-    .schedule-title-group {
-      flex: 1 1 220px;
-      min-width: 0;
-    }
-
-    @media (max-width: 720px) {
-      .schedule-top-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .weather-box {
-        max-width: none;
-        margin-top: 4px;
-      }
-    }
-  
 
     .day-toolbar button,
     .schedule-export-btn,
@@ -515,6 +490,7 @@
     }
 
     .weather-box {
+      margin-top: 8px;
       padding: 8px 10px;
       border-radius: 10px;
       border: 1px solid rgba(148, 163, 184, 0.8);
@@ -522,15 +498,73 @@
       font-size: 0.8rem;
       color: #1f2937;
       line-height: 1.4;
-      min-width: 180px;
-      max-width: 220px;
-      box-sizing: border-box;
     }
 
     .weather-title {
       font-weight: 600;
       margin-bottom: 4px;
     }
+
+    footer {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      text-align: right;
+    }
+
+    footer a {
+      color: #93c5fd;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* ===== 여기서부터 추가 스타일 ===== */
+
+    /* 여행 타이틀 자동완성 래퍼 */
+    .search-wrapper {
+      position: relative;
+    }
+
+    /* 여행 타이틀 자동완성 리스트 (일정용) */
+    #titleSuggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(209, 213, 219, 0.9);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 180px;
+      overflow-y: auto;
+      z-index: 20;
+      font-size: 0.85rem;
+    }
+
+    #titleSuggestions div {
+      padding: 7px 10px;
+      cursor: pointer;
+    }
+
+    #titleSuggestions div:hover {
+      background: rgba(37, 99, 235, 0.15);
+    }
+
+    /* 여행 타이틀 아래 간격 줄이기 & 날씨 박스 붙이기 */
+    #tripTitle {
+      margin-bottom: 4px;
+    }
+
+    .weather-box {
+      margin-top: 4px;
+      min-width: 0;
+      max-width: none;
+      box-sizing: border-box;
+    }
+
     /* 모바일에서 시간/지명/비고 크기 줄이고 📍 버튼 보이게 */
     @media (max-width: 600px) {
       .schedule-table-header {
@@ -554,7 +588,6 @@
         font-size: 0.95rem;
       }
     }
-
   </style>
 </head>
 <body data-pick-mode="search">
@@ -733,25 +766,24 @@
             각 행의 <b>📍 핀 아이콘</b>을 누르면 여행 타이틀 + 지명으로 구글맵 검색이 실행됩니다.
           </p>
 
-          <div class="schedule-top-row">
-            <!-- 왼쪽: 여행 타이틀 입력 -->
-            <div class="schedule-title-group">
-              <label for="tripTitle">여행 타이틀 / 방문 국가</label>
-              <input
-                id="tripTitle"
-                type="text"
-                placeholder="예: 홍콩 여행, 오사카 여행"
-              />
-            </div>
-
-            <!-- 오른쪽: 오늘/내일 날씨 박스 -->
-            <div id="weatherBox" class="weather-box" style="display:none;">
-              <div class="weather-title" id="weatherTitle"></div>
-              <div>오늘: <span id="weatherToday"></span></div>
-              <div>내일: <span id="weatherTomorrow"></span></div>
-            </div>
+          <!-- 여행 타이틀 + 자동완성 -->
+          <label for="tripTitle">여행 타이틀 / 방문 국가</label>
+          <div class="search-wrapper">
+            <input
+              id="tripTitle"
+              type="text"
+              placeholder="예: 홍콩 여행, 오사카 여행"
+              autocomplete="off"
+            />
+            <div id="titleSuggestions" style="display:none;"></div>
           </div>
 
+          <!-- 여행 타이틀 기반 날씨 -->
+          <div id="weatherBox" class="weather-box" style="display:none;">
+            <div class="weather-title" id="weatherTitle"></div>
+            <div>오늘: <span id="weatherToday"></span></div>
+            <div>내일: <span id="weatherTomorrow"></span></div>
+          </div>
 
           <div class="day-toolbar">
             <button type="button" id="addDayBtn">Day 추가</button>
@@ -890,6 +922,7 @@
 
     // ===== 일정/날씨 DOM =====
     const tripTitleInput   = document.getElementById("tripTitle");
+    const titleSugBox      = document.getElementById("titleSuggestions");
     const dayTabsContainer = document.getElementById("dayTabs");
     const rowsContainer    = document.getElementById("scheduleRows");
     const addDayBtn        = document.getElementById("addDayBtn");
@@ -1529,8 +1562,46 @@
       }
     }
 
+    // ===== 여행 타이틀 자동완성 =====
+    const tripKeywordList = weatherLocations.map(loc => loc.name);
+
+    function searchTripKeywords(q) {
+      const lower = q.toLowerCase();
+      if (!lower) return [];
+      return tripKeywordList.filter(name => name.toLowerCase().includes(lower));
+    }
+
+    tripTitleInput.addEventListener("input", () => {
+      const value = tripTitleInput.value.trim();
+      const results = searchTripKeywords(value);
+
+      if (!results.length) {
+        titleSugBox.style.display = "none";
+        return;
+      }
+
+      titleSugBox.innerHTML = "";
+      results.forEach(r => {
+        const div = document.createElement("div");
+        div.textContent = r;
+        div.addEventListener("mousedown", () => {
+          tripTitleInput.value = r + " 여행";
+          titleSugBox.style.display = "none";
+          updateWeatherForTitle();
+        });
+        titleSugBox.appendChild(div);
+      });
+
+      titleSugBox.style.display = "block";
+    });
+
+    tripTitleInput.addEventListener("blur", () => {
+      setTimeout(() => {
+        titleSugBox.style.display = "none";
+      }, 150);
+    });
+
     tripTitleInput.addEventListener("change", updateWeatherForTitle);
-    tripTitleInput.addEventListener("blur", updateWeatherForTitle);
     tripTitleInput.addEventListener("keyup", (e) => {
       if (e.key === "Enter") updateWeatherForTitle();
     });
