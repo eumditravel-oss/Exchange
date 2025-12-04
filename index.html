@@ -22,29 +22,40 @@
   <meta name="twitter:description" content="간편하게 환율,시차 계산과 여행 일정 정리를 한 번에." />
   <meta name="twitter:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
 
-  <style>
-    :root {
-      --panel-bg: rgba(255, 255, 255, 0.78);
-      --panel-inner-bg: rgba(255, 255, 255, 0.9);
-      --border: rgba(209, 213, 219, 0.8);
-      --accent: #2563eb;
-      --accent-soft: rgba(37, 99, 235, 0.12);
-      --text: #111827;
-      --muted: #4b5563;
-    }
 
-    * { box-sizing: border-box; }
+  <!-- 테마는 여기에 -->
+  
+/* 🌈 인스타 감성 파스텔 테마 */
+:root {
+  --panel-bg: rgba(255, 248, 242, 0.55);        /* 전체 페널 배경 */
+  --panel-inner-bg: rgba(255, 253, 249, 0.85); /* 박스 안 배경 */
+  --border: rgba(230, 215, 200, 0.6);          /* 연한 베이지 테두리 */
+  --accent: #ff8a7a;                           /* 인스타 감성 코랄 */
+  --accent-soft: rgba(255, 138, 122, 0.18);
+  --text: #4a3f38;                             /* 다크 브라운 텍스트 */
+  --muted: #7b6a5d;                            /* 부드러운 브라운 회색 */
+}
 
-    body {
-      margin: 0;
-      padding: 16px 8px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.3)),
-        url("plane-window.png") center/cover fixed no-repeat;
-    }
+/* ✨ 인스타 감성 배경 */
+body {
+  margin: 0;
+  padding: 16px 8px;
+  font-family: "Pretendard", "Noto Sans KR", system-ui, sans-serif;
+  color: var(--text);
 
+  /* 부드러운 크림 베이지 그라데이션 */
+  background:
+    linear-gradient(
+      to bottom right,
+      rgba(255, 241, 230, 0.9),
+      rgba(255, 250, 245, 0.85)
+    ),
+    url("plane-window.png") center/cover fixed no-repeat;
+}
+
+
+<!-- 테마는 여기에 --끝 -->
+    
     .app {
       max-width: 1040px;
       margin: 0 auto;
