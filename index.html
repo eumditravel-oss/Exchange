@@ -22,7 +22,6 @@
   <meta name="twitter:description" content="간편하게 환율,시차 계산과 여행 일정 정리를 한 번에." />
   <meta name="twitter:image" content="https://eumditravel-oss.github.io/Exchange/preview.png" />
 
-
   <!-- 테마는 여기에 -->
   <style>
 /* 🌈 인스타 감성 파스텔 테마 */
@@ -58,426 +57,426 @@ body {
     url("plane-window.png") center/cover fixed no-repeat;
 }
 
-  .app {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 18px 20px 14px;
-    background: var(--panel-bg);
-    border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow:
-      0 16px 38px rgba(15, 23, 42, 0.32),
-      0 0 0 1px rgba(255, 255, 255, 0.15);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-  }
+.app {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 18px 20px 14px;
+  background: var(--panel-bg);
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 16px 38px rgba(15, 23, 42, 0.32),
+    0 0 0 1px rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
 
-  header {
-    position: relative;
-    z-index: 1;
-  }
+header {
+  position: relative;
+  z-index: 1;
+}
 
-  h1 {
-    font-size: 1.45rem;
-    margin: 0 0 0.15rem;
-    color: #111827;
-  }
+h1 {
+  font-size: 1.45rem;
+  margin: 0 0 0.15rem;
+  color: #111827;
+}
 
-  @media (max-width: 720px) {
-    h1 { font-size: 1.25rem; }
-  }
+@media (max-width: 720px) {
+  h1 { font-size: 1.25rem; }
+}
 
-  p.desc {
-    margin: 0;
-    color: #374151;
-    font-size: 0.9rem;
-  }
+p.desc {
+  margin: 0;
+  color: #374151;
+  font-size: 0.9rem;
+}
 
-  /* 상단 탭 */
-  .top-bar {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-  }
+/* 상단 탭 */
+.top-bar {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
 
-  .tabs {
-    display: inline-flex;
-    padding: 2px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
-    gap: 4px;
-  }
+.tabs {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 1px 5px rgba(15, 23, 42, 0.18);
+  gap: 4px;
+}
 
-  .tab-button {
-    border: none;
-    background: transparent;
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 0.86rem;
-    cursor: pointer;
-    color: #6b7280;
-    white-space: nowrap;
-  }
+.tab-button {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  color: #6b7280;
+  white-space: nowrap;
+}
 
-  .tab-button.active {
-    background: #111827;
-    color: #f9fafb;
-  }
+.tab-button.active {
+  background: #111827;
+  color: #f9fafb;
+}
 
-  .view {
-    margin-top: 12px;
-  }
+.view {
+  margin-top: 12px;
+}
 
-  /* 패널 공통 */
-  .layout {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
+/* 패널 공통 */
+.layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
 
-  .panel {
-    flex: 1 1 320px;
-    min-width: 0;
-    border-radius: 16px;
-    border: 1px solid var(--border);
-    padding: 14px 16px 16px;
-    background: var(--panel-inner-bg);
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-  }
+.panel {
+  flex: 1 1 320px;
+  min-width: 0;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 14px 16px 16px;
+  background: var(--panel-inner-bg);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
 
-  .panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 6px;
-  }
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
 
-  .panel-header h2 {
-    margin: 0;
-    font-size: 1.05rem;
-  }
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
 
-  label {
-    display: block;
-    margin-top: 0.9rem;
-    font-weight: 600;
-    font-size: 0.88rem;
-  }
+label {
+  display: block;
+  margin-top: 0.9rem;
+  font-weight: 600;
+  font-size: 0.88rem;
+}
 
+input, select, textarea {
+  width: 100%;
+  padding: 7px 9px;
+  margin-top: 0.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+@media (max-width: 720px) {
   input, select, textarea {
-    width: 100%;
-    padding: 7px 9px;
-    margin-top: 0.35rem;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background: rgba(255, 255, 255, 0.92);
+    font-size: 16px !important;
   }
+}
 
-  @media (max-width: 720px) {
-    input, select, textarea {
-      font-size: 16px !important;
-    }
-  }
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-soft);
+}
 
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent-soft);
-  }
+.help {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.15rem;
+}
 
-  .help {
-    font-size: 0.78rem;
-    color: var(--muted);
-    margin-top: 0.15rem;
-  }
+.small-label {
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
-  .small-label {
-    margin-top: 0.35rem;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
+/* ===== 검색 제안 리스트 (환율/시차용) ===== */
+.suggestions {
+  position: relative;
+}
 
-  /* ===== 검색 제안 리스트 (환율/시차용) ===== */
-  .suggestions {
-    position: relative;
-  }
+.suggestions-list {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  font-size: 0.82rem;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
+}
 
-  .suggestions-list {
-    position: absolute;
-    z-index: 10;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid rgba(209, 213, 219, 0.9);
-    border-top: none;
-    max-height: 200px;
-    overflow-y: auto;
-    font-size: 0.82rem;
-    border-radius: 0 0 8px 8px;
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.35);
-  }
+.suggestion-item {
+  padding: 6px 9px;
+  cursor: pointer;
+}
 
-  .suggestion-item {
-    padding: 6px 9px;
-    cursor: pointer;
-  }
+.suggestion-item:hover {
+  background: var(--accent-soft);
+}
 
-  .suggestion-item:hover {
-    background: var(--accent-soft);
-  }
+.rate-info {
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
-  .rate-info {
-    margin-top: 0.45rem;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
+.error {
+  margin-top: 0.5rem;
+  color: #b91c1c;
+  font-size: 0.8rem;
+}
 
-  .error {
-    margin-top: 0.5rem;
-    color: #b91c1c;
-    font-size: 0.8rem;
-  }
+.ok {
+  margin-top: 0.45rem;
+  color: #2563eb;
+  font-size: 0.8rem;
+}
 
-  .ok {
-    margin-top: 0.45rem;
-    color: #2563eb;
-    font-size: 0.8rem;
-  }
+.calc-summary {
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+}
 
-  .calc-summary {
-    margin-top: 0.7rem;
-    font-size: 0.9rem;
-  }
+.calc-summary div {
+  margin-top: 0.25rem;
+}
 
-  .calc-summary div {
-    margin-top: 0.25rem;
-  }
+.calc-main {
+  font-weight: 600;
+}
 
-  .calc-main {
-    font-weight: 600;
-  }
+.section-divider {
+  margin-top: 0.9rem;
+  padding-top: 0.7rem;
+  border-top: 1px dashed rgba(148, 163, 184, 0.8);
+}
 
-  .section-divider {
-    margin-top: 0.9rem;
-    padding-top: 0.7rem;
-    border-top: 1px dashed rgba(148, 163, 184, 0.8);
-  }
+.sub-heading {
+  margin: 0 0 0.3rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 
-  .sub-heading {
-    margin: 0 0 0.3rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
+/* PC/모바일 설명 분리 */
+.only-desktop { display: block; }
+.only-mobile  { display: none; }
 
-  /* PC/모바일 설명 분리 */
-  .only-desktop { display: block; }
-  .only-mobile  { display: none; }
+@media (max-width: 720px) {
+  .only-desktop { display: none; }
+  .only-mobile  { display: block; }
+}
 
-  @media (max-width: 720px) {
-    .only-desktop { display: none; }
-    .only-mobile  { display: block; }
-  }
+/* 선택 방식 토글 */
+.mode-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
+  font-size: 0.78rem;
+  color: #4b5563;
+  white-space: nowrap;
+}
 
-  /* 선택 방식 토글 */
-  .mode-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.12);
-    font-size: 0.78rem;
-    color: #4b5563;
-    white-space: nowrap;
-  }
+.mode-label {
+  font-weight: 500;
+  font-size: 0.78rem;
+}
 
-  .mode-label {
-    font-weight: 500;
-    font-size: 0.78rem;
-  }
+.mode-btn {
+  border: none;
+  background: transparent;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: #6b7280;
+  white-space: nowrap;
+}
 
-  .mode-btn {
-    border: none;
-    background: transparent;
-    padding: 4px 9px;
-    border-radius: 999px;
-    font-size: 0.78rem;
-    cursor: pointer;
-    color: #6b7280;
-    white-space: nowrap;
-  }
+.mode-btn.active {
+  background: #111827;
+  color: #f9fafb;
+}
 
-  .mode-btn.active {
-    background: #111827;
-    color: #f9fafb;
-  }
+/* 모드 전환 */
+body[data-pick-mode="search"] .select-mode { display: none; }
+body[data-pick-mode="search"] .search-mode { display: block; }
 
-  /* 모드 전환 */
-  body[data-pick-mode="search"] .select-mode { display: none; }
-  body[data-pick-mode="search"] .search-mode { display: block; }
+body[data-pick-mode="select"] .select-mode { display: block; }
+body[data-pick-mode="select"] .search-mode { display: none; }
 
-  body[data-pick-mode="select"] .select-mode { display: block; }
-  body[data-pick-mode="select"] .search-mode { display: none; }
+/* 합산식 + / - 키패드 */
+.calc-keypad-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 0.78rem;
+}
 
-  /* 합산식 + / - 키패드 */
-  .calc-keypad-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 6px;
-    font-size: 0.78rem;
-  }
+.calc-keypad {
+  display: inline-flex;
+  gap: 6px;
+}
 
-  .calc-keypad {
-    display: inline-flex;
-    gap: 6px;
-  }
+.calc-key {
+  min-width: 32px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #f9fafb;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
 
-  .calc-key {
-    min-width: 32px;
-    padding: 4px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    background: #f9fafb;
-    font-size: 0.9rem;
-    cursor: pointer;
-  }
+.calc-key:active { background: #e5e7eb; }
 
-  .calc-key:active { background: #e5e7eb; }
+.calc-hint {
+  color: var(--muted);
+  white-space: nowrap;
+}
 
-  .calc-hint {
-    color: var(--muted);
-    white-space: nowrap;
-  }
+/* ===== 일정 관리 ===== */
+.schedule-header-text {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
 
-  /* ===== 일정 관리 ===== */
-  .schedule-header-text {
-    margin-top: 0.2rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
+.day-toolbar {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 
-  .day-toolbar {
-    margin-top: 0.85rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+.day-toolbar button,
+.schedule-export-btn,
+.schedule-import-btn {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #f9fafb;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 
-  .day-toolbar button,
-  .schedule-export-btn,
-  .schedule-import-btn {
-    padding: 5px 10px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    background: #f9fafb;
-    font-size: 0.8rem;
-    cursor: pointer;
-  }
+.day-tabs {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
 
-  .day-tabs {
-    margin-top: 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
+.day-tab-btn {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #ffffff;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
 
-  .day-tab-btn {
-    padding: 4px 9px;
-    border-radius: 999px;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    background: #ffffff;
-    font-size: 0.78rem;
-    cursor: pointer;
-  }
+.day-tab-btn.active {
+  background: #111827;
+  color: #f9fafb;
+  border-color: #111827;
+}
 
-  .day-tab-btn.active {
-    background: #111827;
-    color: #f9fafb;
-    border-color: #111827;
-  }
+.schedule-table-header {
+  display: grid;
+  grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 12px;
+  align-items: center;
+}
 
-  .schedule-table-header {
-    display: grid;
-    grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-top: 12px;
-    align-items: center;
-  }
+.schedule-row {
+  display: grid;
+  grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
+  gap: 6px;
+  margin-top: 6px;
+  align-items: stretch;
+}
 
-  .schedule-row {
-    display: grid;
-    grid-template-columns: 70px minmax(120px, 2fr) minmax(120px, 2fr) 64px;
-    gap: 6px;
-    margin-top: 6px;
-    align-items: stretch;
-  }
+.schedule-row input {
+  width: 100%;
+  padding: 6px 7px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  box-sizing: border-box;
+}
 
-  .schedule-row input {
-    width: 100%;
-    padding: 6px 7px;
-    font-size: 0.82rem;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.92);
-    box-sizing: border-box;
-  }
+.schedule-textarea {
+  width: 100%;
+  padding: 6px 7px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  resize: vertical;
+  min-height: 32px;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
 
-  .schedule-textarea {
-    width: 100%;
-    padding: 6px 7px;
-    font-size: 0.82rem;
-    border: 1px solid rgba(148, 163, 184, 0.9);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.92);
-    resize: vertical;
-    min-height: 32px;
-    line-height: 1.3;
-    overflow-wrap: break-word;
-    word-break: break-word;
-  }
+.map-btn {
+  width: 100%;
+  padding: 0;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .map-btn {
-    width: 100%;
-    padding: 0;
-    height: 32px;
-    border-radius: 8px;
-    border: none;
-    background: transparent;
-    font-size: 1.25rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+.map-btn:active {
+  transform: scale(0.9);
+}
 
-  .map-btn:active {
-    transform: scale(0.9);
-  }
-
-  .add-row-btn {
-    margin-top: 8px;
-    padding: 5px 10px;
-    border-radius: 999px;
-    border: 1px dashed rgba(148, 163, 184, 0.9);
-    background: #f9fafb;
-    font-size: 0.8rem;
-    cursor: pointer;
-  }
+.add-row-btn {
+  margin-top: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px dashed rgba(148, 163, 184, 0.9);
+  background: #f9fafb;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
 
 .schedule-footer {
   margin-top: 10px;
@@ -499,120 +498,118 @@ body {
   cursor: pointer;
 }
 
+.schedule-footer-note {
+  margin-top: 8px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
 
-  .schedule-footer-note {
-    margin-top: 8px;
+.schedule-export-area {
+  margin-top: 8px;
+  width: 100%;
+  min-height: 80px;
+  font-size: 0.8rem;
+}
+
+.weather-box {
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  background: rgba(239, 246, 255, 0.9);
+  font-size: 0.8rem;
+  color: #1f2937;
+  line-height: 1.4;
+}
+
+.weather-title {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+footer {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  text-align: right;
+}
+
+footer a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* 여행 타이틀 자동완성 래퍼 */
+.search-wrapper {
+  position: relative;
+}
+
+/* 여행 타이틀 자동완성 리스트 (일정용) */
+#titleSuggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(209, 213, 219, 0.9);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 180px;
+  overflow-y: auto;
+  z-index: 20;
+  font-size: 0.85rem;
+}
+
+#titleSuggestions div {
+  padding: 7px 10px;
+  cursor: pointer;
+}
+
+#titleSuggestions div:hover {
+  background: rgba(37, 99, 235, 0.15);
+}
+
+/* 여행 타이틀 아래 간격 줄이기 & 날씨 박스 붙이기 */
+#tripTitle {
+  margin-bottom: 4px;
+}
+
+.weather-box {
+  margin-top: 4px;
+  min-width: 0;
+  max-width: none;
+  box-sizing: border-box;
+}
+
+/* 모바일에서 시간/지명/비고 크기 줄이고 📍 버튼 보이게 */
+@media (max-width: 600px) {
+  .schedule-table-header {
+    grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
+    font-size: 0.75rem;
+  }
+
+  .schedule-row {
+    grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
+    gap: 4px;
+  }
+
+  .schedule-row input,
+  .schedule-textarea {
     font-size: 0.78rem;
-    color: var(--muted);
+    padding: 4px 5px;
   }
 
-  .schedule-export-area {
-    margin-top: 8px;
-    width: 100%;
-    min-height: 80px;
-    font-size: 0.8rem;
+  .map-btn {
+    height: 26px;
+    font-size: 0.95rem;
   }
-
-  .weather-box {
-    margin-top: 8px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    border: 1px solid rgba(148, 163, 184, 0.8);
-    background: rgba(239, 246, 255, 0.9);
-    font-size: 0.8rem;
-    color: #1f2937;
-    line-height: 1.4;
-  }
-
-  .weather-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-
-  footer {
-    margin-top: 12px;
-    font-size: 0.8rem;
-    color: #9ca3af;
-    text-align: right;
-  }
-
-  footer a {
-    color: #93c5fd;
-    text-decoration: none;
-  }
-
-  footer a:hover {
-    text-decoration: underline;
-  }
-
-  /* 여행 타이틀 자동완성 래퍼 */
-  .search-wrapper {
-    position: relative;
-  }
-
-  /* 여행 타이틀 자동완성 리스트 (일정용) */
-  #titleSuggestions {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid rgba(209, 213, 219, 0.9);
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    max-height: 180px;
-    overflow-y: auto;
-    z-index: 20;
-    font-size: 0.85rem;
-  }
-
-  #titleSuggestions div {
-    padding: 7px 10px;
-    cursor: pointer;
-  }
-
-  #titleSuggestions div:hover {
-    background: rgba(37, 99, 235, 0.15);
-  }
-
-  /* 여행 타이틀 아래 간격 줄이기 & 날씨 박스 붙이기 */
-  #tripTitle {
-    margin-bottom: 4px;
-  }
-
-  .weather-box {
-    margin-top: 4px;
-    min-width: 0;
-    max-width: none;
-    box-sizing: border-box;
-  }
-
-  /* 모바일에서 시간/지명/비고 크기 줄이고 📍 버튼 보이게 */
-  @media (max-width: 600px) {
-    .schedule-table-header {
-      grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
-      font-size: 0.75rem;
-    }
-
-    .schedule-row {
-      grid-template-columns: 58px minmax(80px, 2fr) minmax(80px, 2fr) 34px;
-      gap: 4px;
-    }
-
-    .schedule-row input,
-    .schedule-textarea {
-      font-size: 0.78rem;
-      padding: 4px 5px;
-    }
-
-    .map-btn {
-      height: 26px;
-      font-size: 0.95rem;
-    }
-  }
+}
   </style>
   <!-- 테마는 여기에 --끝 -->
-
 </head>
 <body data-pick-mode="search">
   <div class="app">
@@ -780,7 +777,6 @@ body {
     <div class="view view-schedule" style="display:none;">
       <div class="layout">
         <section class="panel">
-
           <div class="panel-header">
             <h2>일정 관리</h2>
           </div>
@@ -790,18 +786,17 @@ body {
             각 행의 <b>📍 핀 아이콘</b>을 누르면 여행 타이틀 + 지명으로 구글맵 검색이 실행됩니다.
           </p>
 
-          <!-- 여행 타이틀 + 자동완성 -->
-<label for="tripTitle">방문 국가</label>
-<div class="suggestions">
-  <input
-    id="tripTitle"
-    type="text"
-    placeholder="예: 홍콩, 오사카, 도쿄"
-    autocomplete="off"
-  />
-  <div id="titleSuggestions" class="suggestions-list" style="display:none;"></div>
-</div>
-
+          <!-- 방문 국가(여행 타이틀) + 자동완성 -->
+          <label for="tripTitle">방문 국가</label>
+          <div class="suggestions">
+            <input
+              id="tripTitle"
+              type="text"
+              placeholder="예: 홍콩, 오사카, 도쿄"
+              autocomplete="off"
+            />
+            <div id="titleSuggestions" class="suggestions-list" style="display:none;"></div>
+          </div>
 
           <!-- 여행 타이틀 기반 날씨 -->
           <div id="weatherBox" class="weather-box" style="display:none;">
@@ -829,13 +824,11 @@ body {
 
           <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
 
-<div class="schedule-footer">
-  <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
-  <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
-  <!-- ✅ 새로 추가된 버튼 -->
-  <button type="button" class="schedule-share-btn" id="shareKakaoBtn">카카오톡 공유</button>
-</div>
-
+          <div class="schedule-footer">
+            <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
+            <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
+            <button type="button" class="schedule-share-btn" id="shareKakaoBtn">카카오톡 공유</button>
+          </div>
 
           <textarea
             id="exportTextArea"
@@ -957,12 +950,11 @@ body {
     const deleteDayBtn     = document.getElementById("deleteDayBtn");
     const renameDayBtn     = document.getElementById("renameDayBtn");
     const addRowBtn        = document.getElementById("addRowBtn");
-const exportBtn        = document.getElementById("exportBtn");
-const importBtn        = document.getElementById("importBtn");
-const exportTextArea   = document.getElementById("exportTextArea");
-const importFileInput  = document.getElementById("importFileInput");
-const shareKakaoBtn    = document.getElementById("shareKakaoBtn"); // ✅ 추가
-
+    const exportBtn        = document.getElementById("exportBtn");
+    const importBtn        = document.getElementById("importBtn");
+    const exportTextArea   = document.getElementById("exportTextArea");
+    const importFileInput  = document.getElementById("importFileInput");
+    const shareKakaoBtn    = document.getElementById("shareKakaoBtn");
 
     const weatherBox       = document.getElementById("weatherBox");
     const weatherTitleEl   = document.getElementById("weatherTitle");
@@ -1177,9 +1169,6 @@ const shareKakaoBtn    = document.getElementById("shareKakaoBtn"); // ✅ 추가
     populateSelect(fromSelect);
     populateSelect(toSelect);
 
-    fromSelect.addEventListener("change", () => setBase(fromSelect.value));
-    toSelect.addEventListener("change",   () => setTarget(toSelect.value));
-
     fromSearchInput.value = optionLabel(findCurrency("HKD"));
     toSearchInput.value   = optionLabel(findCurrency("KRW"));
     fromLabel.textContent = "선택된 기준 통화: 홍콩 달러 (HKD)";
@@ -1312,92 +1301,89 @@ const shareKakaoBtn    = document.getElementById("shareKakaoBtn"); // ✅ 추가
       });
     }
 
-function renderRows() {
-  rowsContainer.innerHTML = "";
-  const day = scheduleDays[currentDayIndex];
-  if (!day) return;
+    function renderRows() {
+      rowsContainer.innerHTML = "";
+      const day = scheduleDays[currentDayIndex];
+      if (!day) return;
 
-  day.rows.forEach((row) => {
-    const div = document.createElement("div");
-    div.className = "schedule-row";
+      day.rows.forEach((row) => {
+        const div = document.createElement("div");
+        div.className = "schedule-row";
 
-    const timeInput = document.createElement("input");
-    timeInput.type = "text";
-    timeInput.placeholder = "예: 09:00";
-    timeInput.value = row.time || "";
-    timeInput.addEventListener("input", () => {
-      row.time = timeInput.value;
-    });
+        const timeInput = document.createElement("input");
+        timeInput.type = "text";
+        timeInput.placeholder = "예: 09:00";
+        timeInput.value = row.time || "";
+        timeInput.addEventListener("input", () => {
+          row.time = timeInput.value;
+        });
 
-    const placeTextarea = document.createElement("textarea");
-    placeTextarea.className = "schedule-textarea";
-    placeTextarea.placeholder = "예: 침사추이 스타의 거리";
-    placeTextarea.value = row.place || "";
+        const placeTextarea = document.createElement("textarea");
+        placeTextarea.className = "schedule-textarea";
+        placeTextarea.placeholder = "예: 침사추이 스타의 거리";
+        placeTextarea.value = row.place || "";
 
-    // 🔧 한글 마지막 글자가 다음 칸으로 딸려오는 현상 보정
-    placeTextarea.addEventListener("input", () => {
-      let v = placeTextarea.value;
-      // 이 필드에 처음 입력할 때만 검사
-      if (!placeTextarea.dataset.cleaned && v.length >= 2) {
-        const prevLast = (timeInput.value || "").slice(-1); // 앞 칸(시간) 마지막 글자
-        if (prevLast && v[0] === prevLast) {
-          // "시침사추이" 같이 시작 글자가 앞 칸 마지막 글자면 잘라냄
-          v = v.slice(1);
-          placeTextarea.value = v;
-        }
-        placeTextarea.dataset.cleaned = "1";
-      }
-      row.place = v;
-    });
+        // 🔧 한글 마지막 글자가 다음 칸으로 딸려오는 현상 보정
+        placeTextarea.addEventListener("input", () => {
+          let v = placeTextarea.value;
+          if (!placeTextarea.dataset.cleaned && v.length >= 2) {
+            const prevLast = (timeInput.value || "").slice(-1);
+            if (prevLast && v[0] === prevLast) {
+              v = v.slice(1);
+              placeTextarea.value = v;
+            }
+            placeTextarea.dataset.cleaned = "1";
+          }
+          row.place = v;
+        });
 
-    const noteTextarea = document.createElement("textarea");
-    noteTextarea.className = "schedule-textarea";
-    noteTextarea.placeholder = "예: 야경 감상";
-    noteTextarea.value = row.note || "";
+        const noteTextarea = document.createElement("textarea");
+        noteTextarea.className = "schedule-textarea";
+        noteTextarea.placeholder = "예: 야경 감상";
+        noteTextarea.value = row.note || "";
 
-    // 🔧 비고 칸도 앞 지명 칸 마지막 글자 딸려오는 것 보정
-    noteTextarea.addEventListener("input", () => {
-      let v = noteTextarea.value;
-      if (!noteTextarea.dataset.cleaned && v.length >= 2) {
-        const prevLast = (placeTextarea.value || "").slice(-1); // 앞 칸(지명) 마지막 글자
-        if (prevLast && v[0] === prevLast) {
-          v = v.slice(1);
-          noteTextarea.value = v;
-        }
-        noteTextarea.dataset.cleaned = "1";
-      }
-      row.note = v;
-    });
+        // 🔧 비고 칸도 앞 지명 칸 마지막 글자 딸려오는 것 보정
+        noteTextarea.addEventListener("input", () => {
+          let v = noteTextarea.value;
+          if (!noteTextarea.dataset.cleaned && v.length >= 2) {
+            const prevLast = (placeTextarea.value || "").slice(-1);
+            if (prevLast && v[0] === prevLast) {
+              v = v.slice(1);
+              noteTextarea.value = v;
+            }
+            noteTextarea.dataset.cleaned = "1";
+          }
+          row.note = v;
+        });
 
-    const mapBtn = document.createElement("button");
-    mapBtn.type = "button";
-    mapBtn.className = "map-btn";
-    mapBtn.textContent = "📍";
-    mapBtn.title = "구글맵 열기";
-    mapBtn.setAttribute("aria-label", "구글맵 열기");
+        const mapBtn = document.createElement("button");
+        mapBtn.type = "button";
+        mapBtn.className = "map-btn";
+        mapBtn.textContent = "📍";
+        mapBtn.title = "구글맵 열기";
+        mapBtn.setAttribute("aria-label", "구글맵 열기");
 
-    mapBtn.addEventListener("click", () => {
-      const title = tripTitleInput.value.trim();
-      const place = (row.place || "").trim();
-      const queryParts = [];
-      if (title) queryParts.push(title);
-      if (place) queryParts.push(place);
-      if (!queryParts.length) return;
-      const url =
-        "https://www.google.com/maps/search/?api=1&query=" +
-        encodeURIComponent(queryParts.join(" "));
-      window.open(url, "_blank");
-    });
+        mapBtn.addEventListener("click", () => {
+          const title = tripTitleInput.value.trim();
+          const place = (row.place || "").trim();
+          const queryParts = [];
+          if (title) queryParts.push(title);
+          if (place) queryParts.push(place);
+          if (!queryParts.length) return;
+          const url =
+            "https://www.google.com/maps/search/?api=1&query=" +
+            encodeURIComponent(queryParts.join(" "));
+          window.open(url, "_blank");
+        });
 
-    div.appendChild(timeInput);
-    div.appendChild(placeTextarea);
-    div.appendChild(noteTextarea);
-    div.appendChild(mapBtn);
+        div.appendChild(timeInput);
+        div.appendChild(placeTextarea);
+        div.appendChild(noteTextarea);
+        div.appendChild(mapBtn);
 
-    rowsContainer.appendChild(div);
-  });
-}
-
+        rowsContainer.appendChild(div);
+      });
+    }
 
     function addRow() {
       const day = scheduleDays[currentDayIndex];
@@ -1516,64 +1502,59 @@ function renderRows() {
       updateWeatherForTitle();
     }
 
-function handleImportFile(files) {
-  if (!files || !files.length) return;
-  const file = files[0];
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const text = e.target.result || "";
-    exportTextArea.value = text;
-    parseImportText(text);
-  };
-  reader.readAsText(file, "utf-8");
-}
+    function handleImportFile(files) {
+      if (!files || !files.length) return;
+      const file = files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target.result || "";
+        exportTextArea.value = text;
+        parseImportText(text);
+      };
+      reader.readAsText(file, "utf-8");
+    }
 
-/* ===== ✅ 일정 공유 (URL에 일정 포함) ===== */
-function buildShareUrl() {
-  const text = buildExportText();  // 현재 일정 -> 텍스트
-  const baseUrl = window.location.origin + window.location.pathname;
+    /* ===== ✅ 일정 공유 (URL에 일정 포함) ===== */
+    function buildShareUrl() {
+      const text = buildExportText();  // 현재 일정 -> 텍스트
+      const baseUrl = window.location.origin + window.location.pathname;
 
-  // 텍스트를 base64로 인코딩해서 해시(#) 뒤에 붙임
-  const encoded = btoa(unescape(encodeURIComponent(text)));
-  return `${baseUrl}#plan=${encodeURIComponent(encoded)}`;
-}
+      // 텍스트를 base64로 인코딩해서 해시(#) 뒤에 붙임
+      const encoded = btoa(unescape(encodeURIComponent(text)));
+      return `${baseUrl}#plan=${encodeURIComponent(encoded)}`;
+    }
 
-async function shareSchedule() {
-  const url = buildShareUrl();
+    async function shareSchedule() {
+      const url = buildShareUrl();
 
-  // 모바일 등 지원 브라우저에서는 시스템 공유 시트 사용
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: tripTitleInput.value || "여행 일정",
-        text: "여행 일정 링크를 공유합니다.",
-        url
-      });
-      return;
-    } catch (e) {
-      if (e.name === "AbortError") {
-        // 사용자가 공유를 취소한 경우
-        return;
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: tripTitleInput.value || "여행 일정",
+            text: "여행 일정 링크를 공유합니다.",
+            url
+          });
+          return;
+        } catch (e) {
+          if (e.name === "AbortError") {
+            return;
+          }
+          console.error(e);
+        }
       }
-      console.error(e);
-    }
-  }
 
-  // 그 외 환경: 링크를 클립보드에 복사
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    try {
-      await navigator.clipboard.writeText(url);
-      alert("공유용 링크를 클립보드에 복사했어요.\n카카오톡 대화창에 붙여넣기 해서 보내 주세요!");
-    } catch (e) {
-      console.error(e);
-      prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(url);
+          alert("공유용 링크를 클립보드에 복사했어요.\n카카오톡 대화창에 붙여넣기 해서 보내 주세요!");
+        } catch (e) {
+          console.error(e);
+          prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
+        }
+      } else {
+        prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
+      }
     }
-  } else {
-    // 아주 구형 브라우저용
-    prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
-  }
-}
-
 
     // ===== 여행 타이틀 기반 날씨 =====
     const weatherLocations = [
@@ -1587,7 +1568,7 @@ async function shareSchedule() {
       { keywords: ["나트랑", "nha trang"],           name: "나트랑",    lat: 12.2388, lon: 109.1967 },
       { keywords: ["파리", "paris"],                 name: "파리",      lat: 48.8566, lon: 2.3522 },
       { keywords: ["런던", "london"],                name: "런던",      lat: 51.5074, lon: -0.1278 },
-      { keywords: ["뉴욕", "new york"],             name: "뉴욕",      lat: 40.7128, lon: -74.0060 },
+      { keywords: ["뉴욕", "new york"],              name: "뉴욕",      lat: 40.7128, lon: -74.0060 },
       { keywords: ["괌", "guam"],                    name: "괌",       lat: 13.4443, lon: 144.7937 },
       { keywords: ["세부", "cebu"],                  name: "세부",      lat: 10.3157, lon: 123.8854 },
       { keywords: ["제주", "jeju"],                  name: "제주",      lat: 33.4996, lon: 126.5312 }
@@ -1603,101 +1584,38 @@ async function shareSchedule() {
       return null;
     }
 
-function weatherCodeToText(code) {
-  if (code === 0) return "맑음";
-  if ([1, 2, 3].includes(code)) return "부분적/대체로 흐림";
-  if ([45, 48].includes(code)) return "안개";
-  if ([51, 53, 55].includes(code)) return "이슬비";
-  if ([61, 63, 65].includes(code)) return "비";
-  if ([71, 73, 75].includes(code)) return "눈";
-  if ([80, 81, 82].includes(code)) return "소나기";
-  if ([95, 96, 99].includes(code)) return "뇌우";
-  return "변동";
-}
-
-/* ✅ 여행 타이틀 기반 날씨 업데이트 */
-async function updateWeatherForTitle() {
-  const title = tripTitleInput.value.trim();
-
-  // 제목이 비어 있을 때 안내 메시지
-  if (!title) {
-    weatherBox.style.display = "block";
-    weatherTitleEl.textContent = "날씨 정보";
-    weatherTodayEl.textContent =
-      "방문 국가를 입력하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
-    weatherTomorrowEl.textContent = "";
-    return;
-  }
-
-  const loc = findWeatherLocationFromTitle(title);
-
-  // 매칭되는 도시가 없을 때
-  if (!loc) {
-    weatherBox.style.display = "block";
-    weatherTitleEl.textContent = "날씨 정보";
-    weatherTodayEl.textContent =
-      "타이틀에 도시명을 포함하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
-    weatherTomorrowEl.textContent = "";
-    return;
-  }
-
-  // 도시를 찾았을 때
-  weatherBox.style.display = "block";
-  weatherTitleEl.textContent = `${loc.name} 오늘 / 내일 날씨`;
-
-  try {
-    const url =
-      `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
-      `&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("weather http error");
-    const data = await res.json();
-    if (!data.daily || !data.daily.time || data.daily.time.length < 2) {
-      throw new Error("no daily data");
+    function weatherCodeToText(code) {
+      if (code === 0) return "맑음";
+      if ([1, 2, 3].includes(code)) return "부분적/대체로 흐림";
+      if ([45, 48].includes(code)) return "안개";
+      if ([51, 53, 55].includes(code)) return "이슬비";
+      if ([61, 63, 65].includes(code)) return "비";
+      if ([71, 73, 75].includes(code)) return "눈";
+      if ([80, 81, 82].includes(code)) return "소나기";
+      if ([95, 96, 99].includes(code)) return "뇌우";
+      return "변동";
     }
 
-    const todayMax = data.daily.temperature_2m_max[0];
-    const todayMin = data.daily.temperature_2m_min[0];
-    const todayCode = data.daily.weathercode[0];
+    /* ✅ 여행 타이틀 기반 날씨 업데이트 */
+    async function updateWeatherForTitle() {
+      const title = tripTitleInput.value.trim();
 
-    const tomorrowMax = data.daily.temperature_2m_max[1];
-    const tomorrowMin = data.daily.temperature_2m_min[1];
-    const tomorrowCode = data.daily.weathercode[1];
-
-    weatherTodayEl.textContent =
-      `${todayMin.toFixed(1)}°C ~ ${todayMax.toFixed(1)}°C, ${weatherCodeToText(todayCode)}`;
-    weatherTomorrowEl.textContent =
-      `${tomorrowMin.toFixed(1)}°C ~ ${tomorrowMax.toFixed(1)}°C, ${weatherCodeToText(tomorrowCode)}`;
-  } catch (e) {
-    console.error(e);
-    weatherTodayEl.textContent = "날씨 정보를 불러오지 못했습니다.";
-    weatherTomorrowEl.textContent = "";
-  }
-}
-
-/* ✅ URL 해시에서 일정 불러오기 (#plan=...) */
-function loadPlanFromHash() {
-  const hash = window.location.hash || "";
-  if (!hash.startsWith("#plan=")) return;
-
-  try {
-    const encoded = decodeURIComponent(hash.slice(6)); // "plan=" 뒤부터
-    const text = decodeURIComponent(escape(atob(encoded))); // base64 -> 문자열
-
-    exportTextArea.value = text;
-    parseImportText(text);  // 기존 함수 재사용
-  } catch (e) {
-    console.error("해시에서 일정 불러오기 오류:", e);
-  }
-}
-
-
+      if (!title) {
+        weatherBox.style.display = "block";
+        weatherTitleEl.textContent = "날씨 정보";
+        weatherTodayEl.textContent =
+          "방문 국가를 입력하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
+        weatherTomorrowEl.textContent = "";
+        return;
+      }
 
       const loc = findWeatherLocationFromTitle(title);
+
       if (!loc) {
         weatherBox.style.display = "block";
-        weatherTitleEl.textContent = `날씨 정보`;
-        weatherTodayEl.textContent = "타이틀에 도시명을 포함하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
+        weatherTitleEl.textContent = "날씨 정보";
+        weatherTodayEl.textContent =
+          "타이틀에 도시명을 포함하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
         weatherTomorrowEl.textContent = "";
         return;
       }
@@ -1735,6 +1653,22 @@ function loadPlanFromHash() {
       }
     }
 
+    /* ✅ URL 해시에서 일정 불러오기 (#plan=...) */
+    function loadPlanFromHash() {
+      const hash = window.location.hash || "";
+      if (!hash.startsWith("#plan=")) return;
+
+      try {
+        const encoded = decodeURIComponent(hash.slice(6));
+        const text = decodeURIComponent(escape(atob(encoded)));
+
+        exportTextArea.value = text;
+        parseImportText(text);
+      } catch (e) {
+        console.error("해시에서 일정 불러오기 오류:", e);
+      }
+    }
+
     // ===== 여행 타이틀 자동완성 =====
     const tripKeywordList = weatherLocations.map(loc => loc.name);
 
@@ -1754,19 +1688,18 @@ function loadPlanFromHash() {
       }
 
       titleSugBox.innerHTML = "";
-results.forEach(name => {
-  const div = document.createElement("div");
-  div.className = "suggestion-item";
-  div.textContent = name;
-  div.addEventListener("mousedown", (e) => {
-    e.preventDefault();
-    tripTitleInput.value = name;   // ← 여기만 변경!
-    titleSugBox.style.display = "none";
-    updateWeatherForTitle();
-  });
-  titleSugBox.appendChild(div);
-});
-
+      results.forEach(name => {
+        const div = document.createElement("div");
+        div.className = "suggestion-item";
+        div.textContent = name;
+        div.addEventListener("mousedown", (e) => {
+          e.preventDefault();
+          tripTitleInput.value = name;
+          titleSugBox.style.display = "none";
+          updateWeatherForTitle();
+        });
+        titleSugBox.appendChild(div);
+      });
 
       titleSugBox.style.display = "block";
     });
@@ -1783,23 +1716,22 @@ results.forEach(name => {
     });
 
     // ===== 일정 이벤트 연결 =====
-addRowBtn.addEventListener("click", addRow);
-addDayBtn.addEventListener("click", addDay);
-deleteDayBtn.addEventListener("click", deleteCurrentDay);
-renameDayBtn.addEventListener("click", renameCurrentDay);
-exportBtn.addEventListener("click", exportToFile);
-importBtn.addEventListener("click", () => importFileInput.click());
-importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
-shareKakaoBtn.addEventListener("click", shareSchedule); // ✅ 추가
+    addRowBtn.addEventListener("click", addRow);
+    addDayBtn.addEventListener("click", addDay);
+    deleteDayBtn.addEventListener("click", deleteCurrentDay);
+    renameDayBtn.addEventListener("click", renameCurrentDay);
+    exportBtn.addEventListener("click", exportToFile);
+    importBtn.addEventListener("click", () => importFileInput.click());
+    importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
+    shareKakaoBtn.addEventListener("click", shareSchedule);
 
-// ===== 초기화 =====
-renderDayTabs();
-renderRows();
-updateWeatherForTitle();
-loadPlanFromHash();  // ✅ 공유 링크로 들어왔을 때 일정 복원
-fetchRate();
-setPickMode("search");
-
+    // ===== 초기화 =====
+    renderDayTabs();
+    renderRows();
+    updateWeatherForTitle();
+    loadPlanFromHash();
+    fetchRate();
+    setPickMode("search");
   </script>
 </body>
 </html>
