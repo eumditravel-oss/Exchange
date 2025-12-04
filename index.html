@@ -1603,20 +1603,76 @@ async function shareSchedule() {
       return null;
     }
 
-    function weatherCodeToText(code) {
-      if (code === 0) return "맑음";
-      if ([1, 2, 3].includes(code)) return "부분적/대체로 흐림";
-      if ([45, 48].includes(code)) return "안개";
-      if ([51, 53, 55].includes(code)) return "이슬비";
-      if ([61, 63, 65].includes(code)) return "비";
-      if ([71, 73, 75].includes(code)) return "눈";
-      if ([80, 81, 82].includes(code)) return "소나기";
-      if ([95, 96, 99].includes(code)) return "뇌우";
-      return "변동";
+function weatherCodeToText(code) {
+  if (code === 0) return "맑음";
+  if ([1, 2, 3].includes(code)) return "부분적/대체로 흐림";
+  if ([45, 48].includes(code)) return "안개";
+  if ([51, 53, 55].includes(code)) return "이슬비";
+  if ([61, 63, 65].includes(code)) return "비";
+  if ([71, 73, 75].includes(code)) return "눈";
+  if ([80, 81, 82].includes(code)) return "소나기";
+  if ([95, 96, 99].includes(code)) return "뇌우";
+  return "변동";
+}
+
+/* ✅ 여행 타이틀 기반 날씨 업데이트 */
+async function updateWeatherForTitle() {
+  const title = tripTitleInput.value.trim();
+
+  // 제목이 비어 있을 때 안내 메시지
+  if (!title) {
+    weatherBox.style.display = "block";
+    weatherTitleEl.textContent = "날씨 정보";
+    weatherTodayEl.textContent =
+      "방문 국가를 입력하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
+    weatherTomorrowEl.textContent = "";
+    return;
+  }
+
+  const loc = findWeatherLocationFromTitle(title);
+
+  // 매칭되는 도시가 없을 때
+  if (!loc) {
+    weatherBox.style.display = "block";
+    weatherTitleEl.textContent = "날씨 정보";
+    weatherTodayEl.textContent =
+      "타이틀에 도시명을 포함하면 오늘/내일 날씨를 보여줄게요. (예: 홍콩, 오사카 등)";
+    weatherTomorrowEl.textContent = "";
+    return;
+  }
+
+  // 도시를 찾았을 때
+  weatherBox.style.display = "block";
+  weatherTitleEl.textContent = `${loc.name} 오늘 / 내일 날씨`;
+
+  try {
+    const url =
+      `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}` +
+      `&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("weather http error");
+    const data = await res.json();
+    if (!data.daily || !data.daily.time || data.daily.time.length < 2) {
+      throw new Error("no daily data");
     }
 
-async function updateWeatherForTitle() {
-  // ... (날씨 코드)
+    const todayMax = data.daily.temperature_2m_max[0];
+    const todayMin = data.daily.temperature_2m_min[0];
+    const todayCode = data.daily.weathercode[0];
+
+    const tomorrowMax = data.daily.temperature_2m_max[1];
+    const tomorrowMin = data.daily.temperature_2m_min[1];
+    const tomorrowCode = data.daily.weathercode[1];
+
+    weatherTodayEl.textContent =
+      `${todayMin.toFixed(1)}°C ~ ${todayMax.toFixed(1)}°C, ${weatherCodeToText(todayCode)}`;
+    weatherTomorrowEl.textContent =
+      `${tomorrowMin.toFixed(1)}°C ~ ${tomorrowMax.toFixed(1)}°C, ${weatherCodeToText(tomorrowCode)}`;
+  } catch (e) {
+    console.error(e);
+    weatherTodayEl.textContent = "날씨 정보를 불러오지 못했습니다.";
+    weatherTomorrowEl.textContent = "";
+  }
 }
 
 /* ✅ URL 해시에서 일정 불러오기 (#plan=...) */
@@ -1635,7 +1691,6 @@ function loadPlanFromHash() {
   }
 }
 
-tripTitleInput.addEventListener("change", updateWeatherForTitle);
 
 
       const loc = findWeatherLocationFromTitle(title);
