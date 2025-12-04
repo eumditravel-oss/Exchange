@@ -767,16 +767,17 @@
           </p>
 
           <!-- 여행 타이틀 + 자동완성 -->
-          <label for="tripTitle">여행 타이틀 / 방문 국가</label>
-          <div class="search-wrapper">
-            <input
-              id="tripTitle"
-              type="text"
-              placeholder="예: 홍콩 여행, 오사카 여행"
-              autocomplete="off"
-            />
-            <div id="titleSuggestions" style="display:none;"></div>
-          </div>
+<label for="tripTitle">방문 국가</label>
+<div class="suggestions">
+  <input
+    id="tripTitle"
+    type="text"
+    placeholder="예: 홍콩, 오사카, 도쿄"
+    autocomplete="off"
+  />
+  <div id="titleSuggestions" class="suggestions-list" style="display:none;"></div>
+</div>
+
 
           <!-- 여행 타이틀 기반 날씨 -->
           <div id="weatherBox" class="weather-box" style="display:none;">
@@ -1581,16 +1582,19 @@
       }
 
       titleSugBox.innerHTML = "";
-      results.forEach(r => {
-        const div = document.createElement("div");
-        div.textContent = r;
-        div.addEventListener("mousedown", () => {
-          tripTitleInput.value = r + " 여행";
-          titleSugBox.style.display = "none";
-          updateWeatherForTitle();
-        });
-        titleSugBox.appendChild(div);
-      });
+results.forEach(name => {
+  const div = document.createElement("div");
+  div.className = "suggestion-item";
+  div.textContent = name;
+  div.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    tripTitleInput.value = name;   // ← 여기만 변경!
+    titleSugBox.style.display = "none";
+    updateWeatherForTitle();
+  });
+  titleSugBox.appendChild(div);
+});
+
 
       titleSugBox.style.display = "block";
     });
