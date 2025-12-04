@@ -479,15 +479,26 @@ body {
     cursor: pointer;
   }
 
-  .schedule-footer {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    font-size: 0.78rem;
-    color: var(--muted);
-  }
+.schedule-footer {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* ✅ 카카오톡 공유 버튼 */
+.schedule-share-btn {
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  background: #fff7ed;        /* 파스텔 코랄톤 배경 */
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
 
   .schedule-footer-note {
     margin-top: 8px;
@@ -818,10 +829,13 @@ body {
 
           <button type="button" class="add-row-btn" id="addRowBtn">+ 일정 추가</button>
 
-          <div class="schedule-footer">
-            <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
-            <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
-          </div>
+<div class="schedule-footer">
+  <button type="button" class="schedule-export-btn" id="exportBtn">텍스트로 내보내기</button>
+  <button type="button" class="schedule-import-btn" id="importBtn">텍스트 불러오기</button>
+  <!-- ✅ 새로 추가된 버튼 -->
+  <button type="button" class="schedule-share-btn" id="shareKakaoBtn">카카오톡 공유</button>
+</div>
+
 
           <textarea
             id="exportTextArea"
@@ -943,10 +957,12 @@ body {
     const deleteDayBtn     = document.getElementById("deleteDayBtn");
     const renameDayBtn     = document.getElementById("renameDayBtn");
     const addRowBtn        = document.getElementById("addRowBtn");
-    const exportBtn        = document.getElementById("exportBtn");
-    const importBtn        = document.getElementById("importBtn");
-    const exportTextArea   = document.getElementById("exportTextArea");
-    const importFileInput  = document.getElementById("importFileInput");
+const exportBtn        = document.getElementById("exportBtn");
+const importBtn        = document.getElementById("importBtn");
+const exportTextArea   = document.getElementById("exportTextArea");
+const importFileInput  = document.getElementById("importFileInput");
+const shareKakaoBtn    = document.getElementById("shareKakaoBtn"); // ✅ 추가
+
 
     const weatherBox       = document.getElementById("weatherBox");
     const weatherTitleEl   = document.getElementById("weatherTitle");
@@ -1500,17 +1516,64 @@ function renderRows() {
       updateWeatherForTitle();
     }
 
-    function handleImportFile(files) {
-      if (!files || !files.length) return;
-      const file = files[0];
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const text = e.target.result || "";
-        exportTextArea.value = text;
-        parseImportText(text);
-      };
-      reader.readAsText(file, "utf-8");
+function handleImportFile(files) {
+  if (!files || !files.length) return;
+  const file = files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const text = e.target.result || "";
+    exportTextArea.value = text;
+    parseImportText(text);
+  };
+  reader.readAsText(file, "utf-8");
+}
+
+/* ===== ✅ 일정 공유 (URL에 일정 포함) ===== */
+function buildShareUrl() {
+  const text = buildExportText();  // 현재 일정 -> 텍스트
+  const baseUrl = window.location.origin + window.location.pathname;
+
+  // 텍스트를 base64로 인코딩해서 해시(#) 뒤에 붙임
+  const encoded = btoa(unescape(encodeURIComponent(text)));
+  return `${baseUrl}#plan=${encodeURIComponent(encoded)}`;
+}
+
+async function shareSchedule() {
+  const url = buildShareUrl();
+
+  // 모바일 등 지원 브라우저에서는 시스템 공유 시트 사용
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: tripTitleInput.value || "여행 일정",
+        text: "여행 일정 링크를 공유합니다.",
+        url
+      });
+      return;
+    } catch (e) {
+      if (e.name === "AbortError") {
+        // 사용자가 공유를 취소한 경우
+        return;
+      }
+      console.error(e);
     }
+  }
+
+  // 그 외 환경: 링크를 클립보드에 복사
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(url);
+      alert("공유용 링크를 클립보드에 복사했어요.\n카카오톡 대화창에 붙여넣기 해서 보내 주세요!");
+    } catch (e) {
+      console.error(e);
+      prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
+    }
+  } else {
+    // 아주 구형 브라우저용
+    prompt("이 링크를 복사해서 카카오톡에 붙여넣어 주세요.", url);
+  }
+}
+
 
     // ===== 여행 타이틀 기반 날씨 =====
     const weatherLocations = [
@@ -1552,12 +1615,28 @@ function renderRows() {
       return "변동";
     }
 
-    async function updateWeatherForTitle() {
-      const title = tripTitleInput.value.trim();
-      if (!title) {
-        weatherBox.style.display = "none";
-        return;
-      }
+async function updateWeatherForTitle() {
+  // ... (날씨 코드)
+}
+
+/* ✅ URL 해시에서 일정 불러오기 (#plan=...) */
+function loadPlanFromHash() {
+  const hash = window.location.hash || "";
+  if (!hash.startsWith("#plan=")) return;
+
+  try {
+    const encoded = decodeURIComponent(hash.slice(6)); // "plan=" 뒤부터
+    const text = decodeURIComponent(escape(atob(encoded))); // base64 -> 문자열
+
+    exportTextArea.value = text;
+    parseImportText(text);  // 기존 함수 재사용
+  } catch (e) {
+    console.error("해시에서 일정 불러오기 오류:", e);
+  }
+}
+
+tripTitleInput.addEventListener("change", updateWeatherForTitle);
+
 
       const loc = findWeatherLocationFromTitle(title);
       if (!loc) {
@@ -1649,20 +1728,23 @@ results.forEach(name => {
     });
 
     // ===== 일정 이벤트 연결 =====
-    addRowBtn.addEventListener("click", addRow);
-    addDayBtn.addEventListener("click", addDay);
-    deleteDayBtn.addEventListener("click", deleteCurrentDay);
-    renameDayBtn.addEventListener("click", renameCurrentDay);
-    exportBtn.addEventListener("click", exportToFile);
-    importBtn.addEventListener("click", () => importFileInput.click());
-    importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
+addRowBtn.addEventListener("click", addRow);
+addDayBtn.addEventListener("click", addDay);
+deleteDayBtn.addEventListener("click", deleteCurrentDay);
+renameDayBtn.addEventListener("click", renameCurrentDay);
+exportBtn.addEventListener("click", exportToFile);
+importBtn.addEventListener("click", () => importFileInput.click());
+importFileInput.addEventListener("change", () => handleImportFile(importFileInput.files));
+shareKakaoBtn.addEventListener("click", shareSchedule); // ✅ 추가
 
-    // ===== 초기화 =====
-    renderDayTabs();
-    renderRows();
-    updateWeatherForTitle();
-    fetchRate();
-    setPickMode("search");
+// ===== 초기화 =====
+renderDayTabs();
+renderRows();
+updateWeatherForTitle();
+loadPlanFromHash();  // ✅ 공유 링크로 들어왔을 때 일정 복원
+fetchRate();
+setPickMode("search");
+
   </script>
 </body>
 </html>
